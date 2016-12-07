@@ -7,6 +7,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
+  <link rel="stylesheet" href="assets/styles.css">
   <script src="lib/jquery/dist/jquery.js"></script>
   <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
   <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4rZOUR9C6GjW-FUifZ_kNZpnv9WjS6U&callback=initMap" async defer></script>-->
@@ -23,7 +24,7 @@
 <script src="lib/angular-simple-logger/dist/angular-simple-logger.js"></script>
 <script src="lib/angular-google-maps/dist/angular-google-maps.js"></script>
 
-<nav class="navbar navbar-default">
+<nav class="top-nav navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -33,14 +34,13 @@
       <a class="navbar-brand" href="#/">Gillibus</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-init="curTab = ''">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-init="curTab = 'San Francisco'">
       <ul class="nav navbar-nav">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">San Francisco<span class="caret"></span></a>
+          <a href="#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{curTab}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li ng-click="curTab = 'daly'" ng-class="{active: (curTab == 'daly')}"><a href="#/daly">San Francisco</a></li>
-            <li ng-click="curTab = 'oakland'" ng-class="{active: (curTab == 'oakland')}"><a href="#/oakland">Oakland</a></li>
-            <li ng-click="curTab = 'jose'" ng-class="{active: (curTab == 'jose')}"><a href="#/jose">San Jose</a></li>
+            <li ng-click="curTab = 'San Francisco'" ng-class="{active: (curTab == 'San Francisco')}"><a href="#/">San Francisco</a></li>
+            <li ng-click="curTab = 'Oakland'" ng-class="{active: (curTab == 'Oakland')}"><a href="#/">Oakland</a></li>
             <li role="separator" class="divider"></li>
             <li ng-click="curTab = 'routes'" ng-class="{active: (curTab == 'all')}"><a href="#">All Routes</a></li>
           </ul>
