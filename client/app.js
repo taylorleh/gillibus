@@ -1,4 +1,5 @@
 angular.module('gillibus', [
+  'gillibus.charter',
   'gillibus.locations',
   'gillibus.pricing',
   'gillibus.home',
@@ -20,17 +21,9 @@ angular.module('gillibus', [
       templateUrl: 'pricing/pricingTemplate.html',
       controller: 'PricingController'
     })
-    .when('/jose', {
-      templateUrl: 'locations/locationsTemplate.html',
-      controller: 'LocationsController'
-    })
-    .when('/jose', {
-      templateUrl: 'locations/locationsTemplate.html',
-      controller: 'LocationsController'
-    })
-    .when('/jose', {
-      templateUrl: 'locations/locationsTemplate.html',
-      controller: 'LocationsController'
+    .when('/charter', {
+      templateUrl: 'charter/charterTemplate.html',
+      controller: 'CharterController'
     })
     .otherwise('/');
 
