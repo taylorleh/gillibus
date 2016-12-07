@@ -20,6 +20,12 @@
   "homepage": "https://github.com/taylorleh/gillibus#readme",
   "dependencies": {
     "bower": "^1.8.0",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.3.0"
+  },
+  "devDependencies": {
+    "gulp-concat": "^2.6.1",
+    "gulp-nodemon": "^2.2.1"
   }
 }
