@@ -4,6 +4,8 @@
 
 
   li {
+    z-index: 100;
+    background-color: @mobile-nav-bckg;
 
     a {
       line-height: 80px;
@@ -22,6 +24,17 @@
     color: @brand-black;
     line-height: 80px;
     padding-top: 0px;
+  }
+
+  @media (min-width: @screen-sm) {
+    li {
+      background-color: inherit;
+    }
+
+  }
+
+  @media (min-width: @screen-md) {
+
   }
 
 
