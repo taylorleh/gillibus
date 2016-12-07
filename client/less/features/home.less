@@ -1,5 +1,31 @@
+@import "../variables.less";
 .home.container-fluid {
-  h1 {
+
+  .row.image-row {
+    margin: 1em 0;
+
+    &:nth-child(1) {
+      height: @image-row-default;
+    }
+
+    &:nth-child(2) {
+      height: @image-row-tall;
+    }
+
+    &:nth-child(3) {
+      height: @image-row-wide;
+    }
+
+
+
+    .image-col {
+      height: inherit;
+
+      img {
+        height: inherit;
+      }
+
+    }
 
   }
 }

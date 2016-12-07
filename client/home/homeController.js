@@ -1,4 +1,7 @@
 angular.module('gillibus.home', [])
-.controller('HomeController', ['$scope', function($scope) {
-  console.log('LOADED HOME CONTROLLER');
+.controller('HomeController', ['$scope', 'uiGmapGoogleMapApi', function($scope, uiGmapGoogleMapApi) {
+
+
+
 }]);
+
