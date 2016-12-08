@@ -5,7 +5,7 @@
       <div class="form-group">
         <label for="dateSelection">Jump To date:</label>
         <p class="input-group">
-          <input id="dateSelection" type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="calendar.open" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+          <input ng-change="updateCarousel(calendar.selectedDate);" id="dateSelection" type="text" class="form-control" uib-datepicker-popup ng-model="calendar.selectedDate" is-open="calendar.open" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
           <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="calendar.toggle();"><i class="glyphicon glyphicon-calendar"></i></button>
           </span>
@@ -14,7 +14,7 @@
     </form>
   </div>
   <!--BOOKING VIEWER-->
-  <slick class="row push-down-3" settings="slickConfig">
+  <slick class="row push-down-3" settings="slickConfig" init-onload="true" data="calendar.dayTiles" ng-if="calendar.dayTiles.length">
     <div ng-repeat="d in calendar.dayTiles" class="col-xs-2 slide-container">
       <div class="bg-primary" style="height: 70px">
         <span class="date-label">{{d}}</span>
@@ -26,19 +26,19 @@
     <div class="col-xs-12">
       <form>
         <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+          <label for="exampleInputEmail1">Name</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Name">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          <label for="exampleInputPassword1">Email</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Email">
         </div>
         <div class="form-group">
-          <label for="exampleInputFile">File input</label> <input type="file" id="exampleInputFile">
-          <p class="help-block">Example block-level help text here.</p>
+          <label for="exampleInputFile">Waiver</label> <input type="file" id="exampleInputFile">
+          <p class="help-block">Please sign and upload waiver.</p>
         </div>
         <div class="checkbox">
-          <label> <input type="checkbox"> Check me out </label>
+          <label> <input type="checkbox">I have read and agree to the terms and conditions</label>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>

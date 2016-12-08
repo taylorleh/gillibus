@@ -1,11 +1,11 @@
 angular.module('gillibus.charter', [])
-  .controller('CharterController', ['$scope','moment', function($scope, moment) {
+  .controller('CharterController', ['$scope','$timeout', 'moment', function($scope,$timeout, moment) {
 
     // Calendar
     $scope.calendar = {
+      selectedDate: Date.now(),
       open: false,
       toggle:function() {
-        console.log('calendar toggle', this);
         this.open = !this.open;
       },
       dayTiles: [],
@@ -35,6 +35,14 @@ angular.module('gillibus.charter', [])
         afterChange: function(event, slick, currentSlide, nextSlide) {
         }
       }
+    };
+
+    $scope.updateCarousel = function(date) {
+      $scope.calendar.dayTiles = [];
+      $timeout(function() {
+        $scope.calendar.populateTiles(moment(date));
+      },0);
+
     };
 
     $scope.calendar.populateTiles(moment());
