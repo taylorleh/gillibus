@@ -4,6 +4,9 @@ angular.module('gillibus', [
   'gillibus.pricing',
   'gillibus.home',
   'gillibus.routes',
+  'ui.bootstrap',
+  'angularMoment',
+  'slickCarousel',
   'uiGmapgoogle-maps',
   'ngRoute'
 
@@ -33,6 +36,7 @@ angular.module('gillibus', [
     v: '3', //defaults to latest 3.X anyhow
     libraries: 'geometry'
   });
+
 
 }).run(function($rootScope, $location) {
   console.log('RUNNING')
