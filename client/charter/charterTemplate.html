@@ -15,13 +15,16 @@
   </div>
 
   <!--BOOKING VIEWER-->
-  <slick class="row push-down-3" settings="slickConfig" init-onload="true" data="calendar.dayTiles" ng-if="calendar.dayTiles.length">
-    <div ng-repeat="d in calendar.dayTiles" class="col-xs-2 slide-container">
-      <div class="bg-primary" style="height: 70px">
-        <span class="date-label">{{d}}</span>
+  <div class="row push-down-3">
+
+    <slick class="push-down-3" settings="slickConfig" init-onload="true" data="calendar.dayTiles" ng-if="calendar.dayTiles.length">
+      <div ng-repeat="d in calendar.dayTiles" class="col-xs-2 slide-container">
+        <div class="bg-primary" style="height: 70px">
+          <span class="date-label">{{d}}</span>
+        </div>
       </div>
-    </div>
-  </slick>
+    </slick>
+  </div>
 
 
   <!--Time Viewer-->
