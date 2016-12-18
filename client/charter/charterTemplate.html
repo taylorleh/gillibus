@@ -25,12 +25,12 @@
         </div>
         <!--begin time-->
         <div class="form-group time-begin">
-          <select class="form-control " ng-model="clock.begin" ng-options="time for time in times"></select>
+          <select class="form-control " ng-click="onBeginClick($event)" ng-model="clock.begin" ng-options="time for time in times"></select>
         </div>
         <!--end time-->
         <div class="form-group time-end">
           <select class="form-control" ng-model="clock.end" ng-options="time for time in times">
-            <option value="">-- Return Time --</option>
+            <option value="">Return Time</option>
           </select>
         </div>
         <button type="submit" class="btn btn-primary visible-xs-block btn-lg chk-out">Reserve</button>

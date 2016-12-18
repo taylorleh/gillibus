@@ -23,12 +23,32 @@
       &.time-end, &.time-begin {
         min-width: 30%;
         flex: 1 1;
+        white-space: nowrap;
+        position: relative;
+
+        &:after {
+          content: "\f107";
+          font-family: FontAwesome;
+          position: absolute;
+          top: 50%;
+          right: .3em;
+          pointer-events: none;
+          transform: translate(0, -50%);
+
+        }
+
+
+
 
         .form-control {
           -webkit-appearance: none;
+          font-size: 12px;
+          display: inline-block;
+
         }
 
       }
+
 
       &.cal-field {
         min-width: 30%;
@@ -102,6 +122,10 @@
 
         &.time-end, &.time-begin {
           flex: 1 1;
+
+          .form-control {
+            font-size: inherit;
+          }
 
         }
 
