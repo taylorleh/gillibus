@@ -24,9 +24,17 @@
           </div>
         </div>
         <!--begin time-->
-        <div class="form-group time-begin">
-          <select class="form-control " ng-click="onBeginClick($event)" ng-model="clock.begin" ng-options="time for time in times"></select>
-        </div>
+
+
+        <!--<div class="form-group time-begin">-->
+          <!--<select class="form-control " ng-click="onBeginClick($event)" ng-model="clock.begin" ng-options="time for time in times"></select>-->
+        <!--</div>-->
+
+        <div class="form-group time-begin" gb-select settings="gbSelectOptions"></div>
+
+
+
+
         <!--end time-->
         <div class="form-group time-end">
           <select class="form-control" ng-model="clock.end" ng-options="time for time in times">

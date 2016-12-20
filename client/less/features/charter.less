@@ -1,4 +1,5 @@
 @import "../variables.less";
+@import "../mixins";
 .charter.container{
 
 
@@ -25,17 +26,18 @@
         flex: 1 1;
         white-space: nowrap;
         position: relative;
+        .angle-down();
 
-        &:after {
-          content: "\f107";
-          font-family: FontAwesome;
-          position: absolute;
-          top: 50%;
-          right: .3em;
-          pointer-events: none;
-          transform: translate(0, -50%);
-
-        }
+        //&:after {
+        //  content: "\f107";
+        //  font-family: FontAwesome;
+        //  position: absolute;
+        //  top: 50%;
+        //  right: .3em;
+        //  pointer-events: none;
+        //  transform: translate(0, -50%);
+        //
+        //}
 
 
 
