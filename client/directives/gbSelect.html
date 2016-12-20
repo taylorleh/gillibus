@@ -1,0 +1,9 @@
+<select name="{{settings.name}}" id="">
+  <option value="" ng-repeat="opt in settings.optList">{{opt}}</option>
+</select>
+<div class="select form-control">
+  <span class="value angle-down">{{settings.placeHolder}}</span>
+  <ul class="optList hidden">
+    <li class="option" ng-repeat="opt in settings.optList">{{opt}}</li>
+  </ul>
+</div>
