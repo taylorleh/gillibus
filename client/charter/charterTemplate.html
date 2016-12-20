@@ -5,8 +5,27 @@
       <form class="form-inline date-time-booker push-down-3">
 
         <!--Calendar field-->
-        <div class="form-group cal-field">
-          <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+        <div class="form-group cal-field visible-xs-inline-block">
+          <label class="sr-only" for="dateSelection">Amount (in dollars)</label>
+          <div class="input-group input-group-lg">
+            <input ng-change="updateCarousel(calendar.selectedDate);"
+                   id="dateSelection"
+                   type="text"
+                   class="form-control"
+                   uib-datepicker-popup
+                   ng-model="calendar.selectedDate"
+                   is-open="calendar.open"
+                   datepicker-options="dateOptions"
+                   ng-required="true"
+                   close-text="Close"/>
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="calendar.toggle();"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+          </div>
+        </div>
+
+        <div class="form-group cal-field hidden-xs">
+          <label class="sr-only" for="dateSelection">Amount (in dollars)</label>
           <div class="input-group">
             <input ng-change="updateCarousel(calendar.selectedDate);"
                    id="dateSelection"
@@ -23,16 +42,27 @@
           </span>
           </div>
         </div>
+
         <!--begin time-->
-        <div class="form-group time-begin">
-          <select class="form-control " ng-model="clock.begin" ng-options="time for time in times"></select>
+        <div class="form-group time-begin visible-xs-inline-block">
+          <select class="form-control input-lg" ng-click="onBeginClick($event)" ng-model="clock.begin" ng-options="time for time in times"></select>
         </div>
+        <div class="hidden-xs form-group time-begin">
+          <select class="form-control" ng-click="onBeginClick($event)" ng-model="clock.begin" ng-options="time for time in times"></select>
+        </div>
+
         <!--end time-->
-        <div class="form-group time-end">
-          <select class="form-control" ng-model="clock.end" ng-options="time for time in times">
-            <option value="">-- Return Time --</option>
+        <div class="form-group time-end visible-xs-inline-block">
+          <select class="form-control input-lg" ng-model="clock.end" ng-options="time for time in times">
+            <option value="">Return Time</option>
           </select>
         </div>
+        <div class="form-group time-end hidden-xs">
+          <select class="form-control" ng-model="clock.end" ng-options="time for time in times">
+            <option value="">Return Time</option>
+          </select>
+        </div>
+
         <button type="submit" class="btn btn-primary visible-xs-block btn-lg chk-out">Reserve</button>
         <button type="submit" class="btn btn-primary hidden-xs chk-out">Reserve</button>
       </form>

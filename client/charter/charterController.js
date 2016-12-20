@@ -51,7 +51,19 @@ angular.module('gillibus.charter', [])
         }
       };
 
-      // Carousel
+
+
+
+
+
+      /*
+      ****************
+      * SLICK CAROUSEL
+      ****************
+      */
+
+
+      // config
       $scope.slickConfig = {
         enabled: true,
         autoplay: false,

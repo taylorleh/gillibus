@@ -9,22 +9,71 @@
     flex-direction: row;
     flex-wrap: wrap;
     padding: 0 1em;
+    font-size: 11px;
 
     .form-group {
       margin-bottom: 0;
+
+      .form-control {
+        position: relative;
+        width: 100%;
+        //min-width: 12.5rem;
+      }
 
 
       &.time-end, &.time-begin {
         min-width: 30%;
         flex: 1 1;
+        white-space: nowrap;
+        position: relative;
+
+        &:after {
+          content: "\f107";
+          font-family: FontAwesome;
+          position: absolute;
+          top: 50%;
+          right: .3em;
+          pointer-events: none;
+          transform: translate(0, -50%);
+
+        }
+
+
+
+
+        .form-control {
+          -webkit-appearance: none;
+          font-size: inherit;
+          display: inline-block;
+          line-height: inherit;
+
+        }
 
       }
+
+      &.cal-field, &.time-begin, &.time-end {
+        .form-control {
+          border-radius: 0;
+        }
+
+        .input-group-btn {
+          button {
+            border-radius: 0;
+            font-size: inherit;
+          }
+        }
+      }
+
 
       &.cal-field {
         min-width: 30%;
         flex: 2 1 0;
         .input-group {
           width: 100%;
+
+          .input-group-btn, .form-control {
+            font-size: inherit;
+          }
 
           .input-group-btn {
             width: 38px;
@@ -34,16 +83,12 @@
     }
 
     .chk-out {
-      flex: 1 1 50%;
-      -webkit-flex: 1 1 50%;
-      border-radius: 3px;
+      flex: 1 1 101%;
+      -webkit-flex: 1 1 101%;
+      border-radius: 0;
     }
 
-    .form-control {
-      position: relative;
-      width: 100%;
-      //min-width: 12.5rem;
-    }
+
 
   }
 
@@ -90,12 +135,17 @@
       justify-content: flex-start;
       flex-direction: row;
       flex-wrap: nowrap;
+      font-size: inherit;
 
       .form-group {
         min-width: 200px;
 
         &.time-end, &.time-begin {
           flex: 1 1;
+
+          .form-control {
+            font-size: inherit;
+          }
 
         }
 
