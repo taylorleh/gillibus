@@ -32,6 +32,6 @@ bower_components/
 
 client/lib
 
-.idea/*.*
+.idea/**/*.*
 
 client/assets/styles.css
