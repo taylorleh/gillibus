@@ -1,6 +1,35 @@
 angular.module('gillibus.routes', [])
-  .controller('RoutesController', ['$scope', 'uiGmapGoogleMapApi', function($scope, uiGmapGoogleMapApi) {
+  .controller('RoutesController', ['$scope', 'uiGmapGoogleMapApi', '$geolocation',function($scope, uiGmapGoogleMapApi, $geolocation) {
 
+    /*
+    * GEOLOCATION
+    */
+    $geolocation.watchPosition({
+      timeout: 1000
+    });
+    $scope.myPosition = $geolocation.position;
+    $scope.marker = {
+      id: 0,
+      coords: {
+        latitude: 40.1451,
+        longitude: -99.6680
+      },
+      options: { draggable: false },
+      events: {}
+    };
+
+    $scope.$watch('myPosition.coords', (newValue, oldValue) => {
+      if (!newValue && !oldValue) return;
+      $scope.marker.coords = {
+        latitude: newValue.latitude,
+        longitude: newValue.longitude
+      };
+    });
+
+
+    /*
+    * MAP
+    */
     $scope.map = {
       options: {
         clickableIcons:false,
