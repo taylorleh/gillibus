@@ -8,6 +8,7 @@ angular.module('gillibus', [
   'ui.bootstrap',
   'angularMoment',
   'slickCarousel',
+  'ngGeolocation',
   'uiGmapgoogle-maps',
   'ngRoute'
 
