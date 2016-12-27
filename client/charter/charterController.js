@@ -1,6 +1,6 @@
 angular.module('gillibus.charter', [])
   .controller('CharterController',
-    ['$scope', '$timeout', 'moment', '$window', function($scope, $timeout, moment, $window) {
+    ['$scope', '$timeout', 'moment', '$window', '$uibModal',function($scope, $timeout, moment, $window, $uibModal) {
 
       const bp = {
         768: 3,
@@ -115,6 +115,37 @@ angular.module('gillibus.charter', [])
           $scope.calendar.populateTiles(moment(date));
         }, 0);
 
+      };
+
+
+      /*
+      * CHECKOUT MODAL
+      */
+
+      $scope.open = function () {
+        let modalEl = angular.element('.charter-checkout');
+        let modalInstance = $uibModal.open({
+          templateUrl: '../charter/checkoutModal.html',
+          // appendTo: modalEl,
+          size:'lg',
+          controller: function ($scope) {
+            $scope.user = {};
+
+            $scope.process = function (args) {
+              Stripe.card.createToken({
+                number: '',
+                cvc: '',
+                exp_month:'',
+                exp_year: ''
+
+              }, function (err, resp) {
+
+              })
+            }
+
+
+          }
+        });
       };
 
       const init = function init() {

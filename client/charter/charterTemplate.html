@@ -63,8 +63,8 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary visible-xs-block btn-lg chk-out">Reserve</button>
-        <button type="submit" class="btn btn-primary hidden-xs chk-out">Reserve</button>
+        <button type="submit" ng-click="open()" class="btn btn-primary visible-xs-block btn-lg chk-out">Reserve</button>
+        <button type="submit" ng-click="open()" class="btn btn-primary hidden-xs chk-out">Reserve</button>
       </form>
     <!--</div>-->
   </div>
@@ -86,6 +86,8 @@
     <table window-resizer class="table availability-table table-striped table-condensed">
     </table>
   </div>
+
+  <div class="charter-checkout row"></div>
 
 
   <!--INFO FORM-->
