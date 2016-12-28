@@ -129,6 +129,29 @@
     }
   }
 
+
+  /*
+  * Checkout modal
+  */
+
+  .checkout-modal {
+    form.payment-form {
+
+      .payment-extra {
+
+        .form-control {
+          display: inline-block;
+          width: 45%;
+
+          &:nth-child(2) {
+            float: right;
+          }
+
+        }
+      }
+    }
+  }
+
   @media (min-width: @screen-sm) {
     form.date-time-booker {
       display: flex;
@@ -177,6 +200,38 @@
         //flex-basis: 20%;
       }
     }
+
+
+
+    /*
+    * Checkout Modal
+    */
+
+    .checkout-modal {
+      form.payment-form {
+
+        .payment-main {
+          .form-group {
+            display: block;
+            .form-control {
+              width: 100%;
+            }
+          }
+
+        }
+
+        .form-group {
+          margin-bottom: 2em;
+
+        }
+
+        .payment-extra {
+          display: block;
+
+        }
+      }
+    }
+
 
 
   }
