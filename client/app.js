@@ -5,6 +5,7 @@ angular.module('gillibus', [
   'gillibus.home',
   'gillibus.routes',
   'gillibus.directive.viewport',
+  'gillibus.service.viewport',
   'ui.bootstrap',
   'angularMoment',
   'slickCarousel',
