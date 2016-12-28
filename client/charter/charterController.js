@@ -1,6 +1,6 @@
 angular.module('gillibus.charter', [])
   .controller('CharterController',
-    ['$scope', '$timeout', 'moment', '$window', '$uibModal',function($scope, $timeout, moment, $window, $uibModal) {
+    ['$scope', '$timeout', 'moment', '$window', '$uibModal','viewPort' ,function($scope, $timeout, moment, $window, $uibModal, viewPort) {
 
       const bp = {
         768: 3,
@@ -123,11 +123,12 @@ angular.module('gillibus.charter', [])
       */
 
       $scope.open = function () {
-        let modalEl = angular.element('.charter-checkout');
+        let modalEl = angular.element('.checkout-modal');
+
         let modalInstance = $uibModal.open({
           templateUrl: '../charter/checkoutModal.html',
-          // appendTo: modalEl,
-          size:'lg',
+          appendTo: modalEl,
+          size: viewPort.getViewportSize() === 'xs' ? 'lg' : 'md',
           controller: function ($scope) {
             $scope.user = {};
 
