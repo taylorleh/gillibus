@@ -8,6 +8,7 @@ angular.module('gillibus', [
   'gillibus.service.viewport',
   'ui.bootstrap',
   'angularMoment',
+  'credit-cards',
   'slickCarousel',
   'uiGmapgoogle-maps',
   'ngRoute'
