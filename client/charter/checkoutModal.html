@@ -1,28 +1,35 @@
 <div style="width: inherit; padding: 2em;">
-  <form class="payment-form">
-    <!--<pre>{{user | json}}</pre>-->
+  <form novalidate ng-submit="process($event)" class="payment-form">
     <div class="payment-main">
       <div class="form-group">
         <!--<label for="exampleInputEmail1">Name</label>-->
-        <input ng-model="user.name" type="name" class="form-control" id="exampleInputEmail1" placeholder="Cardholder's Name">
+        <input  ng-model="user.name" type="name" class="form-control" id="exampleInputEmail1" placeholder="Cardholder's Name">
       </div>
       <div class="form-group">
         <!--<label for="exampleInputPassword1">Card Number</label>-->
-        <input ng-model="user.cc" type="password" class="form-control" id="exampleInputPassword1" placeholder="Card Number">
+        <input data-stripe="number" cc-number cc-format ng-model="user.number" type="text" class="form-control card-number" id="exampleInputPassword1" placeholder="Card Number">
       </div>
     </div>
 
 
     <div class="form-group payment-extra">
       <!--<label for="exampleInputPassword1">Card Number</label>-->
-      <input ng-model="user.expire" type="password" class="form-control" id="exampleInputPassword1" placeholder="Expire Date">
-      <input  ng-model="user.cvc" type="password" class="form-control" id="exampleInputPassword1" placeholder="CCV">
+      <div cc-exp class="expire">
+        <div class="payment-extra-label-container">
+          <span class="payment-extra-label">Expiration</span>
+        </div>
+        <input ng-model="user.month" cc-exp-month ng-required="true" data-stripe="exp_month" type="text" class="form-control card-expire" placeholder="MM">
+        <input ng-model="user.year" cc-exp-year ng-required="true" data-stripe="exp_year" type="text" class="form-control card-expire" placeholder="YY">
+      </div>
+      <div class="code">
+        <input  ng-model="user.cvc" type="text" data-stripe="cvc" cc-cvc class="form-control card-cvc" placeholder="CVC">
+      </div>
     </div>
 
     <div class="checkbox">
       <label> <input type="checkbox">I have read and agree to the terms and conditions</label>
     </div>
-    <button type="submit" ng-click="process(user) " class="btn btn-primary">Checkout</button>
+    <button type="submit" class="btn btn-primary">Checkout</button>
   </form>
 </div>
 

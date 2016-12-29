@@ -138,6 +138,51 @@
     form.payment-form {
 
       .payment-extra {
+        position: relative;
+
+        .expire, .code {
+          display: inline-block;
+          width:50%;
+          padding: 2em 0;
+
+        }
+
+        .expire {
+          border: 1px solid grey;
+          position: relative;
+          padding-left: 1em;
+          padding-right: 1em;
+
+
+          .payment-extra-label-container {
+            position: absolute;
+            width: 100%;
+            display: block;
+            top:-.5em;
+            left: 0;
+            text-align: center;
+            background-color: rgba(255,255,255,0);
+            line-height: normal;
+
+            .payment-extra-label {
+              position: relative;
+              background-color: white;
+              text-align: center;
+              display: inline-block;
+              padding: 0 1em;
+              font-style: italic;
+            }
+          }
+
+        }
+
+        .code {
+          float: right;
+          text-align: center;
+          .form-control {
+            float: none;
+          }
+        }
 
         .form-control {
           display: inline-block;
