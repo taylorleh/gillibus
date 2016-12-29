@@ -5,6 +5,7 @@ angular.module('gillibus', [
   'gillibus.home',
   'gillibus.routes',
   'gillibus.directive.viewport',
+  'gillibus.directive.focus',
   'gillibus.service.viewport',
   'ui.bootstrap',
   'angularMoment',

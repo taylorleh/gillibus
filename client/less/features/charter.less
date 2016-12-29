@@ -1,4 +1,6 @@
 @import "../variables.less";
+@import "client/lib/bootstrap/less/variables.less";
+@import "client/lib/bootstrap/less/mixins.less";
 .charter.container{
 
 
@@ -139,14 +141,14 @@
 
       .card-number-container, .card-expire-yy-container, .card-expire-mm-container, .card-cvc-container {
         .form-control {
-          padding-left: 28px;
+          padding-left: 20px;
         }
       }
 
 
 
       // ICONS
-      .card-number-container, .card-expire-yy-container, .card-expire-mm-container, .card-cvc-container {
+      .card-number-container, .card-cvc-container, .card-exp-ro-container {
         position: relative;
         &:after {
           content:"\f09d";
@@ -158,8 +160,9 @@
         }
       }
 
-      .card-expire-mm-container:after {  content: "\f133";  }
-      .card-expire-yy-container:after {  content: "\f133";  }
+      //.card-expire-mm-container:after {  content: "\f133";  }
+      .card-exp-ro-container:after {  content: "\f133";  }
+      //.card-expire-yy-container:after {  content: "\f133";  }
       .card-cvc-container:after {  content: "\f023";  }
 
 
@@ -176,8 +179,35 @@
         .expire {
           border: 1px solid grey;
           position: relative;
-          padding-left: 1em;
-          padding-right: 1em;
+          padding-left: 3em;
+          padding-right: 3em;
+
+          .card-exp-ro-container {
+            width: 100%;
+
+            .card-exp-ro {
+              padding-left: 1.5em;
+            }
+          }
+
+          .card-expire-container {
+            //width: 50%;
+          }
+
+          .card-expire-mm {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+            position: absolute;
+            opacity: 0;
+
+          }
+          .card-expire-yy {
+            border-top-left-radius: 0;
+            border-left: none;
+            position: absolute;
+            opacity: 0;
+          }
 
 
           .payment-extra-label-container {
@@ -216,21 +246,21 @@
           }
         }
 
-        .card-expire-container {
-          display: inline-block;
-          width: 45%;
-
-          &:nth-child(2) {
-            float: right;
-          }
-
-        }
+        //.card-expire-container {
+        //  display: inline-block;
+        //  width: 45%;
+        //
+        //  &:nth-child(2) {
+        //    float: right;
+        //  }
+        //
+        //}
       }
     }
   }
 
   @media (min-width: @screen-sm) {
-    form.date-time-booker {
+    form.date-time-booker  {
       display: flex;
       justify-content: flex-start;
       flex-direction: row;
