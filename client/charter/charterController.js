@@ -133,15 +133,11 @@ angular.module('gillibus.charter', [])
             $scope.user = {};
 
             $scope.process = function (args) {
-              Stripe.card.createToken({
-                number: '',
-                cvc: '',
-                exp_month:'',
-                exp_year: ''
+              let $form = args.target;
 
-              }, function (err, resp) {
-
-              })
+              Stripe.card.createToken($form, function (status, response) {
+                console.log(arguments);
+              });
             }
 
 
