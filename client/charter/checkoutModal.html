@@ -1,11 +1,11 @@
-<div style="width: inherit; padding: 2em;">
+<div style="width: inherit; padding: 3em;">
   <form novalidate ng-submit="process($event)" class="payment-form">
     <div class="payment-main">
       <div class="form-group">
         <!--<label for="exampleInputEmail1">Name</label>-->
         <input  ng-model="user.name" type="name" class="form-control" id="exampleInputEmail1" placeholder="Cardholder's Name">
       </div>
-      <div class="form-group">
+      <div class="form-group card-number-container">
         <!--<label for="exampleInputPassword1">Card Number</label>-->
         <input data-stripe="number" cc-number cc-format ng-model="user.number" type="text" class="form-control card-number" id="exampleInputPassword1" placeholder="Card Number">
       </div>
@@ -18,11 +18,17 @@
         <div class="payment-extra-label-container">
           <span class="payment-extra-label">Expiration</span>
         </div>
-        <input ng-model="user.month" cc-exp-month ng-required="true" data-stripe="exp_month" type="text" class="form-control card-expire" placeholder="MM">
-        <input ng-model="user.year" cc-exp-year ng-required="true" data-stripe="exp_year" type="text" class="form-control card-expire" placeholder="YY">
+        <div class="card-expire-container card-expire-mm-container">
+          <input ng-model="user.month" cc-exp-month ng-required="true" data-stripe="exp_month" type="text" class="form-control card-expire card-expire-mm" placeholder="MM">
+        </div>
+        <div class="card-expire-container card-expire-yy-container">
+          <input ng-model="user.year" cc-exp-year ng-required="true" data-stripe="exp_year" type="text" class="form-control card-expire card-expire-yy" placeholder="YY">
+        </div>
       </div>
       <div class="code">
-        <input  ng-model="user.cvc" type="text" data-stripe="cvc" cc-cvc class="form-control card-cvc" placeholder="CVC">
+        <div class="card-cvc-container">
+          <input  ng-model="user.cvc" type="text" data-stripe="cvc" cc-cvc class="form-control card-cvc" placeholder="CVC">
+        </div>
       </div>
     </div>
 

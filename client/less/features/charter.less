@@ -137,6 +137,32 @@
   .checkout-modal {
     form.payment-form {
 
+      .card-number-container, .card-expire-yy-container, .card-expire-mm-container, .card-cvc-container {
+        .form-control {
+          padding-left: 28px;
+        }
+      }
+
+
+
+      // ICONS
+      .card-number-container, .card-expire-yy-container, .card-expire-mm-container, .card-cvc-container {
+        position: relative;
+        &:after {
+          content:"\f09d";
+          font-family: FontAwesome;
+          position: absolute;
+          top: 20%;
+          padding-left: 5px;
+          left: 0;
+        }
+      }
+
+      .card-expire-mm-container:after {  content: "\f133";  }
+      .card-expire-yy-container:after {  content: "\f133";  }
+      .card-cvc-container:after {  content: "\f023";  }
+
+
       .payment-extra {
         position: relative;
 
@@ -179,12 +205,18 @@
         .code {
           float: right;
           text-align: center;
-          .form-control {
-            float: none;
+          .card-cvc-container {
+            width: 45%;
+            display: inline-block;
+            .form-control {
+              float: none;
+              display: inline-block;
+
+            }
           }
         }
 
-        .form-control {
+        .card-expire-container {
           display: inline-block;
           width: 45%;
 
