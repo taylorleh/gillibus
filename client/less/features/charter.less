@@ -139,7 +139,7 @@
     form.payment-form {
 
       // ICONS
-      .card-number-container, .card-cvc-container, .card-expire-container {
+      .card-number-container, .card-cvc-container, .card-expire-container, .cc-name-container {
         position: relative;
         .form-control {
           padding-left: 28px;
@@ -156,6 +156,9 @@
         }
       }
 
+      .cc-name-container:after {
+        content: "\f2c0";
+      }
       .card-expire-container:after {
         content: "\f133";
       }
@@ -168,6 +171,16 @@
         margin-bottom: 0;
       }
 
+      // MAIN CONTAINER
+      .payment-main {
+        .cc-name-container {
+          .cc-name {
+            .no-radius(left);
+            .no-radius(right);
+          }
+        }
+      }
+
       .payment-extra {
         position: relative;
 
@@ -177,7 +190,9 @@
         }
 
         .card-expire-container {
-          .form-control {  .no-border(top);  }
+          .form-control {
+            .no-border(top);
+          }
 
           .cc-month-container, .cc-year-container {
             width: 50%;
@@ -185,14 +200,16 @@
           }
 
           .cc-month-container {
-            .no-border(right)
+            .no-border(right);
           }
 
           .cc-year-container {
             float: right;
             .no-border(left);
+            .form-control {
+              border-left-width: 0.4em;
+            }
           }
-
 
         }
 
@@ -213,25 +230,6 @@
           padding-right: 1em;
           text-align: center;
 
-          //.payment-extra-label-container {
-          //  position: absolute;
-          //  width: 100%;
-          //  display: block;
-          //  top:-.5em;
-          //  left: 0;
-          //  text-align: center;
-          //  background-color: rgba(255,255,255,0);
-          //  line-height: normal;
-          //
-          //  .payment-extra-label {
-          //    position: relative;
-          //    background-color: white;
-          //    text-align: center;
-          //    display: inline-block;
-          //    padding: 0 1em;
-          //    font-style: italic;
-          //  }
-          //}
 
           .card-expire-container {
             display: inline-block;
@@ -244,20 +242,6 @@
           }
 
         }
-
-        //.code {
-        //  float: right;
-        //  text-align: center;
-        //  .card-cvc-container {
-        //    width: 45%;
-        //    display: inline-block;
-        //    .form-control {
-        //      float: none;
-        //      display: inline-block;
-        //
-        //    }
-        //  }
-        //}
 
       }
     }
