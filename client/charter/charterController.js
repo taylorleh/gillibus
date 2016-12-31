@@ -128,9 +128,34 @@ angular.module('gillibus.charter', [])
         let modalInstance = $uibModal.open({
           templateUrl: '../charter/checkoutModal.html',
           appendTo: modalEl,
-          size: viewPort.getViewportSize() === 'xs' ? 'lg' : 'md',
+          size: viewPort.getViewportSize() === 'xs' ? 'mobile' : 'desktop',
+          windowClass:'window-class',
+          windowTopClass:'top-class',
           controller: function ($scope) {
-            $scope.user = {};
+            $scope.ran = 'hi';
+            $scope.user = {
+              // number:null,
+              // month:null,
+              year:null,
+              exp:function (newValue) {
+                if (!angular.isDefined(newValue)) {
+                  // return $scope.ran;
+                }
+                else {
+                  return $scope.ran;
+                  if (newValue.length <= 2) {
+                    let exp = newValue
+                    this.month = exp;
+                    return '1';
+                  } else {
+                    this.month = newValue;
+                    this.year = newValue.slice(2);
+                    return [this.month, '/', this.year].join('/');
+                  }
+
+                }
+              }
+            };
 
             $scope.process = function (args) {
               let $form = args.target;
@@ -138,12 +163,33 @@ angular.module('gillibus.charter', [])
               Stripe.card.createToken($form, function (status, response) {
                 console.log(arguments);
               });
-            }
+            };
 
+            // TODO - This will cause memory leaks if not unregistered.
+            // $scope.$watch('user.exp', function (event) {
+            //   let numberString = event.toString().split('');
+            //   if (numberString.length <= 2) {
+            //     $scope.user.month = event;
+            //   } else {
+            //     let month = event.slice(0,2);
+            //     let year = event.slice(2);
+            //     console.log('over 2. month =', month, ' year =', year);
+            //     $scope.user.month = month;
+            //     $scope.user.year = year;
+            //
+            //
+            //   }
+            // });
+
+            $scope.expireChange = function (args) {
+              console.log('changing', arguments);
+            }
 
           }
         });
       };
+
+
 
       const init = function init() {
         let hourIndex = (new Date()).getHours();
