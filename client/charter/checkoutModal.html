@@ -1,34 +1,28 @@
 <div style="width: inherit; padding: 3em;">
-  <pre>{{user | json}}</pre>
   <form novalidate ng-submit="process($event)" class="payment-form">
     <div class="payment-main">
       <div class="form-group">
         <!--<label for="exampleInputEmail1">Name</label>-->
-        <input  ng-model="user.name" type="name" class="form-control" id="exampleInputEmail1" placeholder="Cardholder's Name">
+        <input ng-model="user.name" type="name" class="form-control" id="exampleInputEmail1" placeholder="Cardholder's Name">
       </div>
       <div class="form-group card-number-container">
         <!--<label for="exampleInputPassword1">Card Number</label>-->
         <input data-stripe="number" cc-number cc-format ng-model="user.number" type="text" class="form-control card-number" id="exampleInputPassword1" placeholder="Card Number">
       </div>
     </div>
-
-
     <div class="form-group payment-extra">
-        <div class="card-expire-container">
-          <div cc-exp>
-            <input cc-exp-month style="opacity: 0; position: absolute;" tabindex="-1" type="text" ng-model="user.month">
-            <input cc-exp-year style="opacity: 0; position: absolute;" tabindex="-1" type="text" ng-model="user.year">
-          </div>
-          <input ng-model="user.exp" ng-model-options="{
-          getterSetter : true ,
-          debounce: { 'default': 500 }
-          }" ng-required="true" data-stripe="exp_month" type="text" class="form-control card-expire card-expire-mm" placeholder="MM / YY">
+      <div class="card-expire-container" cc-exp>
+        <div class="cc-month-container">
+          <input cc-exp-month type="text" class="form-control cc-month" ng-model="user.month" placeholder="MM">
         </div>
-        <div class="card-cvc-container">
-          <input  ng-model="user.cvc" type="text" data-stripe="cvc" cc-cvc class="form-control card-cvc" placeholder="CVC">
+        <div class="cc-year-container">
+          <input cc-exp-year type="text" class="form-control cc-year" ng-model="user.year" placeholder="YY">
         </div>
+      </div>
+      <div class="card-cvc-container">
+        <input ng-model="user.cvc" type="text" data-stripe="cvc" cc-cvc class="form-control card-cvc" placeholder="CVC">
+      </div>
     </div>
-
     <div class="checkbox">
       <label> <input type="checkbox">I have read and agree to the terms and conditions</label>
     </div>

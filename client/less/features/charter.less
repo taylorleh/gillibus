@@ -1,6 +1,6 @@
 @import "../variables.less";
-.charter.container{
 
+.charter.container {
 
   //time and date inline form
   form.date-time-booker {
@@ -20,7 +20,6 @@
         //min-width: 12.5rem;
       }
 
-
       &.time-end, &.time-begin {
         min-width: 30%;
         flex: 1 1;
@@ -37,9 +36,6 @@
           transform: translate(0, -50%);
 
         }
-
-
-
 
         .form-control {
           -webkit-appearance: none;
@@ -64,7 +60,6 @@
         }
       }
 
-
       &.cal-field {
         min-width: 30%;
         flex: 2 1 0;
@@ -88,20 +83,21 @@
       border-radius: 0;
     }
 
-
-
   }
-
 
   .slick-slider {
     padding: 0 1em;
 
-    .slick-prev {  left: -10em;  }
-    .slick-next {  right: 10em;  }
+    .slick-prev {
+      left: -10em;
+    }
+    .slick-next {
+      right: 10em;
+    }
 
     .slide-container {
       position: relative;
-      padding:0 1em;
+      padding: 0 1em;
 
       .date-container {
         position: relative;
@@ -109,7 +105,7 @@
         .date-label {
           position: absolute;
           width: 100%;
-          top:50%;
+          top: 50%;
           margin: 0 auto;
           text-align: center;
           transform: translate(0, -50%);
@@ -117,7 +113,6 @@
       }
     }
   }
-
 
   .availability-table {
 
@@ -128,7 +123,6 @@
       }
     }
   }
-
 
   /*
   * Checkout modal
@@ -153,7 +147,7 @@
           .no-radius(right);
         }
         &:after {
-          content:"\f09d";
+          content: "\f09d";
           font-family: FontAwesome;
           position: absolute;
           top: 20%;
@@ -162,31 +156,44 @@
         }
       }
 
-      .card-expire-container:after {  content: "\f133";  }
+      .card-expire-container:after {
+        content: "\f133";
+      }
       //.card-expire-yy-container:after {  content: "\f133";  }
-      .card-cvc-container:after {  content: "\f023";  }
+      .card-cvc-container:after {
+        content: "\f023";
+      }
 
       .card-number-container {
         margin-bottom: 0;
       }
-
 
       .payment-extra {
         position: relative;
 
         .card-expire-container, .card-cvc-container {
           display: inline-block;
-          width:50%;
+          width: 50%;
         }
 
         .card-expire-container {
-          .form-control {
-            //.no-border(right);
-            .no-border(top);
-            //.no-radius(right);
-            //.no-radius(left);
-            //border-right: 1px solid gray;
+          .form-control {  .no-border(top);  }
+
+          .cc-month-container, .cc-year-container {
+            width: 50%;
+            display: inline-block;
           }
+
+          .cc-month-container {
+            .no-border(right)
+          }
+
+          .cc-year-container {
+            float: right;
+            .no-border(left);
+          }
+
+
         }
 
         .card-cvc-container {
@@ -205,7 +212,6 @@
           padding-left: 1em;
           padding-right: 1em;
           text-align: center;
-
 
           //.payment-extra-label-container {
           //  position: absolute;
@@ -306,12 +312,9 @@
       }
     }
 
-
-
     /*
     * Checkout Modal
     */
-
     .checkout-modal {
       form.payment-form {
 
@@ -337,10 +340,7 @@
       }
     }
 
-
-
   }
-
 
   @media (min-width: @screen-md) {
 
