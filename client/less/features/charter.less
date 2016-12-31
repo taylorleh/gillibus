@@ -135,19 +135,23 @@
   */
 
   .checkout-modal {
+    .modal-mobile {
+      width: @modal-mobile-size;
+    }
+    .modal-desktop {
+      width: @modal-desktop-size;
+    }
+
     form.payment-form {
 
-      .card-number-container, .card-expire-yy-container, .card-expire-mm-container, .card-cvc-container {
+      // ICONS
+      .card-number-container, .card-cvc-container, .card-expire-container {
+        position: relative;
         .form-control {
           padding-left: 28px;
+          .no-radius(left);
+          .no-radius(right);
         }
-      }
-
-
-
-      // ICONS
-      .card-number-container, .card-expire-yy-container, .card-expire-mm-container, .card-cvc-container {
-        position: relative;
         &:after {
           content:"\f09d";
           font-family: FontAwesome;
@@ -158,19 +162,41 @@
         }
       }
 
-      .card-expire-mm-container:after {  content: "\f133";  }
-      .card-expire-yy-container:after {  content: "\f133";  }
+      .card-expire-container:after {  content: "\f133";  }
+      //.card-expire-yy-container:after {  content: "\f133";  }
       .card-cvc-container:after {  content: "\f023";  }
+
+      .card-number-container {
+        margin-bottom: 0;
+      }
 
 
       .payment-extra {
         position: relative;
 
-        .expire, .code {
+        .card-expire-container, .card-cvc-container {
           display: inline-block;
           width:50%;
-          padding: 2em 0;
+        }
 
+        .card-expire-container {
+          .form-control {
+            //.no-border(right);
+            .no-border(top);
+            //.no-radius(right);
+            //.no-radius(left);
+            //border-right: 1px solid gray;
+          }
+        }
+
+        .card-cvc-container {
+          float: right;
+          .form-control {
+            //.no-radius(left);
+            //.no-radius(right);
+            .no-border(left);
+            .no-border(top);
+          }
         }
 
         .expire {
@@ -178,53 +204,55 @@
           position: relative;
           padding-left: 1em;
           padding-right: 1em;
-
-
-          .payment-extra-label-container {
-            position: absolute;
-            width: 100%;
-            display: block;
-            top:-.5em;
-            left: 0;
-            text-align: center;
-            background-color: rgba(255,255,255,0);
-            line-height: normal;
-
-            .payment-extra-label {
-              position: relative;
-              background-color: white;
-              text-align: center;
-              display: inline-block;
-              padding: 0 1em;
-              font-style: italic;
-            }
-          }
-
-        }
-
-        .code {
-          float: right;
           text-align: center;
-          .card-cvc-container {
-            width: 45%;
+
+
+          //.payment-extra-label-container {
+          //  position: absolute;
+          //  width: 100%;
+          //  display: block;
+          //  top:-.5em;
+          //  left: 0;
+          //  text-align: center;
+          //  background-color: rgba(255,255,255,0);
+          //  line-height: normal;
+          //
+          //  .payment-extra-label {
+          //    position: relative;
+          //    background-color: white;
+          //    text-align: center;
+          //    display: inline-block;
+          //    padding: 0 1em;
+          //    font-style: italic;
+          //  }
+          //}
+
+          .card-expire-container {
             display: inline-block;
-            .form-control {
+            width: 45%;
+
+            &:nth-child(2) {
               float: none;
-              display: inline-block;
-
             }
-          }
-        }
 
-        .card-expire-container {
-          display: inline-block;
-          width: 45%;
-
-          &:nth-child(2) {
-            float: right;
           }
 
         }
+
+        //.code {
+        //  float: right;
+        //  text-align: center;
+        //  .card-cvc-container {
+        //    width: 45%;
+        //    display: inline-block;
+        //    .form-control {
+        //      float: none;
+        //      display: inline-block;
+        //
+        //    }
+        //  }
+        //}
+
       }
     }
   }
@@ -298,7 +326,7 @@
         }
 
         .form-group {
-          margin-bottom: 2em;
+          //margin-bottom: 2em;
 
         }
 
