@@ -7,6 +7,8 @@ angular.module('gillibus.home', [])
     LAT: 37.765058
   };
   let MAP_INSTANCE;
+  $scope.timer = null;
+
 
 
 
@@ -31,9 +33,21 @@ angular.module('gillibus.home', [])
     directionsService.route(directionsReq, function(res, status) {
       console.log('directions arrived ',arguments);
       directionsDisplay.setDirections(res);
+      $scope.initTimer(res.routes.pop());
     });
 
   };
+
+  $scope.initTimer = function(route) {
+    let leg = route.legs[0];
+    console.log('leg', leg);
+    $scope.timer = {
+      time: leg.duration.text,
+      destination: leg.end_address,
+      distance: leg.distance.text
+    }
+  };
+
 
   $scope.map = {
     options: {
@@ -137,7 +151,6 @@ angular.module('gillibus.home', [])
         let currentPosition = results[1].coords;
         MAP_INSTANCE = map;
         $scope.getTimeToDestination(currentPosition, map.map);
-
       });
   };
 
