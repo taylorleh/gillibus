@@ -1,30 +1,39 @@
 angular.module('gillibus.home', [])
-.controller('HomeController', ['$scope', 'uiGmapGoogleMapApi', '$geolocation',function($scope, uiGmapGoogleMapApi, $geolocation) {
+.controller('HomeController',
+  ['$scope', 'uiGmapGoogleMapApi', '$geolocation','DirectionService','uiGmapIsReady', function($scope, uiGmapGoogleMapApi, $geolocation, DirectionService, uiGmapIsReady) {
 
-  /*
-   * GEOLOCATION
-   */
-  $geolocation.watchPosition({
-    timeout: 1000
-  });
-  $scope.myPosition = $geolocation.position;
-  $scope.marker = {
-    id: 0,
-    coords: {
-      latitude: 40.1451,
-      longitude: -99.6680
-    },
-    options: { draggable: false },
-    events: {}
+  const SF_PICKUP= {
+    LNG:-122.419705,
+    LAT: 37.765058
   };
+  let MAP_INSTANCE;
 
-  $scope.$watch('myPosition.coords', (newValue, oldValue) => {
-    if (!newValue && !oldValue) return;
-    $scope.marker.coords = {
-      latitude: newValue.latitude,
-      longitude: newValue.longitude
+
+
+  $scope.getTimeToDestination = function(userCoords, instance) {
+    let directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(instance);
+
+    let directionsService = new google.maps.DirectionsService();
+
+    let directionsReq = {
+      travelMode: 'WALKING',
+      origin:{
+        lat:userCoords.latitude,
+        lng: userCoords.longitude
+      },
+      destination: {
+        lat: SF_PICKUP.LAT,
+        lng: SF_PICKUP.LNG
+      }
     };
-  });
+
+    directionsService.route(directionsReq, function(res, status) {
+      console.log('directions arrived ',arguments);
+      directionsDisplay.setDirections(res);
+    });
+
+  };
 
   $scope.map = {
     options: {
@@ -121,10 +130,19 @@ angular.module('gillibus.home', [])
   };
 
 
-  uiGmapGoogleMapApi.then(function() {
-    console.log('then');
-  })
+  let init = function() {
+    Promise.all([uiGmapIsReady.promise(1),$geolocation.getCurrentPosition({timeout: 10000}), uiGmapGoogleMapApi])
+      .then(function(results) {
+        let map = results[0][0];
+        let currentPosition = results[1].coords;
+        MAP_INSTANCE = map;
+        $scope.getTimeToDestination(currentPosition, map.map);
 
+      });
+  };
+
+
+  init();
 
 }]);
 
