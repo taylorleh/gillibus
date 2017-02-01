@@ -8,6 +8,7 @@ angular.module('gillibus', [
   'gillibus.directive.focus',
   'gillibus.directive.countdownSubheader',
   'gillibus.service.viewport',
+  'gillibus.service.directions',
   'ngGeolocation',
   'ui.bootstrap',
   'angularMoment',
