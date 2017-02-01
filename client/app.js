@@ -8,6 +8,7 @@ angular.module('gillibus', [
   'gillibus.directive.focus',
   'gillibus.directive.countdownSubheader',
   'gillibus.service.viewport',
+  'ngGeolocation',
   'ui.bootstrap',
   'angularMoment',
   'credit-cards',
