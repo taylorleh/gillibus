@@ -12,6 +12,7 @@ angular.module('gillibus', [
   'gillibus.constant.map',
   'ngGeolocation',
   'ui.bootstrap',
+  'ui.calendar',
   'angularMoment',
   'credit-cards',
   'slickCarousel',

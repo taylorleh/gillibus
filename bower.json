@@ -25,9 +25,12 @@
     "angular-bootstrap": "^2.3.0",
     "angular-moment": "^1.0.1",
     "angular-credit-cards": "^3.1.5",
-    "ngGeolocation": "^0.0.8"
+    "ngGeolocation": "^0.0.8",
+    "fullcalendar": "^3.1.0",
+    "angular-ui-calendar": "^1.0.2"
   },
   "resolutions": {
-    "angular": "1.2 - 1.5"
+    "angular": "1.2 - 1.5",
+    "fullcalendar": "~2.7.1"
   }
 }
