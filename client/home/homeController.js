@@ -2,12 +2,23 @@ angular.module('gillibus.home', [])
 .controller('HomeController',
   ['$scope', 'mapConfig', 'uiGmapGoogleMapApi', '$geolocation','DirectionService','uiGmapIsReady', function($scope,mapConfig, uiGmapGoogleMapApi, $geolocation, DirectionService, uiGmapIsReady) {
 
+  const MOCKERROR = {
+    error: {
+      message: "Only secure origins are allowed (see: https://goo.gl/Y0ZkNV)."
+    }
+  };
+
   const SF_PICKUP= {
     LNG:-122.419705,
     LAT: 37.765058
   };
   let MAP_INSTANCE;
-  $scope.timer = null;
+  $scope.map = mapConfig;
+
+
+  $scope.timer = {};
+
+  $scope.timerError = null;
 
 
 
@@ -40,21 +51,33 @@ angular.module('gillibus.home', [])
       console.log('directions arrived ',arguments);
       directionsDisplay.setDirections(res);
       $scope.initTimer(res.routes.pop());
+      $scope.timerError = false;
     });
 
   };
 
-  $scope.initTimer = function(route) {
+  $scope.initTimer = function(route, hasError) {
+    if (hasError) {
+      hasError.error = true;
+      $scope.timer = {
+        message: hasError.message,
+        error: true
+      };
+      $scope.$apply();
+      return;
+    }
+
     let leg = route.legs[0];
-    console.log('leg', leg);
     $scope.timer = {
+      error: false,
       time: leg.duration.text,
       destination: leg.end_address,
       distance: leg.distance.text
-    }
+    };
+    $scope.$apply();
   };
 
-  $scope.map = mapConfig;
+
 
   let init = function() {
     Promise.all([uiGmapIsReady.promise(1),$geolocation.getCurrentPosition({timeout: 10000}), uiGmapGoogleMapApi])
@@ -64,7 +87,19 @@ angular.module('gillibus.home', [])
         MAP_INSTANCE = map;
         $scope.getTimeToDestination(currentPosition, map.map);
       }, function(err) {
-        console.warn('error resolving services', err);
+        $scope.timerError = true;
+        $scope.initTimer(null, {
+          message:MOCKERROR.error.message,
+          error: true
+        });
+      })
+      .catch(function(err) {
+        $scope.timerError = true;
+        $scope.initTimer(null, {
+          message:MOCKERROR.error.message,
+          error: true
+        });
+
       });
   };
 
