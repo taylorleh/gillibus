@@ -9,6 +9,7 @@ angular.module('gillibus', [
   'gillibus.directive.countdownSubheader',
   'gillibus.service.viewport',
   'gillibus.service.directions',
+  'gillibus.constant.map',
   'ngGeolocation',
   'ui.bootstrap',
   'angularMoment',
