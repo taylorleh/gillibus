@@ -11,6 +11,7 @@ angular.module('gillibus', [
   'gillibus.service.directions',
   'gillibus.constant.map',
   'ngGeolocation',
+  'gapi',
   'ui.bootstrap',
   'ui.calendar',
   'angularMoment',

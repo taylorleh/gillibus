@@ -27,7 +27,8 @@
     "angular-credit-cards": "^3.1.5",
     "ngGeolocation": "^0.0.8",
     "fullcalendar": "^3.1.0",
-    "angular-ui-calendar": "^1.0.2"
+    "angular-ui-calendar": "^1.0.2",
+    "ngGAPI": "https://github.com/christiansmith/ngGAPI.git"
   },
   "resolutions": {
     "angular": "1.2 - 1.5",
