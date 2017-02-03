@@ -24,7 +24,8 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-less": "^3.3.0",
-    "gulp-nodemon": "^2.2.1"
+    "gulp-nodemon": "^2.2.1",
+    "heroku-ssl-redirect": "0.0.3"
   },
   "devDependencies": {}
 }
