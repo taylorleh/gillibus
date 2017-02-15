@@ -35,3 +35,7 @@ client/lib
 .idea/**/*.*
 
 client/assets/styles.css
+
+
+# environment
+.env
