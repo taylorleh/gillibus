@@ -8,11 +8,7 @@ let utils = require('../utils/auth');
 
 module.exports = {
 
-  getClientToken: function(req, res) {
-
-  },
-
-  getEventsForCalendar: function(req, res) {
+  getEventsForCalendar: (req, res) =>{
     let token = utils.getAuthToken();
     let calendarId = process.env[req.body.calendar];
 
@@ -39,5 +35,33 @@ module.exports = {
       });
 
     });
+  },
+
+  getFreeBusy: (req, res) =>{
+    let token = utils.getAuthToken();
+
+    token.authorize((err, tokens)=> {
+      let calParams = {
+        auth: token,
+        resource: {
+          timeMin: req.body.timeMin,
+          timeMax: req.body.timeMax,
+          items: [{
+            id: process.env.CHARTER_CALENDAR
+          }]
+        }
+      };
+
+      cal.freebusy.query(calParams, (err, resp) =>{
+        if(err) {
+          console.log('error \n', err);
+          res.status(401).json(err);
+        } else {
+          res.status(200).json(resp);
+        }
+      });
+    });
+
   }
+
 };
