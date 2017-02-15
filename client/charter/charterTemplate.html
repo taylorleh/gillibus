@@ -1,7 +1,9 @@
 <div class="container-fluid charter">
 
   <!--FULL CAL-->
-  <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar"></div>
+  <div ng-if="eventSources">
+    <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar"></div>
+  </div>
 
   <div class="checkout-modal row"></div>
 </div>

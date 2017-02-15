@@ -1,15 +1,17 @@
 angular.module('gillibus.service.calendar', [])
   .factory('CalendarService', function ($http) {
-    const KEY = "AIzaSyB9ZobUZjLzuTKbJEL_EBuA2nR0Zjj6YXo";
-    return {
+    var host = document.location.origin;
+    var service = {};
 
-      getDirections: function (db, table) {
-        var route = `https://maps.googleapis.com/maps/api/directions/json?origin=SanFrancisco&destination=Oakland&mode=walking&key=${KEY}`;
-        return $http({
-          method: 'GET',
-          url: route
-        });
-      }
+    service.getEventsForCalendar = function(calendar) {
+      return $http({
+        method: 'POST',
+        data: {calendar: calendar},
+        url:[host,'calendar/events'].join('/')
+      });
     };
-  })
+
+    return service;
+
+  });
 
