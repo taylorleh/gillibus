@@ -11,7 +11,17 @@ angular.module('gillibus.service.calendar', [])
       });
     };
 
-    return service;
+    service.getFreeBusyForCalendar = function(start, end) {
+      return $http({
+        method: 'POST',
+        data: {
+          timeMin:null,
+          timeMax: null
+        },
+        url:[host,'calendar/freebusy'].join('/')
+      });
+    };
 
+    return service;
   });
 
