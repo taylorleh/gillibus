@@ -152,21 +152,6 @@ angular.module('gillibus.charter', [])
                 });
               };
 
-              // TODO - This will cause memory leaks if not unregistered.
-              // $scope.$watch('user.exp', function (event) {
-              //   let numberString = event.toString().split('');
-              //   if (numberString.length <= 2) {
-              //     $scope.user.month = event;
-              //   } else {
-              //     let month = event.slice(0,2);
-              //     let year = event.slice(2);
-              //     console.log('over 2. month =', month, ' year =', year);
-              //     $scope.user.month = month;
-              //     $scope.user.year = year;
-              //
-              //
-              //   }
-              // });
 
               $scope.expireChange = function(args) {
                 console.log('changing', arguments);
