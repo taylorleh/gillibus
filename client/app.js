@@ -1,7 +1,7 @@
 import 'jquery';
 import 'moment';
 
-import angular from '../node_modules/angular';
+import angular from 'npm/angular';
 import 'npm/angular-ui-calendar/src/calendar.js'
 import 'npm/fullcalendar/dist/fullcalendar.js';
 import 'npm/fullcalendar/dist/gcal.js';
@@ -23,9 +23,9 @@ import { default as MapConstant } from './constant/map';
 
 import 'npm/ngGeolocation/ngGeolocation';
 import 'npm/angular-moment/angular-moment.js'
-// import 'npm/angular-ui-bootstrap'
+import 'npm/angular-ui-bootstrap'
 
-import 'angular-google-maps/dist/angular-google-maps';
+import 'npm/angular-google-maps/dist/angular-google-maps';
 import nemLogging from 'npm/angular-simple-logger/dist/index'
 
 let moduleName = 'gillibus';
@@ -34,8 +34,7 @@ let moduleName = 'gillibus';
 
 
 
-function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
-  console.log('CONFIG WITH', uiGmapGoogleMapApiProvider)
+function config($routeProvider, uiGmapGoogleMapApiProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'home/homeTemplate.html',
@@ -64,17 +63,15 @@ function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
     libraries: 'geometry'
   });
 
-  // $locationProvider.hashPrefix('');
-
-
 }
 
-config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider'];
+config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider'];
 
 
 
 angular.module(moduleName, [
   require('angular-route'),
+  require('npm/angular-ui-bootstrap'),
   CharterController,
   // LocationsController.name,
   // PricingController.name,
@@ -89,7 +86,6 @@ angular.module(moduleName, [
   MapConstant,
   'ngGeolocation',
   // 'gapi',
-  require('npm/angular-ui-bootstrap'),
   'ui.calendar',
   'angularMoment',
   // // 'credit-cards',

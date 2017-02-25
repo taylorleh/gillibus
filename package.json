@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": "bower install && gulp less",
+    "postinstall": "gulp less",
     "dev": "node node_modules/.bin/webpack-dev-server --content-base client",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
     "build:prod": "NODE_ENV='production' webpack"
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/taylorleh/gillibus#readme",
   "dependencies": {
-    "angular": "^1.6.2",
+    "angular": "^1.5.11",
     "angular-google-maps": "^2.4.1",
     "angular-moment": "^1.0.1",
     "angular-route": "^1.6.2",
