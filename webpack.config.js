@@ -1,8 +1,10 @@
 let webpack = require('webpack');
 let path = require('path');
 const NODE_DIR = __dirname + '/node_modules';
+console.log('PROCESS ENV', process.env.NODE_ENV);
+let target = process.env.NODE_ENV || 'develop';
 
-module.exports = {
+let config = {
   context: __dirname + '/client',
   entry: './app.js',
   output: {
@@ -11,7 +13,14 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test:/\.js$/, exclude:'/(node_modules|bower_components)/', loader: 'babel-loader' }
+      {
+        test:/\.js$/,
+        exclude:'/(node_modules|bower_components)/',
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
+      }
     ]
 
   },
@@ -32,6 +41,21 @@ module.exports = {
     //   $: "jquery"
     // })
 
+
   ],
   devtool: 'source-map'
 };
+
+
+if(target === 'production') {
+  console.log('building for PRODUCTION!');
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false
+    })
+  );
+} else {
+  console.log('building for development!');
+}
+
+module.exports = config;
