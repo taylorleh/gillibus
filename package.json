@@ -22,19 +22,25 @@
   },
   "homepage": "https://github.com/taylorleh/gillibus#readme",
   "dependencies": {
+    "angular": "^1.6.2",
+    "angular-google-maps": "^2.4.1",
     "angular-moment": "^1.0.1",
+    "angular-route": "^1.6.2",
     "angular-ui-bootstrap": "^2.5.0",
+    "angular-ui-calendar": "^1.0.2",
     "body-parser": "^1.16.0",
     "bower": "^1.8.0",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
+    "fullcalendar": "^3.2.0",
     "google-oauth-jwt": "^0.2.0",
     "googleapis": "^16.1.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-less": "^3.3.0",
     "gulp-nodemon": "^2.2.1",
-    "heroku-ssl-redirect": "0.0.3"
+    "heroku-ssl-redirect": "0.0.3",
+    "ngGeolocation": "0.0.7"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
