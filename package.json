@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": "gulp less",
+    "postinstall": "bower install && gulp less",
     "dev": "node node_modules/.bin/webpack-dev-server --content-base client",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
     "build:prod": "NODE_ENV='production' webpack"
@@ -29,6 +29,7 @@
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-calendar": "^1.0.2",
     "body-parser": "^1.16.0",
+    "bootstrap": "^3.3.7",
     "bower": "^1.8.0",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
