@@ -1,4 +1,6 @@
-angular.module('gillibus.directive.focus', [])
+import angular from 'npm/angular';
+
+export default angular.module('gillibus.directive.focus', [])
 .directive('glFocus', [function () {
   return {
     restrict:'A',

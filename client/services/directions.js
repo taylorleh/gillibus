@@ -1,7 +1,8 @@
 /**
  * Created by taylor on 1/31/17.
  */
-angular.module('gillibus.service.directions', [])
+import angular from 'npm/angular';
+export default angular.module('gillibus.service.directions', [])
   .factory('DirectionService', function ($http) {
     const KEY = "AIzaSyDs4rZOUR9C6GjW-FUifZ_kNZpnv9WjS6U";
     return {

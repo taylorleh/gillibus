@@ -1,8 +1,9 @@
 /**
  * Created by Taylor Lehman on 12/28/16.
  */
+import angular from 'npm/angular';
 
-angular.module('gillibus.service.viewport', [])
+export default angular.module('gillibus.service.viewport', [])
   .service('viewPort', ['$window',function ($window) {
     return {
       getViewportSize: () => {

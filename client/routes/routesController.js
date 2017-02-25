@@ -1,4 +1,5 @@
-angular.module('gillibus.routes', [])
+import angular from 'npm/angular';
+export default angular.module('gillibus.routes', [])
   .controller('RoutesController', ['$scope', 'uiGmapGoogleMapApi', function($scope, uiGmapGoogleMapApi) {
 
     $scope.map = {

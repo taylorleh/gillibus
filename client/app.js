@@ -1,31 +1,47 @@
-angular.module('gillibus', [
-  'gillibus.charter',
-  'gillibus.locations',
-  'gillibus.pricing',
-  'gillibus.home',
-  'gillibus.routes',
-  'gillibus.directive.viewport',
-  'gillibus.directive.focus',
-  'gillibus.directive.countdownSubheader',
-  'gillibus.service.viewport',
-  'gillibus.service.calendar',
-  'gillibus.service.directions',
-  'gillibus.constant.map',
-  'ngGeolocation',
-  'gapi',
-  'ui.bootstrap',
-  'ui.calendar',
-  'angularMoment',
-  'credit-cards',
-  'slickCarousel',
-  'uiGmapgoogle-maps',
-  'ngRoute'
+import 'jquery';
+import 'moment';
 
-]).config(function($routeProvider, uiGmapGoogleMapApiProvider) {
+import angular from 'angular';
+import 'npm/angular-ui-calendar/src/calendar.js'
+import 'npm/fullcalendar/dist/fullcalendar.js';
+import 'npm/fullcalendar/dist/gcal.js';
+
+import { default as CharterController } from './charter/charterController';
+import { default as LocationsController } from './locations/locationsController';
+
+import { default as PricingController } from './pricing/pricingController';
+import { default as HomeController } from './home/homeController';
+import { default as RoutesController } from './routes/routesController';
+import { default as ViewportDirective } from './directives/viewport';
+import { default as FocusDirective } from './directives/focus';
+import { default as CountdownDirective } from './directives/countdownSubheader';
+import { default as ViewportService } from './services/viewport';
+import { default as CalendarService } from './services/calendar';
+import { default as DirectionsService } from './services/directions';
+import { default as MapConstant } from './constant/map';
+
+
+import 'ngGeolocation/ngGeolocation';
+import 'angular-moment/angular-moment.js'
+import ngRoute from 'npm/angular-route';
+// import 'npm/angular-ui-bootstrap'
+
+import 'angular-google-maps/dist/angular-google-maps';
+import nemLogging from 'npm/angular-simple-logger/dist/index'
+
+let moduleName = 'gillibus';
+
+
+
+
+
+function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
+  console.log('CONFIG WITH', uiGmapGoogleMapApiProvider)
   $routeProvider
     .when('/', {
       templateUrl: 'home/homeTemplate.html',
-      controller: 'HomeController'
+      controller: 'HomeController',
+      controllerAs: 'tl'
     })
     .when('/routes', {
       templateUrl: 'routes/routesTemplate.html',
@@ -37,7 +53,8 @@ angular.module('gillibus', [
     })
     .when('/charter', {
       templateUrl: 'charter/charterTemplate.html',
-      controller: 'CharterController'
+      controller: 'CharterController',
+      controllerAs: 'tl'
     })
     .otherwise('/');
 
@@ -48,8 +65,40 @@ angular.module('gillibus', [
     libraries: 'geometry'
   });
 
+  // $locationProvider.hashPrefix('');
 
-}).run(function($rootScope, $location) {
-  console.log('RUNNING')
 
-});
+}
+
+config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider'];
+
+
+
+angular.module(moduleName, [
+  require('angular-route'),
+  CharterController,
+  // LocationsController.name,
+  // PricingController.name,
+  HomeController,
+  // RoutesController.name,
+  // ViewportDirective.name,
+  // FocusDirective.name,
+  CountdownDirective,
+  // ViewportService.name,
+  CalendarService,
+  // DirectionsService.name,
+  MapConstant,
+  'ngGeolocation',
+  // 'gapi',
+  require('npm/angular-ui-bootstrap'),
+  'ui.calendar',
+  'angularMoment',
+  // // 'credit-cards',
+  // // 'slickCarousel',
+  // nemLogging,
+  'uiGmapgoogle-maps'
+])
+  .config(config);
+
+
+export default moduleName

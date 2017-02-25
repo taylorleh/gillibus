@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": "bower install && gulp less"
+    "postinstall": "bower install && gulp less",
+    "dev": "node node_modules/.bin/webpack-dev-server --content-base client",
+    "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,8 @@
   },
   "homepage": "https://github.com/taylorleh/gillibus#readme",
   "dependencies": {
+    "angular-moment": "^1.0.1",
+    "angular-ui-bootstrap": "^2.5.0",
     "body-parser": "^1.16.0",
     "bower": "^1.8.0",
     "dotenv": "^4.0.0",
@@ -31,5 +35,11 @@
     "gulp-nodemon": "^2.2.1",
     "heroku-ssl-redirect": "0.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "uglifyjs-webpack-plugin": "^0.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
+  }
 }
