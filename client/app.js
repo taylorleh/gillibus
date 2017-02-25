@@ -1,7 +1,7 @@
 import 'jquery';
 import 'moment';
 
-import angular from 'angular';
+import angular from '../node_modules/angular';
 import 'npm/angular-ui-calendar/src/calendar.js'
 import 'npm/fullcalendar/dist/fullcalendar.js';
 import 'npm/fullcalendar/dist/gcal.js';
@@ -21,9 +21,8 @@ import { default as DirectionsService } from './services/directions';
 import { default as MapConstant } from './constant/map';
 
 
-import 'ngGeolocation/ngGeolocation';
-import 'angular-moment/angular-moment.js'
-import ngRoute from 'npm/angular-route';
+import 'npm/ngGeolocation/ngGeolocation';
+import 'npm/angular-moment/angular-moment.js'
 // import 'npm/angular-ui-bootstrap'
 
 import 'angular-google-maps/dist/angular-google-maps';
