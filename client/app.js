@@ -34,7 +34,7 @@ let moduleName = 'gillibus';
 
 
 
-function config($routeProvider, uiGmapGoogleMapApiProvider) {
+function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'home/homeTemplate.html',
@@ -63,9 +63,11 @@ function config($routeProvider, uiGmapGoogleMapApiProvider) {
     libraries: 'geometry'
   });
 
+  $locationProvider.hashPrefix('');
+
 }
 
-config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider'];
+config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider'];
 
 
 
