@@ -18,8 +18,6 @@ class CharterController {
       calendar: {
         height: 1000,
         editable: true,
-        dayRender: function(date, cell) {
-        },
         eventRender: function(event, element, view) {
           let morning = event.start.hour() < 14;
           element.css('position', 'absolute');
@@ -52,6 +50,9 @@ class CharterController {
       }
     };
 
+    let cal = this.uiConfig.calendar;
+    cal.dayRender = this.dayRender;
+
     this.$scope = $scope;
     this.init();
   }
@@ -79,6 +80,12 @@ class CharterController {
         this.$scope.$apply();
       });
   }
+
+  dayRender(date, cell) {
+    console.log('day render', arguments);
+
+  }
+
 
   init() {
     this.getCalendarEvents();

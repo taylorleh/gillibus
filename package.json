@@ -9,6 +9,7 @@
     "postinstall": "gulp less",
     "dev": "node node_modules/.bin/webpack-dev-server --content-base client",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
+    "dev-proxy": "webpack-dev-server --hot --inline --config webpack-proxy-server.config.js --content-base client",
     "build:prod": "NODE_ENV='production' webpack"
   },
   "repository": {
@@ -59,6 +60,7 @@
     "webpack": "^2.2.1"
   },
   "devDependencies": {
+    "morgan": "^1.8.1",
     "webpack-dev-server": "^2.3.0"
   }
 }
