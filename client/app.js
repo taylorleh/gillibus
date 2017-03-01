@@ -1,4 +1,5 @@
 import 'jquery';
+import 'lodash';
 import 'moment';
 
 import angular from 'npm/angular';

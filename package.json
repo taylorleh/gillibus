@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": "bower install && gulp less",
+    "postinstall": "gulp less",
     "dev": "node node_modules/.bin/webpack-dev-server --content-base client",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
     "build:prod": "NODE_ENV='production' webpack"
@@ -50,6 +50,7 @@
     "html-webpack-plugin": "^2.28.0",
     "jquery": "^3.1.1",
     "less-loader": "^2.2.3",
+    "lodash": "^4.17.4",
     "ngGeolocation": "0.0.7",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.13.2",
