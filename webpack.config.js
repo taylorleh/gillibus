@@ -1,8 +1,9 @@
-let webpack = require('webpack');
-let path = require('path');
-const NODE_DIR = __dirname + '/node_modules';
-console.log('PROCESS ENV', process.env.NODE_ENV);
-let target = process.env.NODE_ENV || 'develop';
+const ExtractTextPlugin  = require("extract-text-webpack-plugin");
+const webpack = require('webpack');
+const path = require('path');
+const MainStylesExtract =  new ExtractTextPlugin('assets/main.css');
+const VendorStylesExtract = new ExtractTextPlugin('assets/vendor.css');
+const target = process.env.NODE_ENV || 'develop';
 
 let config = {
   context: __dirname + '/client',
@@ -12,43 +13,57 @@ let config = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test:/\.js$/,
-        exclude:'/(node_modules|bower_components)/',
+        exclude:[path.resolve(__dirname, 'node_modules')],
         loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }
+      },
+      {
+        test: /\.css$/,
+        use: MainStylesExtract.extract({
+          fallback: "style-loader",
+          use: "css-loader?url=false",
+        })
+      },
+      {
+        test: /\.less$/,
+        use: VendorStylesExtract.extract({
+          fallback: "style-loader",
+          use: "css-loader!less-loader"
+        })
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'file-loader?emitFile=false&name=fonts/[name].[ext]'
       }
     ]
-
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.jsx', '.json', '.css'],
     modules: [path.resolve(__dirname, 'node_modules')],
     alias: {
       jquery$:path.resolve( __dirname,'node_modules/jquery/src/jquery.js'),
       moment$:path.resolve( __dirname,'node_modules/moment/moment.js'),
+      bootstrapcss$: path.resolve( __dirname,'node_modules/bootstrap/dist/css/bootstrap.css'),
       npm: __dirname + '/node_modules',
+      ass: path.resolve( __dirname,'client/assets/'),
       b: __dirname + '/client/lib'
       // angular$: path.resolve(__dirname, 'node_modules/angular/index.js')
     }
   },
   plugins: [
-    // new webpack.ProvidePlugin({
-    //   'window.$': 'jquery',
-    //   $: "jquery"
-    // })
-
-
+    MainStylesExtract,
+    VendorStylesExtract
   ],
   devtool: 'source-map'
 };
 
 
 if(target === 'production') {
-  console.log('building for PRODUCTION!');
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       mangle: false

@@ -22,8 +22,14 @@ import { default as MapConstant } from './constant/map';
 
 
 import 'npm/ngGeolocation/ngGeolocation';
-import 'npm/angular-moment/angular-moment.js'
-import 'npm/angular-ui-bootstrap'
+import 'npm/angular-moment/angular-moment.js';
+// import 'npm/angular-ui-bootstrap';
+import 'npm/bootstrap/less/bootstrap.less';
+
+import 'npm/fullcalendar/dist/fullcalendar.css';
+import './assets/styles.css';
+
+
 
 import 'npm/angular-google-maps/dist/angular-google-maps';
 import nemLogging from 'npm/angular-simple-logger/dist/index'
