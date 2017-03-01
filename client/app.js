@@ -85,7 +85,7 @@ angular.module(moduleName, [
   // LocationsController.name,
   // PricingController.name,
   HomeController,
-  // RoutesController.name,
+  RoutesController,
   // ViewportDirective.name,
   // FocusDirective.name,
   CountdownDirective,
