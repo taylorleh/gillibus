@@ -44,8 +44,8 @@ module.exports = {
       let calParams = {
         auth: token,
         resource: {
-          timeMin: req.body.timeMin,
-          timeMax: req.body.timeMax,
+          timeMin: req.body.start,
+          timeMax: req.body.end,
           items: [{
             id: process.env.CHARTER_CALENDAR
           }]

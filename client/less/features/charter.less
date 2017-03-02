@@ -1,6 +1,67 @@
 @import "../variables.less";
 
-.charter.container {
+.charter.container-fluid {
+
+  .schedule-cal {
+    font-family: Handlee;
+  }
+
+  .fc-day {
+    background: rgba(240, 105, 93, 1);
+    //background: linear-gradient(to right bottom, #c1e6fa 50%, #010e23 50%);
+    //background: linear-gradient(to right bottom, rgba(1, 14, 35, 0) 50%, rgba(1, 14, 35, 1) 50%);
+    background: linear-gradient(to right bottom, rgba(1, 14, 35, 0), rgba(27, 85, 119, 0.96));
+    color: #fff;
+    height: 50px;
+    position: relative;
+
+  }
+
+  .fc {
+    button {
+
+    }
+  }
+
+  .early-book, .late-book {
+    display: block;
+    position: relative;
+    width: auto;
+
+    button {
+      box-sizing: border-box;
+      margin: 0;
+      height: inherit;
+      padding: 0 0.4em;
+      font-size: 1rem;
+      white-space: nowrap;
+      cursor: pointer;
+      position: relative;
+      border:1px solid white;
+      background: rgba(0,0,0,0);
+      transition: background-color 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+      &:hover {
+        background-color: rgba(0,0,0,0.5);
+      }
+    }
+  }
+
+  .early-book {
+    padding-top: .5em;
+    padding-left:0;
+    button {
+      //transform: translate(15%, 25%);
+    }
+  }
+
+  .late-book {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    padding-bottom: .5em;
+    padding-right: 0;
+  }
 
   //time and date inline form
   form.date-time-booker {
@@ -230,7 +291,6 @@
           padding-right: 1em;
           text-align: center;
 
-
           .card-expire-container {
             display: inline-block;
             width: 45%;
@@ -248,6 +308,21 @@
   }
 
   @media (min-width: @screen-sm) {
+    .early-book {
+      padding-left: .5em;
+    }
+
+    .late-book {
+      padding-right: .5em;
+    }
+    .early-book, .late-book {
+      button {
+        letter-spacing: 1px;
+        font-size: 1.4rem;
+      }
+    }
+
+
     form.date-time-booker {
       display: flex;
       justify-content: flex-start;
@@ -328,6 +403,12 @@
 
   @media (min-width: @screen-md) {
 
+    .early-book, .late-book {
+      button {
+        font-size: 1.5rem;
+      }
+    }
+
     form.date-time-booker {
       display: flex;
       justify-content: flex-start;
@@ -368,6 +449,15 @@
       .time-begin, .time-end {
         //min-width: 211px;
         //flex-basis: 20%;
+      }
+    }
+
+  }
+
+  @media (min-width: @screen-lg) {
+    .early-book, .late-book {
+      button {
+        font-size: 1.7rem;
       }
     }
 

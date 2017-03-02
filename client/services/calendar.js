@@ -19,13 +19,17 @@ class CalendarService {
     });
   }
 
-  getBusyFromRange() {
+  getBusyFromRange(calendar, start, end) {
     let api = [document.location.origin, 'calendar/freebusy'].join('/');
     let http = HTTP.get(this);
     return http({
       method:'POST',
       url: api,
-      data: {calendar: calendar}
+      data: {
+        calendar: calendar,
+        start: start,
+        end: end
+      }
     });
 
   }
