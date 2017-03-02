@@ -37,7 +37,8 @@ client/lib
 
 .idea/**/*.*
 
-client/assets/styles.css
+client/assets/*.css
+client/assets/*.css.map
 
 
 # environment
