@@ -38,6 +38,16 @@ gulp.task('less', function() {
 });
 
 
+gulp.task('wp-proxy-less', function() {
+  // gulp.watch(__dirname + '/client/less/**/*.less', ['less']);
+  nodemon({
+    watch: ['client/less'],
+    ignore:['node_modules', 'client/lib', 'client/assets'],
+    ext: 'less',
+    tasks: ['less']
+  });
+});
+
 
 gulp.task('default', function() {
   // gulp.watch(__dirname + '/client/less/**/*.less', ['less']);
