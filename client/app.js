@@ -25,6 +25,7 @@ import { default as MapConstant } from './constant/map';
 import 'npm/ngGeolocation/ngGeolocation';
 import 'npm/angular-moment/angular-moment.js';
 // import 'npm/angular-ui-bootstrap';
+import 'bootstrap/dist/js/bootstrap';
 import 'npm/bootstrap/less/bootstrap.less';
 
 import 'npm/fullcalendar/dist/fullcalendar.css';
@@ -59,7 +60,7 @@ function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
     .when('/charter', {
       templateUrl: 'charter/charterTemplate.html',
       controller: 'CharterController',
-      controllerAs: 'tl'
+      controllerAs: 'vm'
     })
     .otherwise('/');
 
