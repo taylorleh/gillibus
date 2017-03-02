@@ -4,12 +4,15 @@ let moduleName = 'gillibus.charter';
 
 class CharterController {
 
-  constructor($scope, $timeout, moment, $window, $compile, CalendarService) {
+  constructor($scope, $uibModal, $timeout, moment, $window, $compile, CalendarService) {
     this.moment = moment;
     this.$compile = $compile;
     this.CalendarService = CalendarService;
+    this.$uibModal = $uibModal;
 
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
+    this.currentView = 'book';
+    this.chosenDate = {};
 
       this.uiConfig = {
         calendar: {
@@ -86,11 +89,66 @@ class CharterController {
       });
   }
 
+  beginCheckoutPhase() {
+    let modalEl = angular.element('.checkout-modal');
+
+    let modalInstance = this.$uibModal.open({
+      templateUrl: '../charter/checkoutModal.html',
+      appendTo: modalEl,
+      size: 'desktop',
+      windowClass: 'window-class',
+      windowTopClass: 'top-class',
+      controller: function($scope) {
+        $scope.ran = 'hi';
+        $scope.user = {
+          // number:null,
+          // month:null,
+          year: null,
+          exp: function(newValue) {
+            if (!angular.isDefined(newValue)) {
+              // return $scope.ran;
+            }
+            else {
+              return $scope.ran;
+              if (newValue.length <= 2) {
+                let exp = newValue
+                this.month = exp;
+                return '1';
+              } else {
+                this.month = newValue;
+                this.year = newValue.slice(2);
+                return [this.month, '/', this.year].join('/');
+              }
+
+            }
+          }
+        };
+
+        $scope.process = function(args) {
+          let $form = args.target;
+
+          Stripe.card.createToken($form, function(status, response) {
+            console.log(arguments);
+          });
+        };
+
+
+        $scope.expireChange = function(args) {
+          console.log('changing', arguments);
+        }
+
+      }
+    });
+  }
+
   onEventClick(event) {
     console.log('click', event);
-    let data = angular.element(event.target).parent().data('date');
+    let data = angular.element(event.target).parent().parent().data('date');
     let time = this.moment(data).toDate();
     let schedule = this.daysOfMonthHash[time];
+    this.chosenDate = this.moment(data).format('LL');
+    this.currentView = 'checkout';
+    // this.beginCheckoutPhase();
   }
 
   /**
@@ -163,6 +221,18 @@ class CharterController {
   }
 
   /**
+   * changes the view of the page. This is mainly invokes from click handlers from template.
+   *
+   * @param {String} viewName - the name of the view to change to
+   * @function changeView
+   * @return None
+   *
+   * */
+  changeView(viewName) {
+    this.currentView = viewName.toLowerCase();
+  }
+
+  /**
    * Invokes services and handles registers current month end date
    * and beginning date
    *
@@ -180,7 +250,7 @@ class CharterController {
 
 }
 
-CharterController.$inject = ["$scope", "$timeout", "moment", "$window", "$compile", "CalendarService"];
+CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "CalendarService"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName

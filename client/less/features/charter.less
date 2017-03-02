@@ -63,6 +63,43 @@
     padding-right: 0;
   }
 
+  .checkout {
+    font-family: bebas-neue;
+    transition: all linear 5s;
+    font-size: 3em;
+    padding: 5rem 0;
+    border-bottom: 5px solid;
+    .previous-step {
+
+      .before-header {
+
+      }
+
+      .before-info {
+        font-size: 2.2rem;
+        color: grey;
+      }
+
+      .before-action {
+        color: @link-blue;
+        button {
+          background-color: inherit;
+          border: 1px solid @link-blue;
+          padding: .2rem 2rem;
+          font-size: 2.8rem;
+        }
+      }
+    }
+  }
+
+  .payment {
+    transition: all linear 5s;
+  }
+
+  .checkout.ng-hide, .payment.ng-hide {
+    opacity: 0;
+  }
+
   //time and date inline form
   form.date-time-booker {
     display: flex;
