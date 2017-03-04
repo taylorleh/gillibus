@@ -44,6 +44,6 @@ class CalendarService {
 
 CalendarService.calendarFactory.$inject = ['$http'];
 
-angular.module(moduleName, []).factory('CalendarService', CalendarService.calendarFactory);
+angular.module(moduleName, []).factory('calendarService', CalendarService.calendarFactory);
 
 export default moduleName

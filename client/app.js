@@ -78,7 +78,6 @@ function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
 config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider'];
 
 
-
 angular.module(moduleName, [
   require('angular-route'),
   require('npm/angular-ui-bootstrap'),
@@ -90,7 +89,7 @@ angular.module(moduleName, [
   // ViewportDirective.name,
   // FocusDirective.name,
   CountdownDirective,
-  // ViewportService.name,
+  ViewportService,
   CalendarService,
   // DirectionsService.name,
   MapConstant,
