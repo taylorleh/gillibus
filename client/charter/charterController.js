@@ -16,6 +16,12 @@ class CharterController {
     this.currentView = 'book';
     this.stripeValidation = {};
     this.chosenDate = {};
+    this.stripeFormOptions = {
+      onSubmit: (event) => {
+        console.log('SUBMIT');
+
+      }
+    };
 
     this.uiConfig = {
       calendar: {
@@ -179,30 +185,30 @@ class CharterController {
    *
    * */
   appendStripeForm() {
-    let desktop = this.viewportService.isDesktop();
-    let style = {
-      base: {
-        color: '#31325F',
-        fontFamily: 'Helvetica Neue',
-        fontSize: desktop ? '22px' : '1.05rem',
-        fontWeight: 300,
-        iconColor: '#666EE8',
-        lineHeight: '65px',
-
-      },
-      invalid: {
-        color: '#cc4f55'
-      }
-
-    };
-    let elements = stripe.elements();
-    let card = elements.create('card', { style: style });
-    this.card = card;
-    // card.on('change', this.onCardChange.bind(this));
-
-    this.$timeout(e => {
-      card.mount('#card-element');
-    });
+    // let desktop = this.viewportService.isDesktop();
+    // let style = {
+    //   base: {
+    //     color: '#31325F',
+    //     fontFamily: 'Helvetica Neue',
+    //     fontSize: desktop ? '22px' : '1.05rem',
+    //     fontWeight: 300,
+    //     iconColor: '#666EE8',
+    //     lineHeight: '65px',
+    //
+    //   },
+    //   invalid: {
+    //     color: '#cc4f55'
+    //   }
+    //
+    // };
+    // let elements = stripe.elements();
+    // let card = elements.create('card', { style: style });
+    // this.card = card;
+    // // card.on('change', this.onCardChange.bind(this));
+    //
+    // this.$timeout(e => {
+    //   card.mount('#card-element');
+    // });
   }
 
 
@@ -227,7 +233,7 @@ class CharterController {
    *
    * */
   processPayment(event) {
-
+    console.log('attempting to submit', event);
   }
 
   dayRender(date, cell) {

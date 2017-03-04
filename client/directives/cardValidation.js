@@ -6,51 +6,105 @@ import angular from 'npm/angular';
 let moduleName = 'gillibus.directive.cardValidation';
 
 
-function CardValidation() {
-  return {
-    restrict: 'A',
-    template: `<div class="outcome">
-          <div class="error"></div>
-          <div class="success">
-            Success! Your Stripe token is <span class="token"></span>
-          </div>
-        </div>`,
-    scope: {
+class StripeForm {
+  constructor() {
+    this.restrict = 'EA';
+    this.templateUrl = '../directives/partials/stripeForm.tpl.html';
+    this.replace = true;
+    this.scope = {
       cardValidation: '=',
       cardObject: '='
-    },
-    link: (scope, element, attrs) => {
-      let el = element;
-      let s = scope;
-      let self = this;
+    };
 
-      scope.onCardChange = (result) => {
-        element.find('.success').hide();
-        let erEl = element.find('.error').hide();
+  }
 
-        if (result.token) {
+  link(scope, element, attrs) {
+    let el = element;
+    let s = scope;
+    let self = this;
 
-        } else if(result.error) {
-          erEl.text(result.error.message);
-          erEl.show();
-        }
+    scope.onCardChange = (result) => {
+      console.log('result', result);
+      element.find('.success').hide();
+      let erEl = element.find('.error').hide();
 
-      };
+      if (result.token) {
 
-      scope.bindCardChange = (cardObj) => {
-        if (cardObj) {
-          cardObj.on('change', angular.bind(scope, scope.onCardChange));
-        }
-      };
+      } else if(result.error) {
+        erEl.text(result.error.message);
+        erEl.show();
+      }
 
-      scope.$watch('cardObject', angular.bind(scope, scope.bindCardChange));
+    };
 
-      scope.$watch('cardValidation', e => {
+    scope.bindCardChange = (cardObj) => {
+      if (cardObj) {
+        cardObj.on('change', angular.bind(scope, scope.onCardChange));
+      }
+    };
 
-      })
-    }
-  };
+    scope.$watch('cardObject', angular.bind(scope, scope.bindCardChange));
+
+    scope.$watch('cardValidation', e => {
+
+    })
+  }
+
+
+  static stripeFormFactory() {
+    StripeForm.instance = new StripeForm();
+  }
 }
 
-angular.module(moduleName, []).directive('cardValidation', CardValidation);
+
+
+
+//
+// function StripeForm() {
+//   function _link(scope, element, attrs) {
+//       let el = element;
+//       let s = scope;
+//       let self = this;
+//
+//       scope.onCardChange = (result) => {
+//         console.log('result', result);
+//         element.find('.success').hide();
+//         let erEl = element.find('.error').hide();
+//
+//         if (result.token) {
+//
+//         } else if(result.error) {
+//           erEl.text(result.error.message);
+//           erEl.show();
+//         }
+//
+//       };
+//
+//       scope.bindCardChange = (cardObj) => {
+//         if (cardObj) {
+//           cardObj.on('change', angular.bind(scope, scope.onCardChange));
+//         }
+//       };
+//
+//       scope.$watch('cardObject', angular.bind(scope, scope.bindCardChange));
+//
+//       scope.$watch('cardValidation', e => {
+//
+//       })
+//   }
+//
+//
+//   return {
+//     restrict: 'EA',
+//     templateUrl: '../directives/partials/stripeForm.tpl.html',
+//     replace: true,
+//     scope: {
+//       cardValidation: '=',
+//       cardObject: '='
+//     },
+//     link: _link
+//   };
+// }
+
+angular.module(moduleName, []).directive('stripeForm', StripeForm.stripeFormFactory);
 export default moduleName;

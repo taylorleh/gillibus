@@ -26,40 +26,5 @@
       </div>
     </div>
   </div>
-  <div class="payment">
-    <div class="row">
-      <div class="col-sm-offset-2 col-sm-8 col-xs-12">
-        <form class="payment-form">
-            <div class="group">
-              <label class="form-name">
-                <span>Name</span>
-                <input name="cardholder-name" class="field" placeholder="Jane Doe" />
-              </label>
-              <label>
-                <span>Phone</span>
-                <input class="field" placeholder="(123) 456-7890" type="tel" />
-              </label>
-            </div>
-            <div class="group">
-              <label>
-                <span>Card</span>
-                <div id="card-element" class="field"></div>
-              </label>
-            </div>
-            <button type="submit">Purchase</button>
-        </form>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div card-validation="vm.stripeValidation" card-object="vm.card"></div>
-        <!--<div class="outcome">-->
-          <!--<div class="error"></div>-->
-          <!--<div class="success">-->
-            <!--Success! Your Stripe token is <span class="token"></span>-->
-          <!--</div>-->
-        <!--</div>-->
-      </div>
-    </div>
-  </div>
+  <stripe-form ng-if="vm.currentView === 'checkout'"></stripe-form>
 </div>
