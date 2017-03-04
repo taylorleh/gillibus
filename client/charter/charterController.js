@@ -4,11 +4,13 @@ let moduleName = 'gillibus.charter';
 
 class CharterController {
 
-  constructor($scope, $uibModal, $timeout, moment, $window, $compile, CalendarService) {
+  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService) {
     this.moment = moment;
     this.$compile = $compile;
-    this.CalendarService = CalendarService;
+    this.calendarService = calendarService;
     this.$uibModal = $uibModal;
+    this.$timeout = $timeout;
+    this.viewportService = viewportService;
 
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
     this.currentView = 'book';
@@ -79,7 +81,7 @@ class CharterController {
   }
 
   getCalendarEvents() {
-    this.CalendarService.getEventsForCalendar('CHARTER_CALENDAR')
+    this.calendarService.getEventsForCalendar('CHARTER_CALENDAR')
       .then(res => {
         let events = res.data.items;
         let transformed = this.transFormEvents(events);
@@ -147,9 +149,11 @@ class CharterController {
     let time = this.moment(data).toDate();
     let schedule = this.daysOfMonthHash[time];
     this.chosenDate = this.moment(data).format('LL');
-    this.currentView = 'checkout';
+    this.changeView('checkout');
     // this.beginCheckoutPhase();
+
   }
+
 
   /**
    * Appends a booking button to a date cell provided the date cell and
@@ -164,6 +168,49 @@ class CharterController {
   _decorateCellAvailability(cell, block) {
     let content = this.$compile(this.getHtmlBlock(block))(this.$scope);
     cell.append(content);
+  }
+
+  /**
+   * Configures and setup stripe element
+   *
+   * @function   appendStripeForm
+   *
+   * */
+  appendStripeForm() {
+    let desktop = this.viewportService.isDesktop();
+    let style = {
+      base: {
+        color:'#31325F',
+        fontFamily: 'Helvetica Neue',
+        fontSize: desktop ? '22px' : '1.05rem',
+        fontWeight: 300,
+        iconColor: '#666EE8',
+        lineHeight: '65px',
+
+      },
+      invalid: {
+        color: '#cc4f55'
+      }
+
+    };
+    let elements = stripe.elements();
+    let card = elements.create('card', {style : style});
+
+    this.$timeout(e => {
+      card.mount('#card-element');
+    });
+  }
+
+
+  /**
+   * Creates a strip token and processes the form:'
+,   *
+   * @param {Object} event - the event object
+   * @function processPayment
+   *
+   * */
+  processPayment(event) {
+
   }
 
   dayRender(date, cell) {
@@ -187,7 +234,7 @@ class CharterController {
    *
    * */
   getFreeBusy(start, end) {
-    return this.CalendarService.getBusyFromRange('CHARTER_CALENDAR', start, end)
+    return this.calendarService.getBusyFromRange('CHARTER_CALENDAR', start, end)
   }
 
   /**
@@ -228,7 +275,11 @@ class CharterController {
    *
    * */
   changeView(viewName) {
-    this.currentView = viewName.toLowerCase();
+    let view = viewName.toLowerCase();
+    this.currentView = view;
+    if (view === 'checkout') {
+      this.appendStripeForm();
+    }
   }
 
   /**
@@ -249,7 +300,7 @@ class CharterController {
 
 }
 
-CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "CalendarService"];
+CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService", "viewportService"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName
