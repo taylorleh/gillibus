@@ -13,12 +13,16 @@ import { default as LocationsController } from './locations/locationsController'
 import { default as PricingController } from './pricing/pricingController';
 import { default as HomeController } from './home/homeController';
 import { default as RoutesController } from './routes/routesController';
-import { default as ViewportDirective } from './directives/viewport';
-import { default as FocusDirective } from './directives/focus';
-import { default as CountdownDirective } from './directives/countdownSubheader';
 import { default as ViewportService } from './services/viewport';
 import { default as CalendarService } from './services/calendar';
 import { default as DirectionsService } from './services/directions';
+
+// DIRECTIVES
+import { default as ViewportDirective } from './directives/viewport';
+import { default as FocusDirective } from './directives/focus';
+import { default as CountdownDirective } from './directives/countdownSubheader';
+import { default as CardDirective } from './directives/cardValidation';
+
 import { default as MapConstant } from './constant/map';
 
 
@@ -90,6 +94,7 @@ angular.module(moduleName, [
   // ViewportDirective.name,
   // FocusDirective.name,
   CountdownDirective,
+  CardDirective,
   ViewportService,
   CalendarService,
   // DirectionsService.name,
