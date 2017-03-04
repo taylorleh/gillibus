@@ -24,6 +24,7 @@
   "homepage": "https://github.com/taylorleh/gillibus#readme",
   "dependencies": {
     "angular": "^1.5.11",
+    "angular-animate": "^1.6.2",
     "angular-google-maps": "^2.4.1",
     "angular-moment": "^1.0.1",
     "angular-route": "^1.6.2",

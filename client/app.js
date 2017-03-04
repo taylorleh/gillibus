@@ -81,6 +81,7 @@ config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProv
 angular.module(moduleName, [
   require('angular-route'),
   require('npm/angular-ui-bootstrap'),
+  require('angular-animate'),
   CharterController,
   // LocationsController.name,
   // PricingController.name,
