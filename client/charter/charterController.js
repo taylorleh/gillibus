@@ -14,41 +14,41 @@ class CharterController {
     this.currentView = 'book';
     this.chosenDate = {};
 
-      this.uiConfig = {
-        calendar: {
-          height: 1000,
-          editable: true,
-          eventRender: function(event, element, view) {
-            let morning = event.start.hour() < 14;
-            element.css('position', 'absolute');
-            element.css('top', morning ? '0px' : '50%');
-            element.css('width', '13.9%');
-            element.css('height', '46%');
-            element.css('zIndex', '10');
+    this.uiConfig = {
+      calendar: {
+        height: 1000,
+        editable: true,
+        eventRender: function(event, element, view) {
+          let morning = event.start.hour() < 14;
+          element.css('position', 'absolute');
+          element.css('top', morning ? '0px' : '50%');
+          element.css('width', '13.9%');
+          element.css('height', '46%');
+          element.css('zIndex', '10');
 
-          },
-          viewRender: function(view, element) {
-            view.dayGrid.rowEls.each(function(index, element) {
-              let $el = angular.element(element);
+        },
+        viewRender: function(view, element) {
+          view.dayGrid.rowEls.each(function(index, element) {
+            let $el = angular.element(element);
 
-              $el.children('.fc-content-skeleton').css('position', 'static');
+            $el.children('.fc-content-skeleton').css('position', 'static');
 
-              $el.css({
-                position: 'relative',
-                minHeight: '100px'
-              });
+            $el.css({
+              position: 'relative',
+              minHeight: '100px'
             });
-          },
-          header: {
-            left: 'month basicWeek basicDay agendaWeek agendaDay',
-            center: 'title',
-            right: 'today prev,next'
-          },
-          eventClick: $scope.alertEventOnClick,
-          eventDrop: $scope.alertOnDrop,
-          eventResize: $scope.alertOnResize
-        }
-      };
+          });
+        },
+        header: {
+          left: 'month basicWeek basicDay agendaWeek agendaDay',
+          center: 'title',
+          right: 'today prev,next'
+        },
+        eventClick: $scope.alertEventOnClick,
+        eventDrop: $scope.alertOnDrop,
+        eventResize: $scope.alertOnResize
+      }
+    };
 
     this.$scope = $scope;
 
@@ -58,12 +58,13 @@ class CharterController {
   }
 
   getHtmlBlock(block) {
-    let csClass = block === 'MORNING' ?
-      ['early-book', 'Book Morning'] :
-      ['late-book', 'Book Evening'];
-    let templ = `<div class="${csClass[0]}"><button ng-click=\"vm.onEventClick($event);\">${csClass[1]}</button></div>`;
-    return templ;
+    let csClass = block === 'MORNING' ? ['early-book', 'Book Morning'] : ['late-book', 'Book Evening'];
 
+    return `
+    <div class="${csClass[0]}">
+    <button class="hide-xs show-sm" ng-click=\"vm.onEventClick($event);\">${csClass[1]}</button>
+    <button class="show-xs hide-sm" ng-click=\"vm.onEventClick($event);\">${csClass[1].split(' ')[1]}</button>
+    </div>`;
   }
 
   transFormEvents(events) {
@@ -132,7 +133,6 @@ class CharterController {
           });
         };
 
-
         $scope.expireChange = function(args) {
           console.log('changing', arguments);
         }
@@ -173,7 +173,7 @@ class CharterController {
     if (!schedule.morning) {
       this._decorateCellAvailability(cell, 'MORNING');
     }
-    if(!schedule.evening) {
+    if (!schedule.evening) {
       this._decorateCellAvailability(cell, 'EVENING');
     }
   }
@@ -189,7 +189,6 @@ class CharterController {
   getFreeBusy(start, end) {
     return this.CalendarService.getBusyFromRange('CHARTER_CALENDAR', start, end)
   }
-
 
   /**
    * Invoked on success of free/busy service
