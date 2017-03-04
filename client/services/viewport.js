@@ -28,7 +28,6 @@ let moduleName = 'gillibus.service.viewport';
 
 class ViewportService {
   constructor($window) {
-    console.log('CONSTURCTING');
     this.$window = $window;
   }
 
