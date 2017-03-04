@@ -4,28 +4,6 @@
 import angular from 'npm/angular';
 let moduleName = 'gillibus.service.viewport';
 
-
-  // .service('viewPort', ['$window',function ($window) {
-  //   return {
-  //     getViewportSize: () => {
-  //       let screenWidth = $window.innerWidth;
-  //       let size = 'lg';
-  //       if (screenWidth < 768) {
-  //         size = 'xs'
-  //       } else if (screenWidth < 992) {
-  //         size = 'sm';
-  //       } else if(screenWidth < 1200) {
-  //         size = 'md';
-  //       }
-  //       return size;
-  //     },
-  //
-  //
-  //
-  //   }
-  //
-  // }]);
-
 class ViewportService {
   constructor($window) {
     this.$window = $window;
