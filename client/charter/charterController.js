@@ -14,6 +14,7 @@ class CharterController {
 
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
     this.currentView = 'book';
+    this.stripeValidation = {};
     this.chosenDate = {};
 
     this.uiConfig = {
@@ -170,6 +171,7 @@ class CharterController {
     cell.append(content);
   }
 
+
   /**
    * Configures and setup stripe element
    *
@@ -180,7 +182,7 @@ class CharterController {
     let desktop = this.viewportService.isDesktop();
     let style = {
       base: {
-        color:'#31325F',
+        color: '#31325F',
         fontFamily: 'Helvetica Neue',
         fontSize: desktop ? '22px' : '1.05rem',
         fontWeight: 300,
@@ -194,7 +196,9 @@ class CharterController {
 
     };
     let elements = stripe.elements();
-    let card = elements.create('card', {style : style});
+    let card = elements.create('card', { style: style });
+    this.card = card;
+    // card.on('change', this.onCardChange.bind(this));
 
     this.$timeout(e => {
       card.mount('#card-element');
@@ -203,8 +207,21 @@ class CharterController {
 
 
   /**
-   * Creates a strip token and processes the form:'
-,   *
+   * Callback from card's onchange listener
+   *
+   * @param {Event} event - event object
+   * @function onCardChange
+   *
+   * */
+  onCardChange(event) {
+    this.stripeValidation = event;
+    this.$scope.$apply();
+  }
+
+
+  /**
+   * Creates a strip token and processes the form
+   *
    * @param {Object} event - the event object
    * @function processPayment
    *
@@ -225,6 +242,7 @@ class CharterController {
     }
   }
 
+
   /**
    * gets busy times for a given month
    *
@@ -236,6 +254,7 @@ class CharterController {
   getFreeBusy(start, end) {
     return this.calendarService.getBusyFromRange('CHARTER_CALENDAR', start, end)
   }
+
 
   /**
    * Invoked on success of free/busy service
@@ -266,6 +285,7 @@ class CharterController {
 
   }
 
+
   /**
    * changes the view of the page. This is mainly invokes from click handlers from template.
    *
@@ -281,6 +301,7 @@ class CharterController {
       this.appendStripeForm();
     }
   }
+
 
   /**
    * Invokes services and handles registers current month end date
@@ -300,7 +321,8 @@ class CharterController {
 
 }
 
-CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService", "viewportService"];
+CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService",
+  "viewportService"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName
