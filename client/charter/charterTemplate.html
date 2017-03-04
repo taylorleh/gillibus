@@ -26,5 +26,5 @@
       </div>
     </div>
   </div>
-  <stripe-form ng-if="vm.currentView === 'checkout'"></stripe-form>
+  <stripe-form options="vm.stripeFormOptions" ng-if="vm.currentView === 'checkout'"></stripe-form>
 </div>

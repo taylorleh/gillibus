@@ -52,7 +52,6 @@ let config = {
       npm: __dirname + '/node_modules',
       ass: path.resolve( __dirname,'client/assets/'),
       b: __dirname + '/client/lib'
-      // angular$: path.resolve(__dirname, 'node_modules/angular/index.js')
     }
   },
   plugins: [
@@ -65,6 +64,10 @@ let config = {
     contentBase: "client",
     proxy: {
       "/calendar":{
+        secure: false,
+        target: 'http://localhost:3000'
+      },
+      '/api': {
         secure: false,
         target: 'http://localhost:3000'
       }

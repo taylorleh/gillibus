@@ -157,8 +157,6 @@ class CharterController {
     let schedule = this.daysOfMonthHash[time];
     this.chosenDate = this.moment(data).format('LL');
     this.changeView('checkout');
-    // this.beginCheckoutPhase();
-
   }
 
 
@@ -175,53 +173,6 @@ class CharterController {
   _decorateCellAvailability(cell, block) {
     let content = this.$compile(this.getHtmlBlock(block))(this.$scope);
     cell.append(content);
-  }
-
-
-  /**
-   * Configures and setup stripe element
-   *
-   * @function   appendStripeForm
-   *
-   * */
-  appendStripeForm() {
-    // let desktop = this.viewportService.isDesktop();
-    // let style = {
-    //   base: {
-    //     color: '#31325F',
-    //     fontFamily: 'Helvetica Neue',
-    //     fontSize: desktop ? '22px' : '1.05rem',
-    //     fontWeight: 300,
-    //     iconColor: '#666EE8',
-    //     lineHeight: '65px',
-    //
-    //   },
-    //   invalid: {
-    //     color: '#cc4f55'
-    //   }
-    //
-    // };
-    // let elements = stripe.elements();
-    // let card = elements.create('card', { style: style });
-    // this.card = card;
-    // // card.on('change', this.onCardChange.bind(this));
-    //
-    // this.$timeout(e => {
-    //   card.mount('#card-element');
-    // });
-  }
-
-
-  /**
-   * Callback from card's onchange listener
-   *
-   * @param {Event} event - event object
-   * @function onCardChange
-   *
-   * */
-  onCardChange(event) {
-    this.stripeValidation = event;
-    this.$scope.$apply();
   }
 
 
@@ -301,11 +252,7 @@ class CharterController {
    *
    * */
   changeView(viewName) {
-    let view = viewName.toLowerCase();
-    this.currentView = view;
-    if (view === 'checkout') {
-      this.appendStripeForm();
-    }
+    this.currentView = viewName.toLowerCase();
   }
 
 

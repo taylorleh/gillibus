@@ -7,14 +7,17 @@ import 'npm/angular-ui-calendar/src/calendar.js'
 import 'npm/fullcalendar/dist/fullcalendar.js';
 import 'npm/fullcalendar/dist/gcal.js';
 
+// CONTROLLERS
 import { default as CharterController } from './charter/charterController';
 import { default as LocationsController } from './locations/locationsController';
-
 import { default as PricingController } from './pricing/pricingController';
 import { default as HomeController } from './home/homeController';
 import { default as RoutesController } from './routes/routesController';
+
+// SERVICES
 import { default as ViewportService } from './services/viewport';
 import { default as CalendarService } from './services/calendar';
+import { default as CharterBookingService } from './services/charterBooking';
 import { default as DirectionsService } from './services/directions';
 
 // DIRECTIVES
@@ -23,9 +26,10 @@ import { default as FocusDirective } from './directives/focus';
 import { default as CountdownDirective } from './directives/countdownSubheader';
 import { default as CardDirective } from './directives/cardValidation';
 
+// CONSTANTS
 import { default as MapConstant } from './constant/map';
 
-
+// THIRDS PARTY
 import 'npm/ngGeolocation/ngGeolocation';
 import 'npm/angular-moment/angular-moment.js';
 // import 'npm/angular-ui-bootstrap';
@@ -97,6 +101,7 @@ angular.module(moduleName, [
   CardDirective,
   ViewportService,
   CalendarService,
+  CharterBookingService,
   // DirectionsService.name,
   MapConstant,
   'ngGeolocation',
