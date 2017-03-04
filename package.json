@@ -54,6 +54,7 @@
     "lodash": "^4.17.4",
     "ngGeolocation": "0.0.7",
     "raw-loader": "^0.5.1",
+    "stripe": "^4.15.0",
     "style-loader": "^0.13.2",
     "uglify-js": "^2.7.5",
     "uglifyjs-webpack-plugin": "^0.2.1",
