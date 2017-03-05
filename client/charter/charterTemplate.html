@@ -27,10 +27,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-5 col-xs-12">
-      <stripe-form options="vm.stripeFormOptions" ng-if="vm.currentView === 'checkout'"></stripe-form>
-    </div>
-    <div class="col-sm-5 col-sm-offset-1">
+    <div class="col-sm-5 col-sm-offset-1 col-xs-12 booking-detail-outer">
       <div class="booking-details">
         <div class="date-summary tbl-row">
           <span class="tbl-cell tbl-cell-lbl">Date:</span> <span class="tbl-cell">{{vm.chosenDate}}</span>
@@ -38,24 +35,25 @@
         <div class="bus-summary tbl-row">
           <label class="tbl-cell tbl-cell-lbl" for="bus">Bus</label>
           <div class="tbl-cell">
-            <select name="bus" id="bus" ng-model="vm.chosenBus" class="form-control" ng-init="vm.chosenBus = 0">
-              <option value="{{$index}}" ng-selected="0" ng-repeat="bus in vm.buses track by $index">{{bus.name}}</option>
-            </select>
+            <select name="bus" id="bus" ng-model="vm.chosenBus" class="form-control" ng-options="l as l.name for l in vm.buses"></select>
           </div>
         </div>
         <div class="time-slot tbl-row">
           <span class="tbl-cell tbl-cell-lbl">Time</span>
           <div class="tbl-cell">
-            <select name="time-block" id="time-block" ng-model="vm.timeBlock" class="form-control">
-              <option value="">---Please select---</option>
-              <option value="Day">Day</option>
-              <option value="Night">Night</option>
+            <select name="time-block" id="time-block" ng-model="vm.timeBlock" class="form-control" ng-options="c as c.name for c in vm.blocks" ng-change="vm.onTimeBlockChange(this)">
             </select>
+          </div>
+        </div>
+        <div class="duration-slot tbl-row">
+          <span class="tbl-cell tbl-cell-lbl">Duration</span>
+          <div class="tbl-cell">
+            <select name="duration-block" id="duration-block" ng-model="vm.duration" ng-options="item as item.label disable when item.disabled for item in vm.hours" class="form-control"></select>
           </div>
         </div>
         <div class="price-summary tbl-row">
           <span class="tbl-cell tbl-cell-lbl">Price</span>
-          <span class="tbl-cell">{{vm.buses[vm.chosenBus].dayRate * vm.buses[vm.chosenBus].durationDayMin | currency}}</span>
+          <span class="tbl-cell">{{vm.chosenBus.dayRate * vm.duration.label | currency}}</span>
         </div>
         <div>
           <p></p>
@@ -65,5 +63,9 @@
         </div>
       </div>
     </div>
+    <div class="col-sm-5 col-xs-12">
+      <stripe-form options="vm.stripeFormOptions" ng-if="vm.currentView === 'checkout'"></stripe-form>
+    </div>
+
   </div>
 </div>

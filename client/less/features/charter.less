@@ -17,7 +17,6 @@
 
   }
 
-
   .early-book, .late-book {
     display: block;
     position: relative;
@@ -32,18 +31,18 @@
       white-space: nowrap;
       cursor: pointer;
       position: relative;
-      border:1px solid white;
-      background: rgba(0,0,0,0);
+      border: 1px solid white;
+      background: rgba(0, 0, 0, 0);
       transition: background-color 1s cubic-bezier(0.22, 0.61, 0.36, 1);
       &:hover {
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
       }
     }
   }
 
   .early-book {
     padding-top: .5em;
-    padding-left:0;
+    padding-left: 0;
     button {
       //transform: translate(15%, 25%);
     }
@@ -85,8 +84,12 @@
     transition: all linear 5s;
   }
 
-  .checkout.ng-hide{
+  .checkout.ng-hide {
     opacity: 0;
+  }
+
+  .booking-detail-outer {
+    float: left;
   }
 
   .booking-details {
@@ -94,11 +97,11 @@
     font-size: 1.7rem;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 100%;
-    color:#8898AA;
-    font-weight:300 !important;
+    color: #8898AA;
+    font-weight: 300 !important;
 
     label {
-      font-weight:300;
+      font-weight: 300;
     }
 
     .tbl-row {
@@ -124,19 +127,24 @@
     }
   }
 
-
   @media (min-width: @screen-sm) {
     .early-book {
       padding-left: .5em;
     }
+
     .late-book {
       padding-right: .5em;
     }
+
     .early-book, .late-book {
       button {
         letter-spacing: 1px;
         font-size: 1.4rem;
       }
+    }
+
+    .booking-detail-outer {
+      float: none;
     }
   }
 

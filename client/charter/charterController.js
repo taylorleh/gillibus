@@ -12,21 +12,43 @@ class CharterController {
     this.$timeout = $timeout;
     this.viewportService = viewportService;
 
+
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
     this.currentView = 'book';
     this.stripeValidation = {};
     this.chosenDate = {};
-    this.timeBlock = '';
-    this.chosenBus = {
-      name: 'Gillibus',
-      capacity: 28,
-      dayRate: 185,
-      nightRate: 200,
-      durationDayMin: 6,
-      durationNightMin: 4,
-      additionalNight: 175,
-      operating: true
-    };
+    this.hours = [
+      {
+        label: 4
+      },
+      {
+        label: 5
+      },
+      {
+        label: 6
+      },
+      {
+        label: 7
+      },
+      {
+        label: 8
+      }
+
+    ];
+    this.duration = this.hours[0];
+
+    this.blocks = [
+      {
+        id: 0,
+        name: 'Day'
+      },
+      {
+        id: 1,
+        name: 'Night'
+      }
+    ];
+    this.timeBlock = this.blocks[1];
+
 
     this.buses = [
       {
@@ -70,6 +92,8 @@ class CharterController {
         operating: true
       }
     ];
+
+    this.chosenBus = this.buses[0];
 
 
     this.stripeFormOptions = {
@@ -168,6 +192,19 @@ class CharterController {
     let schedule = this.daysOfMonthHash[time];
     this.chosenDate = this.moment(data).format('LL');
     this.changeView('checkout');
+  }
+
+
+  onTimeBlockChange(event) {
+    if (this.timeBlock === 'Night') {
+      this.hours[0].disabled = false;
+      this.hours[1].disabled = false;
+      this.duration = this.hours[0];
+    } else {
+      this.hours[0].disabled = true;
+      this.hours[1].disabled = true;
+      this.duration = this.hours[2];
+    }
   }
 
 
