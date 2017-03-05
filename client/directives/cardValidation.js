@@ -8,7 +8,7 @@ let style = {
   base: {
     color: '#31325F',
     fontFamily: 'Helvetica Neue',
-    fontSize: null,
+    fontSize: '1.05rem',
     fontWeight: 300,
     iconColor: '#666EE8',
     lineHeight: '65px',
@@ -24,7 +24,7 @@ function StripeForm(viewportService, charterBooking) {
   function _link(scope, element, attrs) {
     let desktop = viewportService.isDesktop();
     let elements = stripe.elements();
-    style.base.fontSize = desktop ? '22px' : '1.05rem';
+    // style.base.fontSize = desktop ? '22px' : '1.05rem';
 
     scope.card = elements.create('card', { style: style });
     scope.validation = null;
@@ -54,14 +54,29 @@ function StripeForm(viewportService, charterBooking) {
       scope.validation = result;
     };
 
+
+    /**
+     * Creates a strip token and processes the form
+     *
+     * @param {Object} event - the event object
+     * @function processPayment
+     *
+     * */
     scope.processPayment = (event) => {
       if (scope.validation && scope.validation.complete) {
         stripe.createToken(scope.card)
           .then(result => {
-            console.log('GOT RESPONSE', result);
-            element.find('.success').show();
-            chargePaymentWithId(result.token.id);
+            return chargePaymentWithId(result.token.id);
           })
+          .then(result => {
+            console.log('SUCCESS', result);
+            element.find('.success').show();
+            scope.options.onSubmit(null, result, event);
+          })
+          .catch(error => {
+            console.warn('STRIPE ERROR', error);
+            scope.options.onSubmit(error, null, event);
+          });
       }
     };
     scope.card.on('change', scope.onCardChange);

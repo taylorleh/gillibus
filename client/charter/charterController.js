@@ -16,9 +16,67 @@ class CharterController {
     this.currentView = 'book';
     this.stripeValidation = {};
     this.chosenDate = {};
+    this.timeBlock = '';
+    this.chosenBus = {
+      name: 'Gillibus',
+      capacity: 28,
+      dayRate: 185,
+      nightRate: 200,
+      durationDayMin: 6,
+      durationNightMin: 4,
+      additionalNight: 175,
+      operating: true
+    };
+
+    this.buses = [
+      {
+        name: 'Gillibus',
+        capacity: 28,
+        dayRate: 185,
+        nightRate: 200,
+        durationDayMin: 6,
+        durationNightMin: 4,
+        additionalNight: 175,
+        operating: true
+      },
+      {
+        name: 'Charlie',
+        capacity: 28,
+        dayRate: 185,
+        nightRate: 200,
+        durationDayMin: 6,
+        durationNightMin: 4,
+        additionalNight: 175,
+        operating: true
+      },
+      {
+        name: 'G3',
+        capacity: 33,
+        dayRate: 195,
+        nightRate: 225,
+        durationDayMin: 6,
+        durationNightMin: 4,
+        additionalNight: 175,
+        operating: true
+      },
+      {
+        name: 'Starship',
+        capacity: 38,
+        dayRate: 225,
+        nightRate: 250,
+        durationDayMin: 6,
+        durationNightMin: 4,
+        additionalNight: 195,
+        operating: true
+      }
+    ];
+
+
     this.stripeFormOptions = {
-      onSubmit: (event) => {
-        console.log('SUBMIT');
+      onSubmit: (error, response, event) => {
+        if (!error) {
+
+        }
 
       }
     };
@@ -101,53 +159,6 @@ class CharterController {
 
   beginCheckoutPhase() {
     let modalEl = angular.element('.checkout-modal');
-
-    let modalInstance = this.$uibModal.open({
-      templateUrl: '../charter/checkoutModal.html',
-      appendTo: modalEl,
-      size: 'desktop',
-      windowClass: 'window-class',
-      windowTopClass: 'top-class',
-      controller: function($scope) {
-        $scope.ran = 'hi';
-        $scope.user = {
-          // number:null,
-          // month:null,
-          year: null,
-          exp: function(newValue) {
-            if (!angular.isDefined(newValue)) {
-              // return $scope.ran;
-            }
-            else {
-              return $scope.ran;
-              if (newValue.length <= 2) {
-                let exp = newValue
-                this.month = exp;
-                return '1';
-              } else {
-                this.month = newValue;
-                this.year = newValue.slice(2);
-                return [this.month, '/', this.year].join('/');
-              }
-
-            }
-          }
-        };
-
-        $scope.process = function(args) {
-          let $form = args.target;
-
-          Stripe.card.createToken($form, function(status, response) {
-            console.log(arguments);
-          });
-        };
-
-        $scope.expireChange = function(args) {
-          console.log('changing', arguments);
-        }
-
-      }
-    });
   }
 
   onEventClick(event) {
@@ -176,13 +187,6 @@ class CharterController {
   }
 
 
-  /**
-   * Creates a strip token and processes the form
-   *
-   * @param {Object} event - the event object
-   * @function processPayment
-   *
-   * */
   processPayment(event) {
     console.log('attempting to submit', event);
   }
