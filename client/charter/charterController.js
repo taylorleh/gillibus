@@ -4,7 +4,7 @@ let moduleName = 'gillibus.charter';
 
 class CharterController {
 
-  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, calendarConfig) {
+  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, calendarConfig, busProperties) {
     this.moment = moment;
     this.$compile = $compile;
     this.calendarService = calendarService;
@@ -12,100 +12,32 @@ class CharterController {
     this.$timeout = $timeout;
     this.viewportService = viewportService;
 
+    // configs
+    this.buses = busProperties.buses;
+    this.hours = busProperties.hours;
+    this.blocks = busProperties.blocks;
+    this.uiConfig = calendarConfig;
 
+    // config extra
+    this.duration = this.hours[0];
+    this.timeBlock = this.blocks[1];
+    this.chosenBus = this.buses[0];
+
+    // public data
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
     this.currentView = 'book';
     this.stripeValidation = {};
     this.chosenDate = {};
-    this.hours = [
-      {
-        label: 4
-      },
-      {
-        label: 5
-      },
-      {
-        label: 6
-      },
-      {
-        label: 7
-      },
-      {
-        label: 8
-      }
-
-    ];
-    this.duration = this.hours[0];
-
-    this.blocks = [
-      {
-        id: 0,
-        name: 'Day'
-      },
-      {
-        id: 1,
-        name: 'Night'
-      }
-    ];
-    this.timeBlock = this.blocks[1];
-
-
-    this.buses = [
-      {
-        name: 'Gillibus',
-        capacity: 28,
-        dayRate: 185,
-        nightRate: 200,
-        durationDayMin: 6,
-        durationNightMin: 4,
-        additionalNight: 175,
-        operating: true
-      },
-      {
-        name: 'Charlie',
-        capacity: 28,
-        dayRate: 185,
-        nightRate: 200,
-        durationDayMin: 6,
-        durationNightMin: 4,
-        additionalNight: 175,
-        operating: true
-      },
-      {
-        name: 'G3',
-        capacity: 33,
-        dayRate: 195,
-        nightRate: 225,
-        durationDayMin: 6,
-        durationNightMin: 4,
-        additionalNight: 175,
-        operating: true
-      },
-      {
-        name: 'Starship',
-        capacity: 38,
-        dayRate: 225,
-        nightRate: 250,
-        durationDayMin: 6,
-        durationNightMin: 4,
-        additionalNight: 195,
-        operating: true
-      }
-    ];
-
-    this.chosenBus = this.buses[0];
-
 
     this.stripeFormOptions = {
       onSubmit: (error, response, event) => {
         if (!error) {
 
         }
-
       }
     };
 
-    this.uiConfig = calendarConfig;
+
     let cal = this.uiConfig.calendar;
     cal.dayRender = this.dayRender.bind(this);
     cal.viewRender = this.viewRender.bind(this);
@@ -334,7 +266,7 @@ class CharterController {
 }
 
 CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService",
-  "viewportService", "calendarConfig"];
+  "viewportService", "calendarConfig", "busProperties"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName
