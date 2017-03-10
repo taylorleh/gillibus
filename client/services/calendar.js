@@ -31,7 +31,17 @@ class CalendarService {
         end: end
       }
     });
+  }
 
+  createCalendarEvent(eventData) {
+    console.log('creating calendar event', eventData);
+    let api = `${document.location.origin}/api/v1/calendar/events/create`;
+    let $http = HTTP.get(this);
+    return $http({
+      method: 'POST',
+      url: api,
+      data: eventData
+    });
   }
 
   static calendarFactory($http){

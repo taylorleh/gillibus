@@ -64,7 +64,7 @@
       </div>
     </div>
     <div class="col-sm-7 col-xs-12">
-      <stripe-form options="vm.stripeFormOptions" ng-if="vm.currentView === 'checkout'"></stripe-form>
+      <stripe-form customer-data="vm.customerData" options="vm.stripeFormOptions" ng-if="vm.currentView === 'checkout'"></stripe-form>
     </div>
 
   </div>
