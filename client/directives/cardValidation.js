@@ -24,7 +24,7 @@ function StripeForm(viewportService, charterBooking) {
   function _link(scope, element, attrs) {
     let desktop = viewportService.isDesktop();
     let elements = stripe.elements();
-    // style.base.fontSize = desktop ? '22px' : '1.05rem';
+    style.base.fontSize = desktop ? '1.05rem' : '.95rem';
 
     scope.card = elements.create('card', { style: style });
     scope.validation = null;

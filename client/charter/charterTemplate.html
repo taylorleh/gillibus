@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-5 col-sm-offset-1 col-xs-12 booking-detail-outer">
+    <div class="col-sm-5 col-xs-12 booking-detail-outer">
       <div class="booking-details">
         <div class="date-summary tbl-row">
           <span class="tbl-cell tbl-cell-lbl">Date:</span> <span class="tbl-cell">{{vm.chosenDate}}</span>
@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-5 col-xs-12">
+    <div class="col-sm-7 col-xs-12">
       <stripe-form options="vm.stripeFormOptions" ng-if="vm.currentView === 'checkout'"></stripe-form>
     </div>
 
