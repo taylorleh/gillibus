@@ -7,7 +7,6 @@ let moduleName = 'gillibus.service.charterBooking';
 class CharterBooking {
   constructor($http) {
     this.$http = $http;
-    this.standardSlotPrice = 250;
   }
 
   purchaseCharter(token, amount) {
@@ -22,7 +21,7 @@ class CharterBooking {
       url: api,
       data: {
         stripeToken: token,
-        amount: amount || this.standardSlotPrice
+        amount: amount
       }
     });
   }

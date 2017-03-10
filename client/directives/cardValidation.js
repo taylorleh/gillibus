@@ -66,7 +66,11 @@ function StripeForm(viewportService, charterBooking) {
       if (scope.validation && scope.validation.complete) {
         stripe.createToken(scope.card)
           .then(result => {
-            return chargePaymentWithId(result.token.id);
+            if(scope.options.onBeforeValidSubmit) {
+              scope.options.onBeforeValidSubmit(result.token);
+            } else {
+              return chargePaymentWithId(result.token.id);
+            }
           })
           .then(result => {
             console.log('SUCCESS', result);

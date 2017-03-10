@@ -4,10 +4,11 @@ let moduleName = 'gillibus.charter';
 
 class CharterController {
 
-  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, calendarConfig, busProperties) {
+  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, charterBooking, calendarConfig, busProperties) {
     this.moment = moment;
     this.$compile = $compile;
     this.calendarService = calendarService;
+    this.charterBooking = charterBooking;
     this.$uibModal = $uibModal;
     this.$timeout = $timeout;
     this.viewportService = viewportService;
@@ -36,6 +37,8 @@ class CharterController {
         }
       }
     };
+
+    this.stripeFormOptions.onBeforeValidSubmit = this.onBeforeValidSubmit.bind(this);
 
 
     let cal = this.uiConfig.calendar;
@@ -125,6 +128,22 @@ class CharterController {
 
   processPayment(event) {
     console.log('attempting to submit', event);
+  }
+
+
+  /**
+   * invoked after the stripe form has successfully created a token
+   *
+   * @function onBeforeValidSubmit
+   * @param {Object} token - a stripe token object
+   * @param {Number} token.id = token id
+   * @returns None
+   *
+   */
+  onBeforeValidSubmit(token) {
+    let totalAmount = this.chosenBus.dayRate * this.duration.label;
+    let tokenId = token.id;
+    this.charterBooking.purchaseCharter(tokenId, totalAmount * 100);
   }
 
 
@@ -266,7 +285,7 @@ class CharterController {
 }
 
 CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService",
-  "viewportService", "calendarConfig", "busProperties"];
+  "viewportService", "charterBooking", "calendarConfig", "busProperties"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName
