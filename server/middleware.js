@@ -16,7 +16,7 @@ module.exports = function (app, express) {
     next();
   });
 
-  app.use('/calendar', calendarRouter);
+  app.use('/api/v1/calendar', calendarRouter);
   require('./calendar/calendarRoutes')(calendarRouter);
 
   app.use('/api/v1/booking', bookingRouter);

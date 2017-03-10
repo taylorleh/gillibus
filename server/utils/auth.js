@@ -19,7 +19,7 @@ utils.initCalendarToken = function(app) {
     process.env.CLIENT_EMAIL,
     null,
     app.get('PRIVATE_KEY'),
-    ['https://www.googleapis.com/auth/calendar.readonly'],
+    ['https://www.googleapis.com/auth/calendar'],
     null
   );
 };

@@ -63,10 +63,6 @@ let config = {
     hot: true,
     contentBase: "client",
     proxy: {
-      "/calendar":{
-        secure: false,
-        target: 'http://localhost:3000'
-      },
       '/api': {
         secure: false,
         target: 'http://localhost:3000'

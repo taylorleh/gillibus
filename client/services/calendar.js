@@ -10,7 +10,7 @@ class CalendarService {
   }
 
   getEventsForCalendar(calendar) {
-    let api = [document.location.origin, 'calendar/events'].join('/');
+    let api = [document.location.origin, 'api/v1/calendar/events'].join('/');
     let http = HTTP.get(this);
     return http({
       method:'POST',
@@ -20,7 +20,7 @@ class CalendarService {
   }
 
   getBusyFromRange(calendar, start, end) {
-    let api = [document.location.origin, 'calendar/freebusy'].join('/');
+    let api = [document.location.origin, 'api/v1/calendar/freebusy'].join('/');
     let http = HTTP.get(this);
     return http({
       method:'POST',
@@ -33,14 +33,17 @@ class CalendarService {
     });
   }
 
-  createCalendarEvent(eventData) {
+  createCalendarEvent(eventData, calendar) {
     console.log('creating calendar event', eventData);
     let api = `${document.location.origin}/api/v1/calendar/events/create`;
     let $http = HTTP.get(this);
     return $http({
       method: 'POST',
       url: api,
-      data: eventData
+      data: {
+        calendar: calendar,
+        eventData: eventData
+      }
     });
   }
 

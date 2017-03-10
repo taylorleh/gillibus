@@ -9,6 +9,9 @@ module.exports = function(router) {
   router.route('/events')
     .post(calendarController.getEventsForCalendar);
 
+  router.route('/events/create')
+    .post(calendarController.createCalendarEvent);
+
   router.route('/freebusy')
     .post(calendarController.getFreeBusy);
 

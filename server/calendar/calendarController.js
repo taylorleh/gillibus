@@ -37,6 +37,40 @@ module.exports = {
     });
   },
 
+
+  createCalendarEvent: (req, res) => {
+    let token = utils.getAuthToken();
+    let eventData = req.body.eventData;
+    let calendarId = process.env[req.body.calendar];
+
+    if (!calendarId) {
+      res.status(400).json({ message: 'need to specify a claendar' });
+      return;
+    }
+
+
+    token.authorize(function(err, tokens) {
+      let calParams = {
+        auth: token,
+        calendarId: calendarId,
+        resource: eventData
+      };
+
+      cal.events.insert(calParams, function(err, resp) {
+        if (err) {
+          console.log('error \n', err);
+          res.status(401).json(err);
+        }
+
+        if (resp) {
+          res.status(200).json(resp);
+        }
+      });
+
+    })
+
+  },
+
   getFreeBusy: (req, res) =>{
     let token = utils.getAuthToken();
 
