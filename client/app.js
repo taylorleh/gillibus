@@ -28,6 +28,7 @@ import { default as CardDirective } from './directives/cardValidation';
 
 // CONSTANTS
 import { default as MapConstant } from './constant/map';
+import { default as CalendarConstant } from  './constant/calendarConfig';
 
 // THIRDS PARTY
 import 'npm/ngGeolocation/ngGeolocation';
@@ -104,6 +105,7 @@ angular.module(moduleName, [
   CharterBookingService,
   // DirectionsService.name,
   MapConstant,
+  CalendarConstant,
   'ngGeolocation',
   // 'gapi',
   'ui.calendar',

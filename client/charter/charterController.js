@@ -4,7 +4,7 @@ let moduleName = 'gillibus.charter';
 
 class CharterController {
 
-  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService) {
+  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, calendarConfig) {
     this.moment = moment;
     this.$compile = $compile;
     this.calendarService = calendarService;
@@ -105,46 +105,13 @@ class CharterController {
       }
     };
 
-    this.uiConfig = {
-      calendar: {
-        height: 1000,
-        editable: true,
-        eventRender: function(event, element, view) {
-          let morning = event.start.hour() < 14;
-          element.css('position', 'absolute');
-          element.css('top', morning ? '0px' : '50%');
-          element.css('width', '13.9%');
-          element.css('height', '46%');
-          element.css('zIndex', '10');
-
-        },
-        viewRender: function(view, element) {
-          view.dayGrid.rowEls.each(function(index, element) {
-            let $el = angular.element(element);
-
-            $el.children('.fc-content-skeleton').css('position', 'static');
-
-            $el.css({
-              position: 'relative',
-              minHeight: '100px'
-            });
-          });
-        },
-        header: {
-          left: 'month basicWeek basicDay agendaWeek agendaDay',
-          center: 'title',
-          right: 'today prev,next'
-        },
-        eventClick: $scope.alertEventOnClick,
-        eventDrop: $scope.alertOnDrop,
-        eventResize: $scope.alertOnResize
-      }
-    };
-
-    this.$scope = $scope;
-
+    this.uiConfig = calendarConfig;
     let cal = this.uiConfig.calendar;
     cal.dayRender = this.dayRender.bind(this);
+    cal.viewRender = this.viewRender.bind(this);
+    cal.eventRender = this.eventRender.bind(this);
+
+    this.$scope = $scope;
     this.init();
   }
 
@@ -228,6 +195,57 @@ class CharterController {
     console.log('attempting to submit', event);
   }
 
+
+  /**
+   * Invoked after all events and days have been rendered
+   *
+   * @function viewRender
+   * @param view - contains properties associated to the calendar and view
+   *
+   */
+  viewRender(view) {
+    view.dayGrid.rowEls.each(function(index, element) {
+      let $el = angular.element(element);
+
+      $el.children('.fc-content-skeleton').css('position', 'static');
+
+      $el.css({
+        position: 'relative',
+        minHeight: '100px'
+      });
+    });
+  }
+
+
+  /**
+   * Invoked after each event is rendered to the calendar
+   *
+   * @function eventRender
+   * @param {Object} event - contains details of the event
+   * @param {jQuery} element - jQuery object
+   * @param {HTMLElement} view - the calendar view element
+   * @returns None
+   *
+   */
+  eventRender(event, element, view) {
+    let morning = event.start.hour() < 14;
+    element.css('position', 'absolute');
+    element.css('top', morning ? '0px' : '50%');
+    element.css('width', '13.9%');
+    element.css('height', '46%');
+    element.css('zIndex', '10');
+  }
+
+
+  /**
+   * Invoked after each day is being rendered
+   *
+   * @function dayRender
+   * @param {Date} date - date object for the day in context
+   * @param {jQuery} cell - jquery object of the day cell
+   * @returns None
+   *
+   */
   dayRender(date, cell) {
     let key = this.moment(date.toISOString()).startOf('day').toDate();
     let schedule = this.daysOfMonthHash[key] || {};
@@ -316,7 +334,7 @@ class CharterController {
 }
 
 CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService",
-  "viewportService"];
+  "viewportService", "calendarConfig"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName
