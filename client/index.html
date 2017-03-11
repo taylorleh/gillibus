@@ -7,113 +7,49 @@
   <meta name="google-site-verification" content="Pgwni3byCSURFBt4KBqVp2E2v8sneajGB3xgu82XEQM" />
   <title>Gillibus</title>
   <meta name="description" content="">
-  <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
-  <link rel="stylesheet" href="assets/styles.css">
-  <link rel="stylesheet" href="lib/slick-carousel/slick/slick.css">
-  <link rel="stylesheet" href="lib/slick-carousel/slick/slick-theme.css">
-  <link rel="stylesheet" href="lib/fullcalendar/dist/fullcalendar.css"/>
-  <script src="lib/jquery/dist/jquery.js"></script>
-  <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="assets/vendor.css">
+  <link rel="stylesheet" href="assets/main.css">
+  <meta name="robots" content="noindex,nofollow">
   <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4rZOUR9C6GjW-FUifZ_kNZpnv9WjS6U&callback=initMap" async defer></script>-->
-
+  <style>
+    .angular-google-map-container { height: 500px; }
+  </style>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script type="text/javascript">
+    stripe = Stripe('pk_test_pqvrekGG8v1fdndujmr6CA20');
+  </script>
 </head>
 <body>
-<style>
-  .angular-google-map-container { height: 500px; }
-</style>
-
-<script src="lib/lodash/dist/lodash.js"></script>
-<script src="lib/angular/angular.js"></script>
-<script src="lib/angular-route/angular-route.js"></script>
-
-<!--PLUGINS-->
-<script src="lib/angular-bootstrap/ui-bootstrap.js"></script>
-<script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script src="lib/ngGeolocation/ngGeolocation.js"></script>
-<script src="lib/slick-carousel/slick/slick.js"></script>
-<script src="lib/angular-slick-carousel/dist/angular-slick.js"></script>
-<script src="lib/angular-credit-cards/release/angular-credit-cards.js"></script>
-
-<!--GOOGLE-->
-<script src="https://apis.google.com/js/client.js?onload=onClientLoad"></script>
-<script src="lib/ngGAPI/gapi.js"></script>
-
-
-<!-- STRIPE -->
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script type="text/javascript">
-  Stripe.setPublishableKey('pk_test_pqvrekGG8v1fdndujmr6CA20');
-</script>
-
-
-<script src="lib/moment/min/moment.min.js"></script>
-<script src="lib/angular-moment/angular-moment.js"></script>
-
-
-<!-- CAL-->
-<script type="text/javascript" src="lib/angular-ui-calendar/src/calendar.js"></script>
-<script type="text/javascript" src="lib/fullcalendar/dist/fullcalendar.min.js"></script>
-<script type="text/javascript" src="lib/fullcalendar/dist/gcal.js"></script>
-<!--END CAL-->
-
-
-<!--MAPS-->
-<script src="lib/angular-simple-logger/dist/angular-simple-logger.js"></script>
-<script src="lib/angular-google-maps/dist/angular-google-maps.js"></script>
-
-<nav class="top-nav navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#/">Gillibus</a>
-    </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-init="curTab = 'San Francisco'; loc = 'San Francisco'">
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{loc}}<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li ng-click="curTab = 'San Francisco'; loc = 'San Francisco'" ng-class="{active: (curTab == 'San Francisco')}"><a href="#/">San Francisco</a></li>
-            <li ng-click="curTab = 'Oakland'; loc = 'Oakland'" ng-class="{active: (curTab == 'Oakland')}"><a href="#/">Oakland</a></li>
-            <li role="separator" class="divider"></li>
-            <li ng-click="curTab = 'routes'" ng-class="{active: (curTab == 'all')}"><a href="#/routes">All Routes</a></li>
-          </ul>
-        </li>
-        <li ng-click="curTab = 'routes'" ng-class="{active: (curTab == 'routes')}"><a href="#/routes">Routes</a></li>
-        <li ng-click="curTab = 'charter'" ng-class="{active: (curTab == 'charter')}"><a href="#/charter">Charter</a></li>
-        <li ng-click="curTab = 'pricing'" ng-class="{active: (curTab == 'pricing')}"><a href="#/pricing">Pricing</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-
-<div ng-view></div>
-
-<!--DIRECTIVES-->
-<script src="directives/viewport.js"></script>
-<script src="directives/focus.js"></script>
-<script src="directives/countdownSubheader.js"></script>
-
-<!--SERVICES-->
-<script src="services/viewport.js"></script>
-<script src="services/directions.js"></script>
-<script src="services/calendar.js"></script>
-
-<!--CONSTANTS-->
-<script src="constant/map.js"></script>
-
-<!--MODULES-->
-<script src="home/homeController.js"></script>
-<script src="pricing/pricingController.js"></script>
-<script src="locations/locationsController.js"></script>
-<script src="routes/routesController.js"></script>
-<script src="charter/charterController.js"></script>
-
-<script src="app.js"></script>
-
+  <nav class="top-nav navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">Gillibus</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-init="curTab = 'San Francisco'; loc = 'San Francisco'">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{loc}}<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li ng-click="curTab = 'San Francisco'; loc = 'San Francisco'" ng-class="{active: (curTab == 'San Francisco')}"><a href="#/">San Francisco</a></li>
+              <li ng-click="curTab = 'Oakland'; loc = 'Oakland'" ng-class="{active: (curTab == 'Oakland')}"><a href="#/">Oakland</a></li>
+              <li role="separator" class="divider"></li>
+              <li ng-click="curTab = 'routes'" ng-class="{active: (curTab == 'all')}"><a href="#/routes">All Routes</a></li>
+            </ul>
+          </li>
+          <li ng-click="curTab = 'routes'" ng-class="{active: (curTab == 'routes')}"><a href="#/routes">Routes</a></li>
+          <li ng-click="curTab = 'charter'" ng-class="{active: (curTab == 'charter')}"><a href="#/charter">Charter</a></li>
+          <li ng-click="curTab = 'pricing'" ng-class="{active: (curTab == 'pricing')}"><a href="#/pricing">Pricing</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div ng-view></div>
+  <script src="bundle.js"></script>
 </body>
 </html>
 

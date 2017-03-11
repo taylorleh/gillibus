@@ -1,7 +1,7 @@
-/**
- * Created by taylor on 2/1/17.
- */
-angular.module('gillibus.constant.map', [])
+import angular from 'npm/angular';
+let moduleName = 'gillibus.constant.map';
+
+angular.module(moduleName, [])
   .constant('mapConfig', {
     options: {
       clickableIcons: false,
@@ -95,3 +95,5 @@ angular.module('gillibus.constant.map', [])
     },
     zoom: 13
   });
+
+export default moduleName;

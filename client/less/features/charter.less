@@ -1,377 +1,163 @@
 @import "../variables.less";
 
-.charter.container {
+.charter {
 
-  //time and date inline form
-  form.date-time-booker {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 0 1em;
-    font-size: 11px;
+  .schedule-cal {
+    font-family: Handlee;
+  }
 
-    .form-group {
-      margin-bottom: 0;
-
-      .form-control {
-        position: relative;
-        width: 100%;
-        //min-width: 12.5rem;
-      }
-
-      &.time-end, &.time-begin {
-        min-width: 30%;
-        flex: 1 1;
-        white-space: nowrap;
-        position: relative;
-
-        &:after {
-          content: "\f107";
-          font-family: FontAwesome;
-          position: absolute;
-          top: 50%;
-          right: .3em;
-          pointer-events: none;
-          transform: translate(0, -50%);
-
-        }
-
-        .form-control {
-          -webkit-appearance: none;
-          font-size: inherit;
-          display: inline-block;
-          line-height: inherit;
-
-        }
-
-      }
-
-      &.cal-field, &.time-begin, &.time-end {
-        .form-control {
-          border-radius: 0;
-        }
-
-        .input-group-btn {
-          button {
-            border-radius: 0;
-            font-size: inherit;
-          }
-        }
-      }
-
-      &.cal-field {
-        min-width: 30%;
-        flex: 2 1 0;
-        .input-group {
-          width: 100%;
-
-          .input-group-btn, .form-control {
-            font-size: inherit;
-          }
-
-          .input-group-btn {
-            width: 38px;
-          }
-        }
-      }
-    }
-
-    .chk-out {
-      flex: 1 1 101%;
-      -webkit-flex: 1 1 101%;
-      border-radius: 0;
-    }
+  td.fc-day {
+    background: rgba(240, 105, 93, 1);
+    //background: linear-gradient(to right bottom, #c1e6fa 50%, #010e23 50%);
+    //background: linear-gradient(to right bottom, rgba(1, 14, 35, 0) 50%, rgba(1, 14, 35, 1) 50%);
+    background: linear-gradient(to right bottom, rgba(1, 14, 35, 0), rgba(27, 85, 119, 0.96));
+    color: #fff;
+    height: 50px;
+    position: relative;
 
   }
 
-  .slick-slider {
-    padding: 0 1em;
+  .early-book, .late-book {
+    display: block;
+    position: relative;
+    width: auto;
 
-    .slick-prev {
-      left: -10em;
-    }
-    .slick-next {
-      right: 10em;
-    }
-
-    .slide-container {
+    button {
+      box-sizing: border-box;
+      margin: 0;
+      height: inherit;
+      padding: 0 0.4em;
+      font-size: 1rem;
+      white-space: nowrap;
+      cursor: pointer;
       position: relative;
-      padding: 0 1em;
+      border: 1px solid white;
+      background: rgba(0, 0, 0, 0);
+      transition: background-color 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
 
-      .date-container {
-        position: relative;
+  .early-book {
+    padding-top: .5em;
+    padding-left: 0;
+    button {
+      //transform: translate(15%, 25%);
+    }
+  }
 
-        .date-label {
-          position: absolute;
-          width: 100%;
-          top: 50%;
-          margin: 0 auto;
-          text-align: center;
-          transform: translate(0, -50%);
-        }
+  .late-book {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    padding-bottom: .5em;
+    padding-right: 0;
+  }
+
+  .previous-step {
+    font-family: bebas-neue;
+    transition: all linear 5s;
+    font-size: 3em;
+    padding: 5rem 0;
+    border-bottom: 5px solid;
+
+    .before-info {
+      font-size: 2.2rem;
+      color: grey;
+    }
+
+    .before-action {
+      color: @link-blue;
+      button {
+        background-color: inherit;
+        border: 1px solid @link-blue;
+        padding: .2rem 2rem;
+        font-size: 2.8rem;
+      }
+    }
+  }
+
+  .checkout {
+    transition: all linear 5s;
+  }
+
+  .checkout.ng-hide {
+    opacity: 0;
+  }
+
+
+
+  .booking-details {
+    display: table;
+    font-size: 1.7rem;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 100%;
+    color: #8898AA;
+    font-weight: 300 !important;
+
+    label {
+      font-weight: 300;
+    }
+
+    .tbl-row {
+      display: table-row;
+      height: 3em;
+    }
+
+    .tbl-cell {
+      display: table-cell;
+      vertical-align: middle;
+      color: #1e3e63;
+      &.tbl-cell-lbl {
+        width: 30%;
       }
     }
   }
 
   .availability-table {
-
     tbody {
-
       td {
         text-align: center;
       }
     }
   }
 
-  /*
-  * Checkout modal
-  */
-
-  .checkout-modal {
-    .modal-mobile {
-      //width: @modal-mobile-size;
-    }
-    .modal-desktop {
-      width: @modal-desktop-size;
-    }
-
-    form.payment-form {
-
-      // ICONS
-      .card-number-container, .card-cvc-container, .card-expire-container, .cc-name-container {
-        position: relative;
-        .form-control {
-          padding-left: 28px;
-          .no-radius(left);
-          .no-radius(right);
-        }
-        &:after {
-          content: "\f09d";
-          font-family: FontAwesome;
-          position: absolute;
-          top: 20%;
-          padding-left: 5px;
-          left: 0;
-        }
-      }
-
-      .cc-name-container:after {
-        content: "\f2c0";
-      }
-      .card-expire-container:after {
-        content: "\f133";
-      }
-      //.card-expire-yy-container:after {  content: "\f133";  }
-      .card-cvc-container:after {
-        content: "\f023";
-      }
-
-      .card-number-container {
-        margin-bottom: 0;
-      }
-
-      // MAIN CONTAINER
-      .payment-main {
-        .cc-name-container {
-          .cc-name {
-            .no-radius(left);
-            .no-radius(right);
-          }
-        }
-      }
-
-      .payment-extra {
-        position: relative;
-
-        .card-expire-container, .card-cvc-container {
-          display: inline-block;
-          width: 50%;
-        }
-
-        .card-expire-container {
-          .form-control {
-            .no-border(top);
-          }
-
-          .cc-month-container, .cc-year-container {
-            width: 50%;
-            display: inline-block;
-          }
-
-          .cc-month-container {
-            .no-border(right);
-          }
-
-          .cc-year-container {
-            float: right;
-            .no-border(left);
-            .form-control {
-              border-left-width: 0.4em;
-            }
-          }
-
-        }
-
-        .card-cvc-container {
-          float: right;
-          .form-control {
-            //.no-radius(left);
-            //.no-radius(right);
-            .no-border(left);
-            .no-border(top);
-          }
-        }
-
-        .expire {
-          border: 1px solid grey;
-          position: relative;
-          padding-left: 1em;
-          padding-right: 1em;
-          text-align: center;
-
-
-          .card-expire-container {
-            display: inline-block;
-            width: 45%;
-
-            &:nth-child(2) {
-              float: none;
-            }
-
-          }
-
-        }
-
-      }
-    }
-  }
-
   @media (min-width: @screen-sm) {
-    form.date-time-booker {
-      display: flex;
-      justify-content: flex-start;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      font-size: inherit;
+    .early-book {
+      padding-left: .5em;
+    }
 
-      .form-group {
-        min-width: 200px;
+    .late-book {
+      padding-right: .5em;
+    }
 
-        &.time-end, &.time-begin {
-          flex: 1 1;
-
-          .form-control {
-            font-size: inherit;
-          }
-
-        }
-
-        &.cal-field {
-          flex: 2 1 0;
-          .input-group {
-            width: 100%;
-
-            .input-group-btn {
-              width: 38px;
-            }
-          }
-        }
-      }
-
-      .chk-out {
-        flex: 1 1;
-      }
-
-      .form-control {
-        position: relative;
-        width: 100%;
-        flex-basis: 20%;
-        //min-width: 12.5rem;
-      }
-
-      .time-begin, .time-end {
-        //min-width: 211px;
-        //flex-basis: 20%;
+    .early-book, .late-book {
+      button {
+        letter-spacing: 1px;
+        font-size: 1.4rem;
       }
     }
 
-    /*
-    * Checkout Modal
-    */
-    .checkout-modal {
-      form.payment-form {
-
-        .payment-main {
-          .form-group {
-            display: block;
-            .form-control {
-              width: 100%;
-            }
-          }
-
-        }
-
-        .form-group {
-          //margin-bottom: 2em;
-
-        }
-
-        .payment-extra {
-          display: block;
-
-        }
-      }
-    }
 
   }
 
   @media (min-width: @screen-md) {
-
-    form.date-time-booker {
-      display: flex;
-      justify-content: flex-start;
-      flex-direction: row;
-      flex-wrap: nowrap;
-
-      .form-group {
-        min-width: 200px;
-
-        &.time-end, &.time-begin {
-          flex: 1 1;
-
-        }
-
-        &.cal-field {
-          flex: 2 1 0;
-          .input-group {
-            width: 100%;
-
-            .input-group-btn {
-              width: 38px;
-            }
-          }
-        }
-      }
-
-      .chk-out {
-        flex: 1 1;
-      }
-
-      .form-control {
-        position: relative;
-        width: 100%;
-        flex-basis: 20%;
-        //min-width: 12.5rem;
-      }
-
-      .time-begin, .time-end {
-        //min-width: 211px;
-        //flex-basis: 20%;
+    .early-book, .late-book {
+      button {
+        font-size: 1.5rem;
       }
     }
-
   }
 
+  @media (min-width: @screen-lg) {
+    .early-book, .late-book {
+      button {
+        font-size: 1.7rem;
+      }
+    }
+  }
 }
 

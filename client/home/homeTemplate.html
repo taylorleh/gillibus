@@ -1,12 +1,12 @@
 <div class="home container-fluid content">
   <div class="subheader row clock-container">
     <div class="col-xs-9"></div>
-    <div ng-if="timer" class="col-xs-3 timer-container">
-      <div countdown="timer" class="innner"></div>
+    <div ng-if="tl.timer" class="col-xs-3 timer-container">
+      <div countdown="tl.timer" class="innner"></div>
     </div>
   </div>
   <div style="height: 500px;">
-    <ui-gmap-google-map options="map.options" center='map.center' zoom='map.zoom'>
+    <ui-gmap-google-map options="tl.map.options" center='tl.map.center' zoom='tl.map.zoom'>
       <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id"></ui-gmap-marker>
     </ui-gmap-google-map>
   </div>

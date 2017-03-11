@@ -6,6 +6,8 @@ let utils = require('./utils/auth');
 module.exports = function (app, express) {
 
   let calendarRouter = express.Router();
+  let bookingRouter = express.Router();
+
   calendarRouter.use(function(req, res, next) {
     let tokenExists = utils.doesTokenExist();
     if(!tokenExists) {
@@ -14,7 +16,10 @@ module.exports = function (app, express) {
     next();
   });
 
-  app.use('/calendar', calendarRouter);
+  app.use('/api/v1/calendar', calendarRouter);
   require('./calendar/calendarRoutes')(calendarRouter);
+
+  app.use('/api/v1/booking', bookingRouter);
+  require('./booking/bookingRoutes')(bookingRouter);
 
 };

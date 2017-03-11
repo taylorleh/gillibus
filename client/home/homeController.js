@@ -1,24 +1,35 @@
-angular.module('gillibus.home', [])
-.controller('HomeController',
-  ['$scope', 'mapConfig', 'uiGmapGoogleMapApi', '$geolocation','DirectionService','uiGmapIsReady', function($scope,mapConfig, uiGmapGoogleMapApi, $geolocation, DirectionService, uiGmapIsReady) {
-
-  const MOCKERROR = {
-    error: {
-      message: "Only secure origins are allowed (see: https://goo.gl/Y0ZkNV)."
-    }
-  };
-
-  const SF_PICKUP= {
-    LNG:-122.419705,
-    LAT: 37.765058
-  };
-  let MAP_INSTANCE;
-  $scope.map = mapConfig;
+import angular from 'npm/angular';
+let moduleName = 'gillibus.home';
 
 
-  $scope.timer = {};
+class HomeController {
 
-  $scope.timerError = null;
+
+  constructor($scope, mapConfig, $geolocation, uiGmapIsReady, uiGmapGoogleMapApi) {
+    this.MOCKERROR = {
+      error: {
+        message: "Only secure origins are allowed (see: https://goo.gl/Y0ZkNV)."
+      }
+    };
+
+    this.SF_PICKUP= {
+      LNG:-122.419705,
+      LAT: 37.765058
+    };
+
+    this.MAP_INSTANCE;
+    this.uiGmapIsReady = uiGmapIsReady;
+    this.$geolocation = $geolocation;
+    this.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
+    this.$scope = $scope;
+    this.map = mapConfig;
+
+    this.init();
+
+  }
+
+
+
 
 
 
@@ -29,7 +40,7 @@ angular.module('gillibus.home', [])
    * @param {Array} instance
    *
    * */
-  $scope.getTimeToDestination = function(userCoords, instance) {
+  getTimeToDestination(userCoords, instance) {
     let directionsDisplay = new google.maps.DirectionsRenderer();
     directionsDisplay.setMap(instance);
 
@@ -42,69 +53,58 @@ angular.module('gillibus.home', [])
         lng: userCoords.longitude
       },
       destination: {
-        lat: SF_PICKUP.LAT,
-        lng: SF_PICKUP.LNG
+        lat: this.SF_PICKUP.LAT,
+        lng: this.SF_PICKUP.LNG
       }
     };
 
-    directionsService.route(directionsReq, function(res, status) {
-      console.log('directions arrived ',arguments);
+    directionsService.route(directionsReq, (res, status) => {
       directionsDisplay.setDirections(res);
-      $scope.initTimer(res.routes.pop());
-      $scope.timerError = false;
+      this.initTimer(res.routes.pop());
+      this.timerError = false;
     });
 
-  };
+  }
 
-  $scope.initTimer = function(route, hasError) {
+  initTimer(route, hasError) {
     if (hasError) {
       hasError.error = true;
-      $scope.timer = {
+      this.timer = {
         message: hasError.message,
         error: true
       };
-      $scope.$apply();
+      this.$scope.$apply();
       return;
     }
 
     let leg = route.legs[0];
-    $scope.timer = {
+    this.timer = {
       error: false,
       time: leg.duration.text,
       destination: leg.end_address,
       distance: leg.distance.text
     };
-    $scope.$apply();
-  };
+    this.$scope.$apply();
+  }
 
 
 
-  let init = function() {
-    Promise.all([uiGmapIsReady.promise(1),$geolocation.getCurrentPosition({timeout: 10000}), uiGmapGoogleMapApi])
+  init() {
+    Promise.all([this.uiGmapIsReady.promise(1), this.$geolocation.getCurrentPosition({timeout: 10000}), this.uiGmapGoogleMapApi])
       .then(function(results) {
         let map = results[0][0];
         let currentPosition = results[1].coords;
-        MAP_INSTANCE = map;
-        $scope.getTimeToDestination(currentPosition, map.map);
-      }, function(err) {
-        $scope.timerError = true;
-        $scope.initTimer(null, {
-          message:MOCKERROR.error.message,
-          error: true
-        });
-      })
-      .catch(function(err) {
-        $scope.timerError = true;
-        $scope.initTimer(null, {
-          message:MOCKERROR.error.message,
-          error: true
-        });
-
-      });
-  };
+        this.MAP_INSTANCE = map;
+        this.getTimeToDestination(currentPosition, map.map);
+      }.bind(this));
+  }
 
 
-  init();
 
-}]);
+}
+
+
+angular.module(moduleName, []).controller('HomeController', HomeController);
+
+export default moduleName;
 

@@ -1,7 +1,8 @@
 /**
  * Created by taylor on 12/9/16.
  */
-angular.module('gillibus.directive.viewport', [])
+import angular from 'npm/angular';
+export default angular.module('gillibus.directive.viewport', [])
   .directive('windowResizer', function($window) {
     return {
       restrict: 'A',
