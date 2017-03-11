@@ -26,11 +26,15 @@ class CharterController {
 
     // public data
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
+    this.freeBusyCalculated = false;
+    this.eventSources = [];
+
     this.currentView = 'book';
     this.customerData = {
       name: '',
       phone: ''
     };
+
 
     this.stripeValidation = {};
     this.chosenDate = {};
@@ -160,7 +164,7 @@ class CharterController {
 
 
     let startDay = this.moment(this.chosenDate);
-    if(this.timeBlock.name === 'Night') {
+    if (this.timeBlock.name === 'Night') {
       startDay.hour(17);
     } else {
       startDay.hour(10);
@@ -322,7 +326,9 @@ class CharterController {
     let end = this.moment().add(1, 'month');
     this.getFreeBusy(start, end)
       .then(this.freeBusySuccess.bind(this))
-      .then(this.getCalendarEvents.bind(this));
+      .then(() => {
+        this.freeBusyCalculated = true;
+      });
   }
 
 }
