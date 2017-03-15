@@ -15,5 +15,8 @@ module.exports = function(router) {
   router.route('/freebusy')
     .post(calendarController.getFreeBusy);
 
+  router.route('/bus/agenda')
+    .post(calendarController.getBusAgendasFromDate);
+
 };
 

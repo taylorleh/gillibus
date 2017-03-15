@@ -96,6 +96,44 @@ module.exports = {
       });
     });
 
+  },
+
+
+  getBusAgendasFromDate: (req, res) => {
+    let token = utils.getAuthToken();
+    let reqData = req.body;
+
+    let calendarId = process.env[reqData.calendar];
+    let timeMin = reqData.timeMin;
+    let timeMax = reqData.timeMax;
+
+    if (!calendarId) {
+      res.status(400).json({ message: 'need to specify a claendar' });
+      return;
+    }
+
+    token.authorize(function(err, tokens) {
+      let calParams = {
+        auth: token,
+        calendarId: calendarId,
+        timeMin: timeMin,
+        timeMax: timeMax
+      };
+
+      cal.events.list(calParams, function(err, resp) {
+        if (err) {
+          console.log('error \n', err);
+          res.status(401).json(err);
+        }
+
+        if (resp) {
+          res.status(200).json(resp);
+        }
+      });
+
+    });
+
+
   }
 
 };
