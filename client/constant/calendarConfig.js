@@ -11,7 +11,7 @@ let calendarConfig = {
     height: 1000,
     editable: true,
     header: {
-      left: 'month basicWeek basicDay agendaWeek agendaDay',
+      left: 'month',
       center: 'title',
       right: 'today prev,next'
     },
