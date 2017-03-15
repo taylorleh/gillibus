@@ -22,6 +22,7 @@ class CharterController {
 
     // config extra
     this.duration = this.hours[0];
+    this.currentDate = this.moment();
 
     // public data
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
@@ -242,11 +243,13 @@ class CharterController {
     let key = this.moment(date.toISOString()).startOf('day').toDate();
     let schedule = this.daysOfMonthHash[key] || {};
 
-    if (!schedule.morning) {
-      this._decorateCellAvailability(cell, 'MORNING');
-    }
-    if (!schedule.evening) {
-      this._decorateCellAvailability(cell, 'EVENING');
+    if (date.isSameOrAfter(this.currentDate)) {
+      if (!schedule.morning) {
+        this._decorateCellAvailability(cell, 'MORNING');
+      }
+      if (!schedule.evening) {
+        this._decorateCellAvailability(cell, 'EVENING');
+      }
     }
   }
 
