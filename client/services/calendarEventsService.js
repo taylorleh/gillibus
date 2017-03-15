@@ -47,6 +47,18 @@ class CalendarService {
     });
   }
 
+
+  getBusAvailabilityForDate(date) {
+    let api = `${document.location.origin}/api/v1/calendar/bus/agenda`;
+    let http = HTTP.get(this);
+    return http({
+      method:'POST',
+      url: api,
+      data: {calendar: calendar}
+    });
+
+  }
+
   static calendarFactory($http){
     return new CalendarService($http);
   }
