@@ -8,6 +8,11 @@ let moduleName = 'gillibus.service.checkoutStateService';
 class CheckoutStateService {
 
 
+  get checkoutBookEventColor() {
+    return this.checkoutBookBus.colorId;
+  }
+
+
   get calculatedRate() {
     switch(this.checkoutBookTimeBlock.name) {
       case 'Night':
@@ -20,7 +25,6 @@ class CheckoutStateService {
         console.error('default case reached');
         return 0;
     }
-
   }
 
 
@@ -36,8 +40,8 @@ class CheckoutStateService {
     this.checkoutBookTimeBlock = busProperties.blocks[1];
     this.checkoutBookDuration = busProperties.hours[0];
     this._calculatedRate = '';
-
   }
+
 
   purchaseCharter(token, amount) {
   }

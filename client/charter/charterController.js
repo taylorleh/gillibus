@@ -157,19 +157,20 @@ class CharterController {
 
   createNewCalendarEvent(stripeResponse) {
     let startDay = this.moment(this.chosenDate);
-    let carService = this.charterCheckoutStateService;
+    let cartService = this.charterCheckoutStateService;
 
-    if (carService.checkoutBookTimeBlock.name === 'Night') {
+    if (cartService.checkoutBookTimeBlock.name === 'Night') {
       startDay.hour(17);
     } else {
       startDay.hour(10);
     }
 
-    let endTime = this.moment(startDay).add(carService.checkoutBookDuration.label, 'hour');
+    let endTime = this.moment(startDay).add(cartService.checkoutBookDuration.label, 'hour');
 
 
     let event = {
       summary: `Charter for: ${this.charterCheckoutStateService.checkoutBookCustName}`,
+      colorId: cartService.checkoutBookEventColor,
       start: {
         dateTime: startDay.toISOString(),
         timeZone: 'America/Los_Angeles'
@@ -184,8 +185,7 @@ class CharterController {
         this.init();
         this.changeView('book');
 
-      }.bind(this));
-
+      }.bind(this));ª
   }
 
 

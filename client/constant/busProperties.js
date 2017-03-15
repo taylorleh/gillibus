@@ -43,7 +43,8 @@ let busProperties = {
       durationDayMin: 6,
       durationNightMin: 4,
       additionalNight: 175,
-      operating: true
+      operating: true,
+      colorId: 9 // blue
     },
     {
       name: 'Charlie',
@@ -53,7 +54,8 @@ let busProperties = {
       durationDayMin: 6,
       durationNightMin: 4,
       additionalNight: 175,
-      operating: true
+      operating: true,
+      colorId: 10 // green
     },
     {
       name: 'G3',
@@ -63,7 +65,8 @@ let busProperties = {
       durationDayMin: 6,
       durationNightMin: 4,
       additionalNight: 175,
-      operating: true
+      operating: true,
+      colorId: 5 // yellow
     },
     {
       name: 'Starship',
@@ -73,7 +76,8 @@ let busProperties = {
       durationDayMin: 6,
       durationNightMin: 4,
       additionalNight: 195,
-      operating: true
+      operating: true,
+      colorId: 11 // red
     }
   ]
 
