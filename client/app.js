@@ -16,7 +16,7 @@ import { default as RoutesController } from './routes/routesController';
 
 // SERVICES
 import { default as ViewportService } from './services/viewport';
-import { default as CalendarService } from './services/calendar';
+import { default as CalendarService } from './services/calendarEventsService';
 import { default as CharterBookingService } from './services/charterBooking';
 import { default as CheckoutStateService } from './services/charterCheckoutStateService';
 import { default as DirectionsService } from './services/directions';
