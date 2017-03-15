@@ -4,7 +4,7 @@ let moduleName = 'gillibus.charter';
 
 class CharterController {
 
-  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, charterBooking, calendarConfig, busProperties) {
+  constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, charterBooking, calendarConfig, busProperties, charterCheckoutStateService) {
     this.moment = moment;
     this.$compile = $compile;
     this.calendarService = calendarService;
@@ -12,6 +12,7 @@ class CharterController {
     this.$uibModal = $uibModal;
     this.$timeout = $timeout;
     this.viewportService = viewportService;
+    this.charterCheckoutStateService = charterCheckoutStateService;
 
     // configs
     this.buses = busProperties.buses;
@@ -21,19 +22,14 @@ class CharterController {
 
     // config extra
     this.duration = this.hours[0];
-    this.timeBlock = this.blocks[1];
-    this.chosenBus = this.buses[0];
 
     // public data
     this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
     this.freeBusyCalculated = false;
     this.eventSources = [];
+    this.formState = charterCheckoutStateService;
 
     this.currentView = 'book';
-    this.customerData = {
-      name: '',
-      phone: ''
-    };
 
 
     this.stripeValidation = {};
@@ -92,9 +88,6 @@ class CharterController {
       });
   }
 
-  beginCheckoutPhase() {
-    let modalEl = angular.element('.checkout-modal');
-  }
 
   onEventClick(event) {
     console.log('click', event);
@@ -107,14 +100,15 @@ class CharterController {
 
 
   onTimeBlockChange(event) {
-    if (this.timeBlock === 'Night') {
+    let checkoutService = this.charterCheckoutStateService;
+    if (checkoutService.checkoutBookTimeBlock.name === 'Night') {
       this.hours[0].disabled = false;
       this.hours[1].disabled = false;
-      this.duration = this.hours[0];
+      checkoutService.checkoutBookDuration = this.hours[0];
     } else {
       this.hours[0].disabled = true;
       this.hours[1].disabled = true;
-      this.duration = this.hours[2];
+      checkoutService.checkoutBookDuration = this.hours[2];
     }
   }
 
@@ -150,7 +144,7 @@ class CharterController {
    *
    */
   onBeforeValidSubmit(token) {
-    let totalAmount = this.chosenBus.dayRate * this.duration.label;
+    let totalAmount = this.charterCheckoutStateService.checkoutBookPrice;
     let tokenId = token.id;
     this.charterBooking.purchaseCharter(tokenId, totalAmount * 100)
       .then(this.createNewCalendarEvent.bind(this))
@@ -161,20 +155,20 @@ class CharterController {
 
 
   createNewCalendarEvent(stripeResponse) {
-
-
     let startDay = this.moment(this.chosenDate);
-    if (this.timeBlock.name === 'Night') {
+    let carService = this.charterCheckoutStateService;
+
+    if (carService.checkoutBookTimeBlock.name === 'Night') {
       startDay.hour(17);
     } else {
       startDay.hour(10);
     }
 
-    let endTime = this.moment(startDay).add(this.duration.label, 'hour');
+    let endTime = this.moment(startDay).add(carService.checkoutBookDuration.label, 'hour');
 
 
     let event = {
-      summary: `Charter for: ${this.customerData.name}`,
+      summary: `Charter for: ${this.charterCheckoutStateService.checkoutBookCustName}`,
       start: {
         dateTime: startDay.toISOString(),
         timeZone: 'America/Los_Angeles'
@@ -334,7 +328,7 @@ class CharterController {
 }
 
 CharterController.$inject = ["$scope", "$uibModal", "$timeout", "moment", "$window", "$compile", "calendarService",
-  "viewportService", "charterBooking", "calendarConfig", "busProperties"];
+  "viewportService", "charterBooking", "calendarConfig", "busProperties", "charterCheckoutStateService"];
 angular.module(moduleName, []).controller('CharterController', CharterController);
 
 export default moduleName

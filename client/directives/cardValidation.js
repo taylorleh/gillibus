@@ -94,8 +94,8 @@ function StripeForm(viewportService, charterBooking) {
     replace: true,
     scope: {
       options: '=',
-      customerData: '=',
-      cardObject: '='
+      cardObject: '=',
+      formState: '='
     },
     link: _link
   };

@@ -18,6 +18,7 @@ import { default as RoutesController } from './routes/routesController';
 import { default as ViewportService } from './services/viewport';
 import { default as CalendarService } from './services/calendar';
 import { default as CharterBookingService } from './services/charterBooking';
+import { default as CheckoutStateService } from './services/charterCheckoutStateService';
 import { default as DirectionsService } from './services/directions';
 
 // DIRECTIVES
@@ -104,6 +105,7 @@ angular.module(moduleName, [
   ViewportService,
   CalendarService,
   CharterBookingService,
+  CheckoutStateService,
   // DirectionsService.name,
   MapConstant,
   CalendarConstant,
