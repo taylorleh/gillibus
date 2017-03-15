@@ -35,13 +35,13 @@
         <div class="bus-summary tbl-row">
           <label class="tbl-cell tbl-cell-lbl" for="bus">Bus</label>
           <div class="tbl-cell">
-            <select name="bus" id="bus" ng-model="vm.formState.checkoutBookBus" class="form-control" ng-options="l as l.name for l in vm.buses"></select>
+            <select name="bus" id="bus" ng-model="vm.formState.checkoutBookBus" class="form-control" ng-options="l as l.name disable when l.disabled for l in vm.formState.buses"></select>
           </div>
         </div>
         <div class="time-slot tbl-row">
           <span class="tbl-cell tbl-cell-lbl">Time</span>
           <div class="tbl-cell">
-            <select name="time-block" id="time-block" ng-model="vm.formState.checkoutBookTimeBlock" class="form-control" ng-options="c as c.name for c in vm.blocks" ng-change="vm.onTimeBlockChange(this)">
+            <select name="time-block" id="time-block" ng-model="vm.formState.checkoutBookTimeBlock" class="form-control" ng-options="c as c.name for c in vm.formState.blocks" ng-change="vm.onTimeBlockChange(this)">
             </select>
           </div>
         </div>

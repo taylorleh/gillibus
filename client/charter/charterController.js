@@ -15,9 +15,9 @@ class CharterController {
     this.charterCheckoutStateService = charterCheckoutStateService;
 
     // configs
-    this.buses = busProperties.buses;
+    // this.buses = busProperties.buses;
     this.hours = busProperties.hours;
-    this.blocks = busProperties.blocks;
+    // this.blocks = busProperties.blocks;
     this.uiConfig = calendarConfig;
 
     // config extra
@@ -61,8 +61,8 @@ class CharterController {
 
     return `
     <div class="${csClass[0]}">
-    <button class="hide-xs show-sm" ng-click=\"vm.onEventClick($event);\">${csClass[1]}</button>
-    <button class="show-xs hide-sm" ng-click=\"vm.onEventClick($event);\">${csClass[1].split(' ')[1]}</button>
+    <button class="hide-xs show-sm" ng-click=\"vm.onEventClick($event, '${csClass[0]}');\">${csClass[1]}</button>
+    <button class="show-xs hide-sm" ng-click=\"vm.onEventClick($event, '${csClass[0]}');\">${csClass[1].split(' ')[1]}</button>
     </div>`;
   }
 
@@ -90,13 +90,18 @@ class CharterController {
   }
 
 
-  onEventClick(event) {
+  onEventClick(event, blockIdentifier) {
     console.log('click', event);
     let data = angular.element(event.target).parent().parent().data('date');
     let time = this.moment(data).toDate();
-    let schedule = this.daysOfMonthHash[time];
-    this.chosenDate = this.moment(data).format('LL');
-    this.changeView('checkout');
+    this.calendarService.getBusAvailabilityForDate('CHARTER_CALENDAR', time.toISOString(), this.moment(time).endOf('day').toISOString())
+      .then(res => {
+        this.charterCheckoutStateService.initTimeBlock(blockIdentifier === 'early-book' ? 'day' : 'night');
+        this.charterCheckoutStateService.setBusSchedule(res);
+        this.chosenDate = this.moment(data).format('LL');
+        this.changeView('checkout');
+      })
+
   }
 
 

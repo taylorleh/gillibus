@@ -1,18 +1,42 @@
 import angular from 'npm/angular';
 let moduleName = 'gillibus.service.calendar';
-const HTTP = new WeakMap();
 
 
 
 class CalendarService {
-  constructor($http) {
-    HTTP.set(this, $http);
+
+  _transformBusAgenda(response) {
+    let colorKeys = this.busProperties.buses.reduce((memo, bus) => {
+      memo[bus.colorId] = { name: bus.name, amFree: true, pmFree: true };
+      return memo;
+    }, {});
+    console.log(colorKeys);
+
+    let items = response.data.items;
+    items.forEach(function(event){
+      let midday = this.moment(event.start.dateTime).hour(14);
+      let eventBlock = midday.isSameOrAfter(event.start) ? 'MORNING' : 'NIGHT';
+      if(eventBlock === 'MORNING') {
+        colorKeys[event.colorId].amFree = false;
+      } else {
+        colorKeys[event.colorId].pmFree = false;
+      }
+
+    }.bind(this));
+
+    return colorKeys;
+
+  }
+
+  constructor($http, busProperties, moment) {
+    this.$http = $http;
+    this.busProperties = busProperties;
+    this.moment = moment;
   }
 
   getEventsForCalendar(calendar) {
     let api = [document.location.origin, 'api/v1/calendar/events'].join('/');
-    let http = HTTP.get(this);
-    return http({
+    return this.$http({
       method:'POST',
       url: api,
       data: {calendar: calendar}
@@ -21,8 +45,7 @@ class CalendarService {
 
   getBusyFromRange(calendar, start, end) {
     let api = [document.location.origin, 'api/v1/calendar/freebusy'].join('/');
-    let http = HTTP.get(this);
-    return http({
+    return this.$http({
       method:'POST',
       url: api,
       data: {
@@ -36,8 +59,7 @@ class CalendarService {
   createCalendarEvent(eventData, calendar) {
     console.log('creating calendar event', eventData);
     let api = `${document.location.origin}/api/v1/calendar/events/create`;
-    let $http = HTTP.get(this);
-    return $http({
+    return this.$http({
       method: 'POST',
       url: api,
       data: {
@@ -48,27 +70,36 @@ class CalendarService {
   }
 
 
-  getBusAvailabilityForDate(date) {
+  /**
+   *
+   * @param {String} calendar - calendar id
+   * @param {Date} start - start time to filter by
+   * @param {Date} end - end time to filter by
+   * @return {Promise}
+   */
+  getBusAvailabilityForDate(calendar, start, end) {
     let api = `${document.location.origin}/api/v1/calendar/bus/agenda`;
-    let http = HTTP.get(this);
-    return http({
+    console.log('CALLING AGENDA WITH', arguments);
+    return this.$http({
       method:'POST',
       url: api,
-      data: {calendar: calendar}
-    });
+      data: {
+        calendar: calendar,
+        timeMin: start,
+        timeMax: end
+      }
+    })
+      .then(this._transformBusAgenda.bind(this))
 
   }
 
-  static calendarFactory($http){
-    return new CalendarService($http);
-  }
 
 }
 
 
 
-CalendarService.calendarFactory.$inject = ['$http'];
+CalendarService.$inject = ['$http', 'busProperties', 'moment'];
 
-angular.module(moduleName, []).factory('calendarService', CalendarService.calendarFactory);
+angular.module(moduleName, []).service('calendarService', CalendarService);
 
 export default moduleName
