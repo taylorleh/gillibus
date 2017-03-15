@@ -30,7 +30,6 @@ class CheckoutStateService {
 
 
   constructor($http, busProperties) {
-    console.log('bus props', busProperties);
     this.checkoutBookCustName = '';
     this.checkoutBookCustPhone = '';
     this.checkoutBookBus = busProperties.buses[0];
