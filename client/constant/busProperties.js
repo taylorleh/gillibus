@@ -44,7 +44,8 @@ let busProperties = {
       durationNightMin: 4,
       additionalNight: 175,
       operating: true,
-      colorId: 9 // blue
+      colorId: 9, // blue
+      env: 'CHARTER_GILLIBUS'
     },
     {
       name: 'Charlie',
@@ -55,7 +56,8 @@ let busProperties = {
       durationNightMin: 4,
       additionalNight: 175,
       operating: true,
-      colorId: 10 // green
+      colorId: 10, // green
+      env: 'CHARTER_CHARLIE'
     },
     {
       name: 'G3',
@@ -66,7 +68,8 @@ let busProperties = {
       durationNightMin: 4,
       additionalNight: 175,
       operating: true,
-      colorId: 5 // yellow
+      colorId: 5, // yellow
+      env: 'CHARTER_G3'
     },
     {
       name: 'Starship',
@@ -77,7 +80,8 @@ let busProperties = {
       durationNightMin: 4,
       additionalNight: 195,
       operating: true,
-      colorId: 11 // red
+      colorId: 11, // red
+      env: 'CHARTER_STARSHIP'
     }
   ]
 

@@ -45,6 +45,13 @@ gulp.task('wp-proxy-less', function() {
   });
 });
 
+gulp.task('watch-server', function() {
+  nodemon({
+    watch: ['server'],
+    ignore: ['node_modules', './client'],
+    ext: 'js'
+  })
+});
 
 gulp.task('default', function() {
   // gulp.watch(__dirname + '/client/less/**/*.less', ['less']);

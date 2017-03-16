@@ -7,6 +7,7 @@ class CharterController {
   constructor($scope, $uibModal, $timeout, moment, $window, $compile, calendarService, viewportService, charterBooking, calendarConfig, busProperties, charterCheckoutStateService) {
     this.moment = moment;
     this.$compile = $compile;
+    this.busProperties = busProperties;
     this.calendarService = calendarService;
     this.charterBooking = charterBooking;
     this.$uibModal = $uibModal;
@@ -25,7 +26,7 @@ class CharterController {
     this.currentDate = this.moment();
 
     // public data
-    this.daysOfMonthHash = calendarUtils.daysOfMonthHash();
+    this.daysOfMonthHash = calendarUtils.daysOfMonthHash(busProperties.buses.map(e => e.name.toUpperCase()));
     this.freeBusyCalculated = false;
     this.eventSources = [];
     this.formState = charterCheckoutStateService;
@@ -77,8 +78,8 @@ class CharterController {
     })
   }
 
-  getCalendarEvents() {
-    this.calendarService.getEventsForCalendar('CHARTER_CALENDAR')
+  getCalendarEvents(calendarLookup) {
+    this.calendarService.getEventsForCalendar(calendarLookup)
       .then(res => {
         let events = res.data.items;
         let transformed = this.transFormEvents(events);
@@ -94,10 +95,13 @@ class CharterController {
     console.log('click', event);
     let data = angular.element(event.target).parent().parent().data('date');
     let time = this.moment(data).toDate();
-    this.calendarService.getBusAvailabilityForDate('CHARTER_CALENDAR', time.toISOString(), this.moment(time).endOf('day').toISOString())
+    let schedule = this.daysOfMonthHash[time.toString()];
+    this.calendarService.getBusAvailabilityForDate('CHARTER_CALENDAR', time.toISOString(),
+      this.moment(time).endOf('day').toISOString())
       .then(res => {
-        this.charterCheckoutStateService.initTimeBlock(blockIdentifier === 'early-book' ? 'day' : 'night');
-        this.charterCheckoutStateService.setBusSchedule(res);
+        // this.charterCheckoutStateService.initTimeBlock(blockIdentifier === 'early-book' ? 'day' : 'night');
+        // this.charterCheckoutStateService.setBusSchedule(res);
+        this.charterCheckoutStateService.initNewFormState(blockIdentifier === 'early-book' ? 'day' : 'night', schedule);
         this.chosenDate = this.moment(data).format('LL');
         this.changeView('checkout');
       })
@@ -105,18 +109,18 @@ class CharterController {
   }
 
 
-  onTimeBlockChange(event) {
-    let checkoutService = this.charterCheckoutStateService;
-    if (checkoutService.checkoutBookTimeBlock.name === 'Night') {
-      this.hours[0].disabled = false;
-      this.hours[1].disabled = false;
-      checkoutService.checkoutBookDuration = this.hours[0];
-    } else {
-      this.hours[0].disabled = true;
-      this.hours[1].disabled = true;
-      checkoutService.checkoutBookDuration = this.hours[2];
-    }
-  }
+  // onTimeBlockChange(event) {
+  //   let checkoutService = this.charterCheckoutStateService;
+  //   if (checkoutService.checkoutBookTimeBlock.name === 'Night') {
+  //     this.hours[0].disabled = false;
+  //     this.hours[1].disabled = false;
+  //     checkoutService.checkoutBookDuration = this.hours[0];
+  //   } else {
+  //     this.hours[0].disabled = true;
+  //     this.hours[1].disabled = true;
+  //     checkoutService.checkoutBookDuration = this.hours[2];
+  //   }
+  // }
 
 
   /**
@@ -190,7 +194,7 @@ class CharterController {
         this.init();
         this.changeView('book');
 
-      }.bind(this));ª
+      }.bind(this));
   }
 
 
@@ -249,10 +253,18 @@ class CharterController {
     let schedule = this.daysOfMonthHash[key] || {};
 
     if (date.isSameOrAfter(this.currentDate)) {
-      if (!schedule.morning) {
+      let {starShip, g3, gilli, charlie} = {starShip: schedule.STARSHIP, g3: schedule.G3 , gilli: schedule.GILLIBUS, charlie: schedule.CHARLIE };
+
+      if (!starShip || !gilli || !charlie || !g3) {
+        console.warn('Date not registered in date hash!!');
+        return;
+      }
+
+
+      if (starShip.day || g3.day || gilli.day || charlie.day) {
         this._decorateCellAvailability(cell, 'MORNING');
       }
-      if (!schedule.evening) {
+      if (starShip.night || g3.night || gilli.night || charlie.night) {
         this._decorateCellAvailability(cell, 'EVENING');
       }
     }
@@ -326,11 +338,29 @@ class CharterController {
   init() {
     let start = this.moment().toDate();
     let end = this.moment().add(1, 'month');
-    this.getFreeBusy(start, end)
-      .then(this.freeBusySuccess.bind(this))
+
+    let ids = this.busProperties.buses.map(p => p.env);
+    console.log('ids', ids);
+    this.calendarService.getEventsForCalendars(ids)
+      .then(response => {
+        response.forEach(evt => {
+          calendarUtils.applyCalendarEventsToUnified(evt.data, this.daysOfMonthHash);
+        });
+      })
       .then(() => {
         this.freeBusyCalculated = true;
+        this.$scope.$apply();
       });
+
+
+    // this.getCalendarEvents('CHARTER_G3').then(function(res) {
+    //   console.log('RES', res);
+    // })
+    // this.getFreeBusy(start, end)
+    //   .then(this.freeBusySuccess.bind(this))
+    //   .then(() => {
+    //     this.freeBusyCalculated = true;
+    //   });
   }
 
 }

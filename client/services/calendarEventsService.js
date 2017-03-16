@@ -43,6 +43,26 @@ class CalendarService {
     });
   }
 
+  /**
+   * Returns events for multiple calendars
+   *
+   * @function getEventsForCalendars
+   * @param {String[]} calendarIds - an array of calendar IDs
+   * @return {Promise[]} an array of promises
+   *
+   */
+  getEventsForCalendars(calendarIds) {
+    let promises = calendarIds.map(id => {
+      return this.getEventsForCalendar(id);
+    });
+
+    return Promise.all(promises)
+      .then(response => {
+        console.log('PROMISE ALL RES', response);
+        return response;
+      })
+  }
+
   getBusyFromRange(calendar, start, end) {
     let api = [document.location.origin, 'api/v1/calendar/freebusy'].join('/');
     return this.$http({
