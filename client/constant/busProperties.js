@@ -83,7 +83,8 @@ let busProperties = {
       colorId: 11, // red
       env: 'CHARTER_STARSHIP'
     }
-  ]
+  ],
+  busNames: ['GILLIBUS', 'CHARLIE', 'G3', 'STARSHIP']
 
 };
 
