@@ -1,8 +1,6 @@
 import angular from 'npm/angular';
 let moduleName = 'gillibus.service.calendar';
 
-
-
 class CalendarService {
 
   _transformBusAgenda(response) {
@@ -10,7 +8,6 @@ class CalendarService {
       memo[bus.colorId] = { name: bus.name, amFree: true, pmFree: true };
       return memo;
     }, {});
-    console.log(colorKeys);
 
     let items = response.data.items;
     items.forEach(function(event){
@@ -46,7 +43,7 @@ class CalendarService {
   /**
    * Returns events for multiple calendars
    *
-   * @function getEventsForCalendars
+   * @method getEventsForCalendars
    * @param {String[]} calendarIds - an array of calendar IDs
    * @return {Promise[]} an array of promises
    *
@@ -58,7 +55,6 @@ class CalendarService {
 
     return Promise.all(promises)
       .then(response => {
-        console.log('PROMISE ALL RES', response);
         return response;
       })
   }
@@ -77,7 +73,6 @@ class CalendarService {
   }
 
   createCalendarEvent(eventData, calendar) {
-    console.log('creating calendar event', eventData);
     let api = `${document.location.origin}/api/v1/calendar/events/create`;
     return this.$http({
       method: 'POST',
@@ -99,7 +94,6 @@ class CalendarService {
    */
   getBusAvailabilityForDate(calendar, start, end) {
     let api = `${document.location.origin}/api/v1/calendar/bus/agenda`;
-    console.log('CALLING AGENDA WITH', arguments);
     return this.$http({
       method:'POST',
       url: api,
