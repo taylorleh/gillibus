@@ -12,8 +12,8 @@ class CheckoutStateService {
 
   set checkoutBookTimeBlock(value) {
     this._checkoutBookTimeBlock = value;
-    this.initTimeBlock(value.name.toLowerCase());
     this.setBusSchedule(this.schedule);
+    this.updateDurationRestriction(value.name.toLowerCase());
   }
 
 
@@ -22,8 +22,8 @@ class CheckoutStateService {
   }
 
 
-  get calculatedRate() {
-    switch (this._checkoutBookTimeBlock.name) {
+  calculatedRate(block) {
+    switch (block) {
       case 'Night':
         return this.checkoutBookBus.nightRate;
         break;
@@ -36,9 +36,40 @@ class CheckoutStateService {
     }
   }
 
+  minHours(busObject, blockInContext) {
+    return this.buses.reduce((memo, bus) => {
+      if(busObject.name  === bus.name) {
+        memo = busObject[`duration${blockInContext}Min`];
+      }
+      return memo;
+    }, 0);
+  }
 
-  get checkoutBookPrice() {
-    return this.calculatedRate * this.checkoutBookDuration.label;
+
+  /**
+   * retrives the total calculated price
+   *
+   * @method checkoutTotalPrice
+   * @return {number}
+   */
+  get checkoutTotalPrice() {
+    let _timeInContext = this._checkoutBookTimeBlock.name;
+    let _busInContext = this.checkoutBookBus;
+    let hoursBooked = this.checkoutBookDuration.label;
+    let primeTimeRate = null;
+    let overTimeHours = null;
+    let baseRate = this.calculatedRate(_timeInContext);
+    let baseHours = this.minHours(_busInContext, _timeInContext);
+    if(_timeInContext === 'Night') {
+      overTimeHours = hoursBooked - 4;
+      primeTimeRate = _busInContext.additionalNight;
+    }
+    if(_timeInContext === 'Day') {
+      return hoursBooked * baseRate;
+    } else {
+      return ((baseHours * baseRate )+ (overTimeHours * primeTimeRate));
+    }
+
   }
 
 
@@ -52,7 +83,6 @@ class CheckoutStateService {
     this.checkoutBookBus = busProperties.buses[0];
     this._checkoutBookTimeBlock = busProperties.blocks[1];
     this.checkoutBookDuration = busProperties.hours[0];
-    this._calculatedRate = '';
   }
 
 
@@ -89,29 +119,24 @@ class CheckoutStateService {
     }
   }
 
-  initTimeBlock(block) {
-    let { context, notContext } = {
-      context: block === 'day' ? 'day' : 'night', notContext: block === 'day' ? 'night' : 'day'
-    };
-
-    this._checkoutBookTimeBlock = this.busProperties.blocks[context === 'day' ? 0 : 1];
-
-    let shouldRestrictOtherBlock = this.buses.every(bus => {
-      let b = this.schedule[bus.name.toUpperCase()];
-      return !b[notContext];
-    });
-
-    if (shouldRestrictOtherBlock) {
-      this.blocks[notContext === 'day' ? 0 : 1].disabled = true;
+  restrictTimeBlocks(blockOutsideCtx, schedule) {
+    this.blocks[0].disabled = false;
+    this.blocks[1].disabled = false;
+    if(!schedule[blockOutsideCtx.name]) {
+      this.blocks[blockOutsideCtx.index].disabled = true;
     }
-
-    this.updateDurationRestriction(context);
-
   }
 
   initNewFormState(timeBlock, schedule) {
+    let { otherContextBlock, otherIndex } = {
+      otherContextBlock: (timeBlock === 'day' ? 'night' : 'day'),
+      otherIndex: (otherContextBlock === 'day' ? 1 : 0)
+    };
+
     this.schedule = schedule;
-    this.initTimeBlock(timeBlock);
+    this._checkoutBookTimeBlock = this.busProperties.blocks[(timeBlock === 'day' ? 0 : 1)];
+    this.updateDurationRestriction(timeBlock);
+    this.restrictTimeBlocks({name: otherContextBlock, index: otherIndex}, schedule);
     this.setBusSchedule(schedule);
   }
 
@@ -125,6 +150,7 @@ class CheckoutStateService {
 CheckoutStateService.$inject = ['$http', 'busProperties'];
 
 angular.module(moduleName, []).service('charterCheckoutStateService', CheckoutStateService);
+
 
 export default moduleName
 
