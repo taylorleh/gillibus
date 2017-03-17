@@ -99,9 +99,10 @@ class CharterController {
     this.calendarService.getBusAvailabilityForDate('CHARTER_CALENDAR', time.toISOString(),
       this.moment(time).endOf('day').toISOString())
       .then(res => {
-        // this.charterCheckoutStateService.initTimeBlock(blockIdentifier === 'early-book' ? 'day' : 'night');
+        // this.charterCheckoutStateService.restrictTimeBlocks(blockIdentifier === 'early-book' ? 'day' : 'night');
         // this.charterCheckoutStateService.setBusSchedule(res);
         this.charterCheckoutStateService.initNewFormState(blockIdentifier === 'early-book' ? 'day' : 'night', schedule);
+
         this.chosenDate = this.moment(data).format('LL');
         this.changeView('checkout');
       })
@@ -154,7 +155,7 @@ class CharterController {
    *
    */
   onBeforeValidSubmit(token) {
-    let totalAmount = this.charterCheckoutStateService.checkoutBookPrice;
+    let totalAmount = this.charterCheckoutStateService.checkoutTotalPrice;
     let tokenId = token.id;
     this.charterBooking.purchaseCharter(tokenId, totalAmount * 100)
       .then(this.createNewCalendarEvent.bind(this))
@@ -189,8 +190,9 @@ class CharterController {
         timeZone: 'America/Los_Angeles'
       }
     };
-    this.calendarService.createCalendarEvent(event, 'CHARTER_CALENDAR')
+    this.calendarService.createCalendarEvent(event, this.charterCheckoutStateService.checkoutBookBus.env)
       .then(function(res) {
+        console.log(`booked bus with response ${res}`);
         this.init();
         this.changeView('book');
 
@@ -343,9 +345,12 @@ class CharterController {
     console.log('ids', ids);
     this.calendarService.getEventsForCalendars(ids)
       .then(response => {
-        response.forEach(evt => {
-          calendarUtils.applyCalendarEventsToUnified(evt.data, this.daysOfMonthHash);
-        });
+        let out = calendarUtils.applyCalendarEventsToUnified(
+          response.map(b => b.data.items),
+          this.daysOfMonthHash,
+          this.busProperties.busNames,
+          this.moment
+        );
       })
       .then(() => {
         this.freeBusyCalculated = true;
