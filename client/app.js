@@ -19,6 +19,7 @@ import { default as ViewportService } from './services/viewport';
 import { default as CalendarService } from './services/calendarEventsService';
 import { default as CharterBookingService } from './services/charterBooking';
 import { default as CheckoutStateService } from './services/charterCheckoutStateService';
+import { default as GpsSocketFactory } from './services/gpsSocketFactory';
 import { default as DirectionsService } from './services/directions';
 
 // DIRECTIVES
@@ -37,7 +38,10 @@ import 'npm/ngGeolocation/ngGeolocation';
 import 'npm/angular-moment/angular-moment.js';
 // import 'npm/angular-ui-bootstrap';
 import 'bootstrap/dist/js/bootstrap';
+import '../node_modules/angular-socket-io/socket';
 import 'npm/bootstrap/less/bootstrap.less';
+import io from '../node_modules/socket.io-client/dist/socket.io';
+window.io = io;
 
 import 'npm/fullcalendar/dist/fullcalendar.css';
 import './assets/styles.css';
@@ -106,6 +110,7 @@ angular.module(moduleName, [
   CalendarService,
   CharterBookingService,
   CheckoutStateService,
+  GpsSocketFactory,
   // DirectionsService.name,
   MapConstant,
   CalendarConstant,
@@ -114,6 +119,7 @@ angular.module(moduleName, [
   // 'gapi',
   'ui.calendar',
   'angularMoment',
+  'btford.socket-io',
   // // 'credit-cards',
   // // 'slickCarousel',
   // nemLogging,

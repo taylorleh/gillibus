@@ -66,6 +66,14 @@ let config = {
       '/api': {
         secure: false,
         target: 'http://localhost:3000'
+      },
+      '/sockjs-node/*': {
+        secure: false,
+        target:'http://localhost:3000'
+      },
+      '/socket.io/*': {
+        secure:false,
+        target:'http://localhost:3000'
       }
     }
 

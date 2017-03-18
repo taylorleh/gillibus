@@ -4,8 +4,7 @@ let moduleName = 'gillibus.home';
 
 class HomeController {
 
-
-  constructor($scope, mapConfig, $geolocation, uiGmapIsReady, uiGmapGoogleMapApi) {
+  constructor($scope, mapConfig, $geolocation, uiGmapIsReady, uiGmapGoogleMapApi, gpsSocketFactory) {
     this.MOCKERROR = {
       error: {
         message: "Only secure origins are allowed (see: https://goo.gl/Y0ZkNV)."
@@ -23,14 +22,11 @@ class HomeController {
     this.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     this.$scope = $scope;
     this.map = mapConfig;
+    this.gpsSocketFactory = gpsSocketFactory;
 
     this.init();
 
   }
-
-
-
-
 
 
   /**
@@ -63,8 +59,8 @@ class HomeController {
       this.initTimer(res.routes.pop());
       this.timerError = false;
     });
-
   }
+
 
   initTimer(route, hasError) {
     if (hasError) {
@@ -88,7 +84,6 @@ class HomeController {
   }
 
 
-
   init() {
     Promise.all([this.uiGmapIsReady.promise(1), this.$geolocation.getCurrentPosition({timeout: 10000}), this.uiGmapGoogleMapApi])
       .then(function(results) {
@@ -98,12 +93,9 @@ class HomeController {
         this.getTimeToDestination(currentPosition, map.map);
       }.bind(this));
   }
-
-
-
 }
 
-
+HomeController.$inject = ['$scope', 'mapConfig', '$geolocation', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'gpsSocketFactory'];
 angular.module(moduleName, []).controller('HomeController', HomeController);
 
 export default moduleName;
