@@ -4,7 +4,6 @@
 let utils = require('./utils/auth');
 
 module.exports = function (app, express) {
-
   let calendarRouter = express.Router();
   let bookingRouter = express.Router();
 
