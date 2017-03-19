@@ -42,7 +42,7 @@ import 'npm/ngGeolocation/ngGeolocation';
 import 'npm/angular-moment/angular-moment.js';
 // import 'npm/angular-ui-bootstrap';
 import 'bootstrap/dist/js/bootstrap';
-import '../node_modules/angular-socket-io/socket';
+import 'npm/angular-socket-io/socket.js';
 import 'npm/bootstrap/less/bootstrap.less';
 import io from '../node_modules/socket.io-client/dist/socket.io';
 window.io = io;
