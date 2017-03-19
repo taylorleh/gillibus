@@ -1,0 +1,37 @@
+<div class="container">
+  <div style="text-align: center;" class="row">
+      <h1>Welcome</h1>
+  </div>
+
+  <div class="row">
+    <div style="background-color: #843534; color: white; padding: 1.5em; -webkit-border-radius:1.5em ;-moz-border-radius:1.5em ;border-radius: 1.5em;" class="col-xs-6 col-xs-offset-3">
+      <span>You are about to share your devices location with everyone who accesses this site. Before you do so please choose which bus bus you are in so this is reflected properly on the site.</span><br><br>
+      <span> Once you choose a bus, you will not have the option to choose another. You must accept the devices request to use your geolocation. Good Luck!</span>
+    </div>
+  </div>
+
+  <div style="margin-top: 1.5em" class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="driver-bus">What Bus Are You Driving?</label>
+          <select name="driver-bus" id="driver-bus" ng-model="driverBus" class="form-control" ng-options="o as o for o in buses" ng-change="onChooseDriverBus(this);"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="data.isPolling" class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <h3 style="width: 100%; text-align: center">You are sharing your GP</h3>
+      <div style="display: inline-block; width: 45%; text-align: center;">
+        <div>longitude</div>
+        <div>{{data.myPosition.coords.longitude}}</div>
+      </div>
+      <div style="display: inline-block; width: 45%; text-align: center">
+        <div>latitude</div>
+        <div>{{data.myPosition.coords.latitude}}</div>
+      </div>
+    </div>
+  </div>
+</div>

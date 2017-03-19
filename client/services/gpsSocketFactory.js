@@ -7,7 +7,19 @@ let moduleName = 'gillibus.factory.gpsSocketFactory';
 
 
 function gpsSocketFactory(socketFactory) {
-  return socketFactory();
+  let service = {};
+
+  service.connectWithNameSpace = function(ioSpace) {
+    return socketFactory({
+      ioSocket: ioSpace
+    });
+  };
+
+  service.removeMyself = function(socket) {
+
+  };
+
+  return service;
 }
 
 

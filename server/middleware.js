@@ -13,6 +13,8 @@ module.exports = function (app, express) {
       utils.initCalendarToken(app);
     }
     next();
+
+
   });
 
   app.use('/api/v1/calendar', calendarRouter);

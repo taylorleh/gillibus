@@ -5,9 +5,12 @@
       <div countdown="tl.timer" class="innner"></div>
     </div>
   </div>
-  <div style="height: 500px;">
+  <div class="map-container" style="height: 500px; position: relative;">
     <ui-gmap-google-map options="tl.map.options" center='tl.map.center' zoom='tl.map.zoom'>
       <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id"></ui-gmap-marker>
     </ui-gmap-google-map>
+    <div ng-show="tl.nobus" class="overlay-container">
+    </div>
+    <span ng-show="tl.nobus" class="overlay-message">No Drivers Are Sharing Their Location Yet!</span>
   </div>
 </div>

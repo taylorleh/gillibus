@@ -9,11 +9,8 @@ const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 
 // SOCKETS
-// require('./server/sockets/socketController')(io);
+require('./server/sockets/socketController')(io);
 
-io.sockets.on('connect', function(e) {
-  console.log('got a socket connection');
-})
 
 
 // MIDDLEWARE

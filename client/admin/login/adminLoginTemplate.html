@@ -1,0 +1,15 @@
+<div class="container">
+  <section class="form-wrap" style="margin-top: 20%;">
+    <form name="adminLogin" ng-submit="vm.onRequestLogin(vm.login);">
+      <div class="form-group">
+        <label  for="adminEmailInput">Email address</label>
+        <input required ng-model="vm.login.user" type="email" class="form-control" id="adminEmailInput" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="adminPassInput">Password</label>
+        <input required type="password" ng-model="vm.login.password" class="form-control" id="adminPassInput" placeholder="Password">
+      </div>
+      <button type="submit" ng-disabled="adminLogin.$invalid" class="btn btn-primary">Login</button>
+    </form>
+  </section>
+</div>

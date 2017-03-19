@@ -11,20 +11,26 @@ class HomeController {
       }
     };
 
-    this.SF_PICKUP= {
-      LNG:-122.419705,
+    this.SF_PICKUP = {
+      LNG: -122.419705,
       LAT: 37.765058
     };
 
     this.MAP_INSTANCE;
     this.uiGmapIsReady = uiGmapIsReady;
-    this.$geolocation = $geolocation;
+    // this.$geolocation = $geolocation;
     this.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
     this.$scope = $scope;
     this.map = mapConfig;
-    this.gpsSocketFactory = gpsSocketFactory;
+    this.nobus = false;
+    this.socket = gpsSocketFactory.connectWithNameSpace(io('/customer'));
 
-    this.init();
+    this.init(this.socket);
+
+
+    $scope.$on('$destroy', function() {
+      this.socket.disconnect();
+    }.bind(this))
 
   }
 
@@ -44,8 +50,8 @@ class HomeController {
 
     let directionsReq = {
       travelMode: 'WALKING',
-      origin:{
-        lat:userCoords.latitude,
+      origin: {
+        lat: userCoords.latitude,
         lng: userCoords.longitude
       },
       destination: {
@@ -59,6 +65,41 @@ class HomeController {
       this.initTimer(res.routes.pop());
       this.timerError = false;
     });
+  }
+
+  listenForBus(socket) {
+    socket.on('bus location', function(data) {
+      this.ensureMapAssetsAvailableAndDraw(data);
+    }.bind(this));
+
+    socket.on('no buses', () => {
+      this.nobus = true;
+    });
+
+    socket.on('yes buses', () => {
+      this.nobus = false;
+    });
+
+    socket.on('connect', function(data) {
+
+    })
+
+  }
+
+
+  ensureMapAssetsAvailableAndDraw(coordinates) {
+    Promise.all([this.uiGmapIsReady.promise(1),coordinates, this.uiGmapGoogleMapApi])
+      .then(function(results) {
+        let map = results[0][0];
+        let currentPosition = results[1];
+        this.MAP_INSTANCE = map;
+        this.getTimeToDestination(currentPosition, map.map);
+      }.bind(this));
+
+  }
+
+  showNoBusOverlay() {
+    angular.element()
   }
 
 
@@ -84,18 +125,22 @@ class HomeController {
   }
 
 
-  init() {
-    Promise.all([this.uiGmapIsReady.promise(1), this.$geolocation.getCurrentPosition({timeout: 10000}), this.uiGmapGoogleMapApi])
-      .then(function(results) {
-        let map = results[0][0];
-        let currentPosition = results[1].coords;
-        this.MAP_INSTANCE = map;
-        this.getTimeToDestination(currentPosition, map.map);
-      }.bind(this));
+  init(socket) {
+    this.listenForBus(socket);
+
+
+    // Promise.all([this.uiGmapIsReady.promise(1), this.uiGmapGoogleMapApi])
+    //   .then(function(results) {
+    //     let map = results[0][0];
+    //     // let currentPosition = results[1].coords;
+    //     this.MAP_INSTANCE = map;
+    //     // this.getTimeToDestination(currentPosition, map.map);
+    //   }.bind(this));
   }
 }
 
-HomeController.$inject = ['$scope', 'mapConfig', '$geolocation', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'gpsSocketFactory'];
+HomeController.$inject = ['$scope', 'mapConfig', '$geolocation', 'uiGmapIsReady', 'uiGmapGoogleMapApi',
+  'gpsSocketFactory'];
 angular.module(moduleName, []).controller('HomeController', HomeController);
 
 export default moduleName;
