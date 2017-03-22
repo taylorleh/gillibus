@@ -23,6 +23,7 @@ class HomeController {
     this.$scope = $scope;
     this.map = mapConfig;
     this.nobus = false;
+    this.activeBuses = [];
     this.socket = gpsSocketFactory.connectWithNameSpace(io('/customer'));
 
     this.init(this.socket);
@@ -51,14 +52,18 @@ class HomeController {
     let directionsReq = {
       travelMode: 'WALKING',
       origin: {
-        lat: userCoords.latitude,
-        lng: userCoords.longitude
+        lat: userCoords.location.latitude,
+        lng: userCoords.location.longitude
       },
       destination: {
         lat: this.SF_PICKUP.LAT,
         lng: this.SF_PICKUP.LNG
       }
     };
+
+    this.activeBuses.push({
+      name: userCoords.bus
+    });
 
     directionsService.route(directionsReq, (res, status) => {
       directionsDisplay.setDirections(res);

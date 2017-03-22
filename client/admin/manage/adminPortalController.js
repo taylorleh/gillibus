@@ -29,7 +29,7 @@ class PortalController {
     $scope.$on('$geolocation.position.changed', (event, newPosition) => {
       $scope.data.myPosition.coords = newPosition.coords;
       if(this.socket) {
-        this.emitGpsDataToServer(this.socket, newPosition.coords);
+        this.emitGpsDataToServer(this.socket, {location: newPosition.coords, bus: $scope.driverBus});
       }
     });
 
@@ -45,12 +45,16 @@ class PortalController {
 
 
   emitGpsDataToServer(gpsSocket, coordinates) {
-    gpsSocket.emit('driver location', {
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      accuracy: coordinates.accuracy,
-      heading:coordinates.heading
-    });
+    let infoObj = {
+      location: {
+        latitude: coordinates.location.latitude,
+        longitude: coordinates.location.longitude,
+        accuracy: coordinates.location.accuracy,
+        heading:coordinates.location.heading
+      },
+      bus: coordinates.bus
+    };
+    gpsSocket.emit('driver location', infoObj);
 
   }
 
