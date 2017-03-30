@@ -22,9 +22,14 @@ import { default as CalendarService } from './services/calendarEventsService';
 import { default as CharterBookingService } from './services/charterBooking';
 import { default as CheckoutStateService } from './services/charterCheckoutStateService';
 import { default as GpsSocketFactory } from './services/gpsSocketFactory';
-import { default as AdminAuthService } from './admin/login/services/authService';
-import { default as AdminAuthenticationService } from './admin/login/services/adminAuthentication';
+import { default as AdminAuthService } from './admin/login/services/authService'; // this is mock do not use
+import { default as AdminAuthenticationService } from './admin/login/services/adminAuthentication'; // this is mock do not use
+import { default as AdminAuth } from  './services/adminAuth';
 import { default as DirectionsService } from './services/directions';
+
+
+// INTERCEPTORS
+import { default as AttachTokensInterceptor } from './services/interceptors/attachTokens';
 
 // DIRECTIVES
 import { default as ViewportDirective } from './directives/viewport';
@@ -57,7 +62,7 @@ import nemLogging from 'npm/angular-simple-logger/dist/index'
 let moduleName = 'gillibus';
 
 
-function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
+function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider, $httpProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'home/homeTemplate.html',
@@ -84,10 +89,10 @@ function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
     })
     .when('/admin/manage', {
       templateUrl: 'admin/manage/adminPortalTemplate.html',
-      controller: 'PortalController'
+      controller: 'PortalController',
+      authenticate: true
     })
     .otherwise('/');
-
 
   //  configure google maps provider
   uiGmapGoogleMapApiProvider.configure({
@@ -97,22 +102,35 @@ function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
   });
 
   $locationProvider.hashPrefix('');
-}
-config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider'];
+  $httpProvider.interceptors.push('AttachTokens');
 
-function run($rootScope, $location, AdminAuthentication) {
-  $rootScope.$on('admin:authorized', () => {
-    AdminAuthentication.setIsAuthorized(true);
-    $rootScope.$apply(function() {
-      $location.url('/admin/manage');
-    })
+}
+config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider', '$httpProvider'];
+
+
+
+function run($rootScope, $location, AdminAuthentication, AdminAuth) {
+  // $rootScope.$on('admin:authorized', () => {
+  //   AdminAuthentication.setIsAuthorized(true);
+  //   $rootScope.$apply(function() {
+  //     $location.url('/admin/manage');
+  //   })
+  // });
+  //
+  // $rootScope.$on('admin:unauthorized', () => {
+  //   AdminAuthentication.setIsAuthorized(false);
+  // });
+
+
+  $rootScope.$on('$routeChangeStart', function (evt, next, current) {
+    if (next.$$route && next.$$route.authenticate && !AdminAuth.isAuth()) {
+      $location.path('/admin');
+    }
   });
 
-  $rootScope.$on('admin:unauthorized', () => {
-    AdminAuthentication.setIsAuthorized(false);
-  });
+
 }
-run.$inject = ['$rootScope','$location', 'AdminAuthentication'];
+run.$inject = ['$rootScope','$location', 'AdminAuthentication', 'AdminAuth'];
 
 
 angular.module(moduleName, [
@@ -132,9 +150,11 @@ angular.module(moduleName, [
     CalendarService,
     CharterBookingService,
     CheckoutStateService,
-    AdminAuthService,
-    AdminAuthenticationService,
+    AdminAuthService, // remove
+    AdminAuthenticationService, // remove
+    AdminAuth,
     GpsSocketFactory,
+    AttachTokensInterceptor,
     // DirectionsService.name,
     MapConstant,
     CalendarConstant,

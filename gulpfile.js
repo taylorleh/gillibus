@@ -47,7 +47,7 @@ gulp.task('wp-proxy-less', function() {
 
 gulp.task('watch-server', function() {
   nodemon({
-    watch: ['server'],
+    watch: ['server', 'server.js'],
     ignore: ['node_modules', './client'],
     ext: 'js'
   })

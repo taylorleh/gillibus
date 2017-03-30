@@ -2,8 +2,8 @@
  * Created by taylor on 3/22/17.
  */
 
-let Users = require('../collections/users');
-let User = require('../models/user');
+  // let Users = require('../collections/users');
+let models = require('../models');
 let bcrypt = require('bcrypt-nodejs');
 
 
@@ -27,6 +27,18 @@ exports.getUsers = (req, res) => {
 };
 
 
+exports.throwIfUserExists = (username) => {
+
+  return models.Users.findOne({ where: { username: username } })
+    .then(instance => {
+      if(instance) {
+        return Promise.reject('exists');
+      }
+      return Promise.resolve(instance);
+    });
+};
+
+
 exports.createUser = (req, res) => {
   const { username, password } = req.body;
 
@@ -34,27 +46,18 @@ exports.createUser = (req, res) => {
     res.status(401).end('must define pass and user');
   }
 
-  userExists(username)
+  exports.throwIfUserExists(username)
     .then(() => {
 
-      let salt = bcrypt.genSaltSync();
-      let hash = bcrypt.hashSync(password, salt);
-
-      Users.create({
-          username: username,
-          hash: hash,
-          salt: salt
-        })
-        .then(response => {
-          res.json(response);
-        })
-        .catch(error => {
-          res.json(error);
-        });
+      return models.Users.create({ username: username, password: password })
     })
-    .catch(err => {
-      res.json(err);
+    .then(result => {
+      res.json(result);
+    })
+    .catch(error => {
+      res.status(401).json(error);
     });
+
 };
 
 exports.loginAdmin = (req, res) => {
@@ -65,21 +68,45 @@ exports.loginAdmin = (req, res) => {
     res.status(401).end('must define pass and user');
   }
 
-  Users
-    .query({ where: { username: username } })
-    .fetchOne({ require: true })
-    .then(model => {
-      return model.get('hash');
+
+  models.Users.findOne({ where: { username: username } })
+    .then(instance => {
+      if(instance) {
+        return instance.checkPassword(password);
+      }else {
+        Promise.reject('does not exists');
+      }
+
     })
-    .then(hash => {
-      bcrypt.compare(password, hash, (error, result) => {
-        res.json(result);
-      })
+    .then(authenticated => {
+      console.log('going to return');
+      res.json(authenticated);
     })
     .catch(error => {
-      res.status(401).json(error.message);
+      res.status(401).json(error);
     })
 
+  // exports.throwIfUserExists(username)
+  //   .then(instance => {
+  //     instance.checkPassword(password);
+  //
+  //   })
+  //   .catch(error => {
+  //     res.status(401).json(error);
+  //   });
+
+  // models.Users.findOne({ username: username })
+  //   .then(user => {
+  //     return user.verifyPassword(password, user.get('hash'), (err, result) => {
+  //       if (err) {
+  //         res.json(err);
+  //       }
+  //       res.json(result);
+  //     })
+  //   })
+  //   .catch(error => {
+  //     res.status(401).json(error);
+  //   })
 
 };
 
