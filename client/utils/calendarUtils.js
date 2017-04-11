@@ -58,15 +58,6 @@ calendarUtils.daysOfMonthHash = (busIds) => {
 };
 
 
-// accessRole:"writer"
-// defaultReminders:Array(0)
-// etag:""p324evk77jvdd40g""
-// items:Array(0)
-// kind:"calendar#events"
-// nextSyncToken:"CIjv0Oef2tICEIjv0Oef2tICGAQ="
-// summary:"(Bus)-Gillibus-28"
-// timeZone:"America/Los_Angeles"
-// updated:"2017-03-16T05:03:56.037Z"
 
 /**
  *

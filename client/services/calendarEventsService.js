@@ -10,10 +10,10 @@ class CalendarService {
     }, {});
 
     let items = response.data.items;
-    items.forEach(function(event){
+    items.forEach(function(event) {
       let midday = this.moment(event.start.dateTime).hour(14);
       let eventBlock = midday.isSameOrAfter(event.start) ? 'MORNING' : 'NIGHT';
-      if(eventBlock === 'MORNING') {
+      if (eventBlock === 'MORNING') {
         colorKeys[event.colorId].amFree = false;
       } else {
         colorKeys[event.colorId].pmFree = false;
@@ -31,12 +31,15 @@ class CalendarService {
     this.moment = moment;
   }
 
-  getEventsForCalendar(calendar) {
+  getEventsForCalendar(calendar, min, max) {
     let api = [document.location.origin, 'api/v1/calendar/events'].join('/');
+    let req = { calendar: calendar };
+    min && (req.timeMin = min);
+    max && (req.timeMax = max);
     return this.$http({
-      method:'POST',
+      method: 'POST',
       url: api,
-      data: {calendar: calendar}
+      data: req
     });
   }
 
@@ -45,12 +48,14 @@ class CalendarService {
    *
    * @method getEventsForCalendars
    * @param {String[]} calendarIds - an array of calendar IDs
+   * @param start - the lower bound
+   * @param end - the upper bound
    * @return {Promise[]} an array of promises
    *
    */
-  getEventsForCalendars(calendarIds) {
+  getEventsForCalendars(calendarIds, start, end) {
     let promises = calendarIds.map(id => {
-      return this.getEventsForCalendar(id);
+      return this.getEventsForCalendar(id, start, end);
     });
 
     return Promise.all(promises)
@@ -62,7 +67,7 @@ class CalendarService {
   getBusyFromRange(calendar, start, end) {
     let api = [document.location.origin, 'api/v1/calendar/freebusy'].join('/');
     return this.$http({
-      method:'POST',
+      method: 'POST',
       url: api,
       data: {
         calendar: calendar,
@@ -95,21 +100,20 @@ class CalendarService {
   getBusAvailabilityForDate(calendar, start, end) {
     let api = `${document.location.origin}/api/v1/calendar/bus/agenda`;
     return this.$http({
-      method:'POST',
-      url: api,
-      data: {
-        calendar: calendar,
-        timeMin: start,
-        timeMax: end
-      }
-    })
+        method: 'POST',
+        url: api,
+        data: {
+          calendar: calendar,
+          timeMin: start,
+          timeMax: end
+        }
+      })
       .then(this._transformBusAgenda.bind(this))
 
   }
 
 
 }
-
 
 
 CalendarService.$inject = ['$http', 'busProperties', 'moment'];
