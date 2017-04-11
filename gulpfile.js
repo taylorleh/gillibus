@@ -54,8 +54,8 @@ gulp.task('watch-server', function() {
 });
 
 gulp.task('default', function() {
-  // gulp.watch(__dirname + '/client/less/**/*.less', ['less']);
   nodemon({
+    watch: ['server', 'server.js'],
     ignore:['node_modules', 'client/lib', 'client/assets'],
     ext: 'js html less',
     tasks: ['less']
