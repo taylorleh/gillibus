@@ -56,7 +56,7 @@ import io from '../node_modules/socket.io-client/dist/socket.io';
 window.io = io;
 
 import 'npm/fullcalendar/dist/fullcalendar.css';
-import './assets/styles.css';
+import './dist/assets/styles.css';
 
 
 import 'npm/angular-google-maps/dist/angular-google-maps';

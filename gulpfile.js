@@ -25,7 +25,7 @@ gulp.task('less', function() {
       paths: [path.join(__dirname,'includes' )]
     }))
     .pipe(concat('styles.css'))
-    .pipe(gulp.dest('./client/assets'))
+    .pipe(gulp.dest('./client/dist/assets'))
 });
 
 
@@ -39,7 +39,7 @@ gulp.task('wp-proxy-less', function() {
   // gulp.watch(__dirname + '/client/less/**/*.less', ['less']);
   nodemon({
     watch: ['client/less'],
-    ignore:['node_modules', 'client/lib', 'client/assets'],
+    ignore:['node_modules', 'client/lib', 'client/assets', 'client/dist'],
     ext: 'less',
     tasks: ['less']
   });
@@ -48,7 +48,7 @@ gulp.task('wp-proxy-less', function() {
 gulp.task('watch-server', function() {
   nodemon({
     watch: ['server', 'server.js'],
-    ignore: ['node_modules', './client'],
+    ignore: ['node_modules', './client', 'client/dist'],
     ext: 'js'
   })
 });
@@ -56,7 +56,7 @@ gulp.task('watch-server', function() {
 gulp.task('default', function() {
   nodemon({
     watch: ['server', 'server.js'],
-    ignore:['node_modules', 'client/lib', 'client/assets'],
+    ignore:['node_modules', 'client/lib', 'client/assets', 'client/dist'],
     ext: 'js html less',
     tasks: ['less']
   })

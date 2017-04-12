@@ -9,7 +9,7 @@ let config = {
   context: __dirname + '/client',
   entry: './app.js',
   output: {
-    path: __dirname + '/client',
+    path: __dirname + '/client/dist',
     filename: 'bundle.js'
   },
   module: {

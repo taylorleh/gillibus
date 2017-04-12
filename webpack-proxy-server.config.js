@@ -50,7 +50,6 @@ let config = {
       moment$:path.resolve( __dirname,'node_modules/moment/moment.js'),
       bootstrapcss$: path.resolve( __dirname,'node_modules/bootstrap/dist/css/bootstrap.css'),
       npm: __dirname + '/node_modules',
-      ass: path.resolve( __dirname,'client/assets/'),
       b: __dirname + '/client/lib'
     }
   },
