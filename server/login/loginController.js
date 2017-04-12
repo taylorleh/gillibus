@@ -5,6 +5,7 @@
   // let Users = require('../collections/users');
 let models = require('../models');
 let bcrypt = require('bcrypt-nodejs');
+let jwt = require('jsonwebtoken');
 
 
 let userExists = (username) => {
@@ -60,7 +61,7 @@ exports.createUser = (req, res) => {
 
 };
 
-exports.loginAdmin = (req, res) => {
+exports.loginAdmin = (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
 
@@ -73,40 +74,31 @@ exports.loginAdmin = (req, res) => {
     .then(instance => {
       if(instance) {
         return instance.checkPassword(password);
-      }else {
-        Promise.reject('does not exists');
+      }
+      else {
+        return Promise.reject({message:'User not found!'});
       }
 
     })
-    .then(authenticated => {
-      console.log('going to return');
-      res.json(authenticated);
+    .then(response => {
+      let claims = response.instance.get();
+      let secret = process.env.JWT_SECRET;
+
+      let token = jwt.sign(claims, secret, {
+        expiresIn: '3h'
+      });
+      res.json({
+        success: true,
+        message: 'Admin Authenticated',
+        token: token,
+        roles: 'ADMIN',
+        id: claims.id
+      });
     })
     .catch(error => {
-      res.status(401).json(error);
+      res.status(403).json({ success: false, message: error.message });
     })
 
-  // exports.throwIfUserExists(username)
-  //   .then(instance => {
-  //     instance.checkPassword(password);
-  //
-  //   })
-  //   .catch(error => {
-  //     res.status(401).json(error);
-  //   });
-
-  // models.Users.findOne({ username: username })
-  //   .then(user => {
-  //     return user.verifyPassword(password, user.get('hash'), (err, result) => {
-  //       if (err) {
-  //         res.json(err);
-  //       }
-  //       res.json(result);
-  //     })
-  //   })
-  //   .catch(error => {
-  //     res.status(401).json(error);
-  //   })
 
 };
 
