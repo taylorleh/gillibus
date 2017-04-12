@@ -15,22 +15,22 @@
       <div class="form-horizontal">
         <div class="form-group">
           <label for="driver-bus">What Bus Are You Driving?</label>
-          <select name="driver-bus" id="driver-bus" ng-model="driverBus" class="form-control" ng-options="o as o for o in buses" ng-change="onChooseDriverBus(driverBus);"></select>
+          <select name="driver-bus" id="driver-bus" ng-model="vm.driverBus" class="form-control" ng-options="o as o for o in vm.buses" ng-change="vm.onChooseDriverBus(this);"></select>
         </div>
       </div>
     </div>
   </div>
 
-  <div ng-show="data.isPolling" class="row">
+  <div ng-show="vm.data.isPolling" class="row">
     <div class="col-xs-6 col-xs-offset-3">
       <h3 style="width: 100%; text-align: center">You are sharing your GP</h3>
       <div style="display: inline-block; width: 45%; text-align: center;">
         <div>longitude</div>
-        <div>{{data.myPosition.coords.longitude}}</div>
+        <div>{{vm.data.myPosition.coords.longitude}}</div>
       </div>
       <div style="display: inline-block; width: 45%; text-align: center">
         <div>latitude</div>
-        <div>{{data.myPosition.coords.latitude}}</div>
+        <div>{{vm.data.myPosition.coords.latitude}}</div>
       </div>
     </div>
   </div>

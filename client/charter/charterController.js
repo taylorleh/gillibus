@@ -255,7 +255,7 @@ class CharterController {
     let schedule = this.daysOfMonthHash[key] || {};
 
     if (date.isSameOrAfter(this.currentDate)) {
-      let {starShip, g3, gilli, charlie} = {starShip: schedule.STARSHIP, g3: schedule.G3 , gilli: schedule.GILLIBUS, charlie: schedule.CHARLIE };
+      let { starShip, g3, gilli, charlie } = { starShip: schedule.STARSHIP, g3: schedule.G3, gilli: schedule.GILLIBUS, charlie: schedule.CHARLIE };
 
       if (!starShip || !gilli || !charlie || !g3) {
         console.warn('Date not registered in date hash!!');
@@ -338,14 +338,13 @@ class CharterController {
    *
    * */
   init() {
-    let start = this.moment().toDate();
-    let end = this.moment().add(1, 'month');
+    let start = this.moment().startOf('month').format("YYYY-MM-DDTHH:mm:ssZ");
+    let end = this.moment().endOf('month').format("YYYY-MM-DDTHH:mm:ssZ");
 
     let ids = this.busProperties.buses.map(p => p.env);
-    console.log('ids', ids);
-    this.calendarService.getEventsForCalendars(ids)
+    this.calendarService.getEventsForCalendars(ids, start)
       .then(response => {
-        let out = calendarUtils.applyCalendarEventsToUnified(
+        calendarUtils.applyCalendarEventsToUnified(
           response.map(b => b.data.items),
           this.daysOfMonthHash,
           this.busProperties.busNames,
@@ -357,15 +356,6 @@ class CharterController {
         this.$scope.$apply();
       });
 
-
-    // this.getCalendarEvents('CHARTER_G3').then(function(res) {
-    //   console.log('RES', res);
-    // })
-    // this.getFreeBusy(start, end)
-    //   .then(this.freeBusySuccess.bind(this))
-    //   .then(() => {
-    //     this.freeBusyCalculated = true;
-    //   });
   }
 
 }

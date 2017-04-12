@@ -12,6 +12,8 @@ module.exports = {
   getEventsForCalendar: (req, res) => {
     let token = utils.getAuthToken();
     let calendarId = process.env[req.body.calendar];
+    let timeMin = req.body.timeMin;
+    let timeMax = req.body.timeMax;
 
     if (!calendarId) {
       res.status(400).json({ message: 'need to specify a claendar' });
@@ -23,6 +25,9 @@ module.exports = {
         auth: token,
         calendarId: calendarId
       };
+
+      timeMin &&  (calParams.timeMin = timeMin);
+      timeMax &&  (calParams.timeMax = timeMax);
 
       cal.events.list(calParams, function(err, resp) {
         if (err) {

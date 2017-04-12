@@ -22,13 +22,19 @@ import { default as CalendarService } from './services/calendarEventsService';
 import { default as CharterBookingService } from './services/charterBooking';
 import { default as CheckoutStateService } from './services/charterCheckoutStateService';
 import { default as GpsSocketFactory } from './services/gpsSocketFactory';
-import { default as AdminAuthService } from './admin/login/services/authService';
-import { default as AdminAuthenticationService } from './admin/login/services/adminAuthentication';
+// import { default as AdminAuthService } from './admin/login/services/authService'; // this is mock do not use
+// import { default as AdminAuthenticationService } from './admin/login/services/adminAuthentication'; // this is mock do not use
+import { default as AdminAuth } from  './services/adminAuth';
+import { default as AdminSessionService } from  './services/adminSession';
 import { default as DirectionsService } from './services/directions';
 
+
+// INTERCEPTORS
+import { default as AttachTokensInterceptor } from './services/interceptors/attachTokens';
+
 // DIRECTIVES
-import { default as ViewportDirective } from './directives/viewport';
-import { default as FocusDirective } from './directives/focus';
+// import { default as ViewportDirective } from './directives/viewport';
+// import { default as FocusDirective } from './directives/focus';
 import { default as CountdownDirective } from './directives/countdownSubheader';
 import { default as CardDirective } from './directives/cardValidation';
 
@@ -36,6 +42,8 @@ import { default as CardDirective } from './directives/cardValidation';
 import { default as MapConstant } from './constant/map';
 import { default as CalendarConstant } from  './constant/calendarConfig';
 import { default as BusPropsConstant } from './constant/busProperties';
+import { default as UserRoles } from './constant/userRoles';
+import { default as AuthEvents } from './constant/authEvents';
 
 // THIRDS PARTY
 import 'npm/ngGeolocation/ngGeolocation';
@@ -57,37 +65,61 @@ import nemLogging from 'npm/angular-simple-logger/dist/index'
 let moduleName = 'gillibus';
 
 
-function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
-  $routeProvider
-    .when('/', {
-      templateUrl: 'home/homeTemplate.html',
+function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, $locationProvider, $httpProvider, USER_ROLES) {
+
+  $httpProvider.interceptors.push([
+    '$injector',
+    function($injector) {
+      return $injector.get('AuthInterceptor');
+    }
+  ]);
+
+
+  $stateProvider
+    .state('main', {
+      url: '/',
+      templateUrl: './home/homeTemplate.html',
       controller: 'HomeController',
-      controllerAs: 'tl'
+      controllerAs: 'tl',
+      data: {}
     })
-    .when('/routes', {
+    .state('routes', {
+      url: '/routes',
       templateUrl: 'routes/routesTemplate.html',
-      controller: 'RoutesController'
+      controller: 'RoutesController',
+      data: {}
     })
-    .when('/pricing', {
+    .state('pricing', {
+      url: '/pricing',
       templateUrl: 'pricing/pricingTemplate.html',
-      controller: 'PricingController'
+      controller: 'PricingController',
+      data: {}
     })
-    .when('/charter', {
+    .state('charter', {
+      url: '/charter',
       templateUrl: 'charter/charterTemplate.html',
       controller: 'CharterController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      data: {}
     })
-    .when('/admin', {
+    .state('admin', {
+      url: '/admin',
       templateUrl: 'admin/login/adminLoginTemplate.html',
       controller: 'AdminController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      data: {}
     })
-    .when('/admin/manage', {
+    .state('manage', {
+      url: '/admin/manage',
       templateUrl: 'admin/manage/adminPortalTemplate.html',
-      controller: 'PortalController'
-    })
-    .otherwise('/');
+      controller: 'PortalController',
+      controllerAs: 'vm',
+      data: {
+        authorizedRoles: [USER_ROLES.admin]
+      }
+    });
 
+  $urlRouterProvider.otherwise('/');
 
   //  configure google maps provider
   uiGmapGoogleMapApiProvider.configure({
@@ -97,26 +129,44 @@ function config($routeProvider, uiGmapGoogleMapApiProvider, $locationProvider) {
   });
 
   $locationProvider.hashPrefix('');
+  $httpProvider.interceptors.push('AttachTokens');
+
 }
-config.$inject = ['$routeProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider'];
+config.$inject = ['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', '$locationProvider',
+  '$httpProvider', 'USER_ROLES'];
 
-function run($rootScope, $location, AdminAuthentication) {
-  $rootScope.$on('admin:authorized', () => {
-    AdminAuthentication.setIsAuthorized(true);
-    $rootScope.$apply(function() {
-      $location.url('/admin/manage');
-    })
-  });
 
-  $rootScope.$on('admin:unauthorized', () => {
-    AdminAuthentication.setIsAuthorized(false);
+function run($rootScope, $location, AdminAuth, USER_ROLES, AUTH_EVENTS) {
+  // I PROBABLY DONT NEED ANY OF TH CODE BELOW AS THIS WAS MEANT FOR USE IN TEMPLATES
+  $rootScope.currentUser = null;
+  $rootScope.userRoles = USER_ROLES;
+  $rootScope.isAuthorized = AdminAuth.isAuthorized;
+
+  $rootScope.setCurrentUser = function(user) {
+    $rootScope.currentUser = user;
+  };
+
+
+  $rootScope.$on('$stateChangeStart', function(event, next, current) {
+    let authorizedRoles = next.data.authorizedRoles;
+    if (authorizedRoles && !AdminAuth.isAuthorized(authorizedRoles)) {
+      event.preventDefault();
+      if (AdminAuth.isAuthenticated()) {
+        // user is not allowed
+        $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+      } else {
+        // user is not logged in
+        $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+      }
+    }
+
   });
 }
-run.$inject = ['$rootScope','$location', 'AdminAuthentication'];
 
+run.$inject = ['$rootScope', '$location', 'AdminAuth', 'USER_ROLES', 'AUTH_EVENTS'];
 
 angular.module(moduleName, [
-    require('angular-route'),
+    require('angular-ui-router'),
     require('npm/angular-ui-bootstrap'),
     require('angular-animate'),
     CharterController,
@@ -132,24 +182,39 @@ angular.module(moduleName, [
     CalendarService,
     CharterBookingService,
     CheckoutStateService,
-    AdminAuthService,
-    AdminAuthenticationService,
+    // AdminAuthService, // remove
+    // AdminAuthenticationService, // remove
+    AdminAuth,
+    AdminSessionService,
     GpsSocketFactory,
+    AttachTokensInterceptor,
     // DirectionsService.name,
     MapConstant,
     CalendarConstant,
     BusPropsConstant,
+    UserRoles,
+    AuthEvents,
     'ngGeolocation',
     // 'gapi',
     'ui.calendar',
     'angularMoment',
     'btford.socket-io',
-    // // 'credit-cards',
-    // // 'slickCarousel',
-    // nemLogging,
     'uiGmapgoogle-maps'
   ])
   .config(config)
+  .factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
+    return {
+      responseError: function(response) {
+        $rootScope.$broadcast({
+          401: AUTH_EVENTS.notAuthenticated,
+          403: AUTH_EVENTS.notAuthorized,
+          419: AUTH_EVENTS.sessionTimeout,
+          440: AUTH_EVENTS.sessionTimeout
+        }[response.status], response);
+        return $q.reject(response);
+      }
+    };
+  })
   .run(run);
 
 

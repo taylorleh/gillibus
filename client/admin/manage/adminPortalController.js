@@ -8,32 +8,35 @@ let moduleName = 'gillibus.admin.controller.adminPortalController';
 class PortalController {
 
   //noinspection SpellCheckingInspection
-  constructor($scope, $geolocation, gpsSocketFactory, busProperties) {
-    // this.$scope = $scope;
+  constructor($scope, $geolocation, gpsSocketFactory, busProperties, adminSession, $state) {
     angular.element('nav').hide();
+    this.gpsSocketFactory = gpsSocketFactory;
+    this.$geolocation = $geolocation;
+    this.$scope = $scope;
+    this.$state = $state;
 
-    $scope.buses = busProperties.busNames;
-    $scope.driverBus = null;
-    $scope.pollDataFromUser = this.pollDataFromUser.bind(this);
-    $scope.onChooseDriverBus = this.onChooseDriverBus.bind($scope);
-    $scope.data = {
+    this.buses = busProperties.busNames;
+    this.driverBus = null;
+    this.data = {
       isPolling: false,
       myPosition: {
         coords: {}
       }
     };
 
-    this.$geolocation = $geolocation;
-    this.socket = gpsSocketFactory.connectWithNameSpace(io('/driver'));
 
-    $scope.$on('$geolocation.position.changed', (event, newPosition) => {
-      $scope.data.myPosition.coords = newPosition.coords;
+    this.socket = this.startSocketConnection(this.gpsSocketFactory, adminSession.id);
+    this.initSocketListeners(this.socket);
+
+
+    this.$scope.$on('$geolocation.position.changed', (event, newPosition) => {
+      this.data.myPosition.coords = newPosition.coords;
       if(this.socket) {
-        this.emitGpsDataToServer(this.socket, {location: newPosition.coords, bus: $scope.driverBus});
+        this.emitGpsDataToServer(this.socket, newPosition.coords, this.driverBus);
       }
     });
 
-    $scope.$on('$destroy', () => {
+    this.$scope.$on('$destroy', () => {
       this.socket.disconnect();
       this.$geolocation.clearWatch();
       angular.element('nav').show();
@@ -42,22 +45,78 @@ class PortalController {
   }
 
 
-
-
-  emitGpsDataToServer(gpsSocket, coordinates) {
-    let infoObj = {
-      location: {
-        latitude: coordinates.location.latitude,
-        longitude: coordinates.location.longitude,
-        accuracy: coordinates.location.accuracy,
-        heading:coordinates.location.heading
-      },
-      bus: coordinates.bus
-    };
-    gpsSocket.emit('driver location', infoObj);
-
+  /**
+   * Emits a disconnection event to the server
+   *
+   * @param socket - a driver socket
+   *
+   */
+  disconnectDriverSocket(socket) {
+    socket.disconnect();
   }
 
+
+  /**
+   * Emits the driver current GPS coordinates to the server
+   *
+   * @param gpsSocket - a driver socket
+   * @param coordinates - GPS coordinates object
+   *
+   */
+  emitGpsDataToServer(gpsSocket, coordinates, bus) {
+    gpsSocket.emit('driver location', {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      accuracy: coordinates.accuracy,
+      heading:coordinates.heading,
+      driverBus: bus
+    });
+  }
+
+
+  /**
+   * Sets up socket listeners for a given driver
+   *
+   * @param socket - a driver socket
+   *
+   */
+  initSocketListeners(socket) {
+    socket.on('connect', function(e) {
+    });
+
+    socket.on("unauthorized", error => {
+      let type = error.data.name;
+      if (type === "UnauthorizedError") {
+        this.disconnectDriverSocket(socket);
+        this.$state.transitionTo('main');
+      } else if(type === "TokenExpiredError") {
+        this.disconnectDriverSocket(socket);
+        this.$state.transitionTo('admin');
+      } else {
+        this.$state.transitionTo('main');
+      }
+    });
+  }
+
+
+  /**
+   * Initializes a new socket in the driver namespace
+   *
+   * @param socketFactory - the io
+   * @param token - auth token
+   *
+   */
+  startSocketConnection(socketFactory, token) {
+    return socketFactory.connectWithNameSpace(io('/driver', {
+      'query': `token=${token}`
+    }));
+  }
+
+
+  /**
+   * Event handler for choosing bus
+   * @param name
+   */
   onChooseDriverBus(name) {
     this.data.isPolling = true;
     this.pollDataFromUser({
@@ -67,8 +126,6 @@ class PortalController {
     });
 
   }
-
-
 
 
   /**
@@ -85,7 +142,7 @@ class PortalController {
 
 }
 
-PortalController.$inject = ['$scope', '$geolocation', 'gpsSocketFactory', 'busProperties'];
+PortalController.$inject = ['$scope', '$geolocation', 'gpsSocketFactory', 'busProperties', 'adminSession', '$state'];
 angular.module(moduleName, []).controller('PortalController', PortalController);
 
 export default moduleName
