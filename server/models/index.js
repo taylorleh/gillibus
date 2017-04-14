@@ -18,7 +18,7 @@ let sequelize = new Sequelize(process.env.GDATABASE_DB, process.env.GDATABASE_US
 
   pool: {
     max: 5,
-    min: 1,
+    min: 0,
     idle: 10000
   }
 });
