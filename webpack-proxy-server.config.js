@@ -6,11 +6,12 @@ const VendorStylesExtract = new ExtractTextPlugin('assets/vendor.css');
 const target = process.env.NODE_ENV || 'develop';
 
 let config = {
-  context: __dirname + '/client',
+  context: path.resolve(__dirname, 'client'),
   entry: './app.js',
   output: {
     path: __dirname + '/client',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/dist/'
   },
   module: {
     rules: [
@@ -44,7 +45,9 @@ let config = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.css'],
-    modules: [path.resolve(__dirname, 'node_modules')],
+    modules: [
+      path.resolve(__dirname, 'node_modules')
+    ],
     alias: {
       jquery$:path.resolve( __dirname,'node_modules/jquery/src/jquery.js'),
       moment$:path.resolve( __dirname,'node_modules/moment/moment.js'),
@@ -57,10 +60,11 @@ let config = {
     MainStylesExtract,
     VendorStylesExtract
   ],
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   devServer: {
     hot: true,
     contentBase: "client",
+    // https: true,
     proxy: {
       '/api': {
         secure: false,

@@ -10,7 +10,8 @@ let config = {
   entry: './app.js',
   output: {
     path: __dirname + '/client/dist',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/dist/'
   },
   module: {
     rules: [
