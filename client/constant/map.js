@@ -15,22 +15,13 @@ angular.module(moduleName, [])
         {
           featureType: 'administrative.locality',
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
+          stylers: [{ visibility: 'off' }]
         },
         {
           featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{ color: '#263c3f' }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#6b9a76' }]
+          stylers: [
+            { visibility: 'off' }
+          ]
         },
         {
           featureType: 'road',
@@ -68,9 +59,8 @@ angular.module(moduleName, [])
           stylers: [{ color: '#2f3948' }]
         },
         {
-          featureType: 'transit.station',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
+          featureType: 'transit',
+          stylers: [{ visibility: 'off' }]
         },
         {
           featureType: 'water',
