@@ -4,35 +4,97 @@ let moduleName = 'gillibus.home';
 
 class HomeController {
 
-  constructor($scope, mapConfig, $geolocation, uiGmapIsReady, uiGmapGoogleMapApi, gpsSocketFactory) {
-    this.MOCKERROR = {
-      error: {
-        message: "Only secure origins are allowed (see: https://goo.gl/Y0ZkNV)."
-      }
-    };
+  constructor($scope, mapConfig, $geolocation, uiGmapIsReady, uiGmapGoogleMapApi, gpsSocketFactory, $q, $timeout) {
 
     this.SF_PICKUP = {
       LNG: -122.419705,
       LAT: 37.765058
     };
 
+    this.$q = $q;
     this.MAP_INSTANCE;
     this.uiGmapIsReady = uiGmapIsReady;
-    // this.$geolocation = $geolocation;
     this.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
+    this.$timeout = $timeout;
     this.$scope = $scope;
     this.map = mapConfig;
-    this.nobus = false;
-    this.activeBuses = [];
+    this.nobus = true;
+    this.refresh = false;
+    this.activeBuses = {};
     this.socket = gpsSocketFactory.connectWithNameSpace(io('/customer'));
 
-    this.init(this.socket);
+    this.markers = {};
+    this.markerCoords = {};
+    this.markerId = Infinity;
+    this.activeBusName = null;
+    this.markerOptions = {
+      GILLIBUS: 'assets/images/gillibus.png',
+      STARSHIP: 'assets/images/starship.png',
+      G3: 'assets/images/g3.png',
+      CHARLIE: 'assets/images/charlie.png'
+    };
+    this.initSocketListeners(this.socket);
 
 
     $scope.$on('$destroy', function() {
       this.socket.disconnect();
     }.bind(this))
 
+
+    this.uiGmapIsReady.promise(1)
+      .then(instances => {
+        // console.log('gmap instances ', instances);
+      })
+
+  }
+
+  // ------------------------------------------------ ACTIONS ----------------------------------------------------------
+
+  onClientBusSelect(busName) {
+    this.activeBusName = busName;
+    let busDetails = this.activeBuses[busName];
+    if (busDetails) {
+      this.setMarker(busDetails);
+    } else {
+      console.warn('client chose a bus to view but couldn\'t find in the model');
+    }
+  }
+
+
+  // ------------------------------------------------ MAP ACTIONS -------------------------------------------
+
+  /**
+   * sets the marker properties on the model
+   *
+   * @param locationObj
+   */
+  setMarker(locationObj) {
+    console.log('setting marker');
+
+    let coord = {
+      longitude: locationObj.location.longitude,
+      latitude: locationObj.location.latitude
+    };
+    let bus = this.markers[locationObj.bus];
+    if(bus) {
+      bus.coords = coord;
+    }
+    else {
+      this.markers[locationObj.bus] = {
+        id: locationObj.bus,
+        coords: coord,
+        opts: { icon: this.markerOptions[locationObj.bus] }
+      }
+    }
+  }
+
+
+  refreshMap() {
+    this.refresh = true;
+    this.$timeout(() => {
+      console.log('in timeout with this', this);
+      this.refresh = false;
+    }, 1000)
   }
 
 
@@ -43,7 +105,131 @@ class HomeController {
    * @param {Array} instance
    *
    * */
-  getTimeToDestination(userCoords, instance) {
+  // getTimeToDestination(userCoords, instance) {
+  //   let directionsDisplay = new google.maps.DirectionsRenderer();
+  //   directionsDisplay.setMap(instance);
+  //
+  //   let directionsService = new google.maps.DirectionsService();
+  //
+  //   let directionsReq = {
+  //     travelMode: 'WALKING',
+  //     origin: {
+  //       lat: userCoords.location.latitude,
+  //       lng: userCoords.location.longitude
+  //     },
+  //     destination: {
+  //       lat: this.SF_PICKUP.LAT,
+  //       lng: this.SF_PICKUP.LNG
+  //     }
+  //   };
+  //
+  //
+  //   directionsService.route(directionsReq, (res, status) => {
+  //     directionsDisplay.setDirections(res);
+  //     this.initTimer(res.routes.pop());
+  //     // this.timerError = false;
+  //   });
+  // }
+
+
+  isDriverNew(locationObj) {
+    return !(locationObj.bus in this.activeBuses);
+  }
+
+  initSocketListeners(socket) {
+    socket.on('bus location', this.onBusLocation.bind(this));
+
+    socket.on('no buses', () => {
+      this.nobus = true;
+    });
+
+
+    socket.on('driver left', this.removeActiveDriver.bind(this));
+
+    socket.on('connect', data => {
+      console.log('connected', data);
+      this.requestOnlineBuses(socket);
+    })
+
+  }
+
+
+  /**
+   * request which buses are currently online at the moment
+   *
+   * @method requestOnlineBuses
+   * @param socket - a client socket
+   *
+   */
+  requestOnlineBuses(socket) {
+    socket.emit('what buses are online', data => {
+      Object.keys(data).length && (this.nobus = false);
+      this.updateBusSelectionWithCurrentlyOnlineBuses(data);
+    });
+  }
+
+  /**
+   * udates the model to reflect the current online buses. and creates a new directions
+   * service if not already yet ceated
+   *
+   * @param {Object} busData
+   */
+  updateBusSelectionWithCurrentlyOnlineBuses(busData) {
+    let allBusesToRender = [];
+    if (Array.isArray(busData)) {
+      busData.forEach(driver => {
+        this.activeBuses[driver.bus] = driver;
+        allBusesToRender.push(driver);
+      })
+    } else {
+      this.activeBuses[busData.bus] = busData;
+      allBusesToRender.push(busData);
+    }
+
+    allBusesToRender.forEach(this.setMarker.bind(this));
+  }
+
+
+  /**
+   * removes a bus from the active list after driver disconnects
+   * @param busName
+   */
+  removeActiveDriver(busName) {
+    if (this.activeBuses[busName] && this.markers[busName]) {
+      delete this.activeBuses[busName];
+      delete this.markers[busName];
+    } else {
+      console.warn('tried removing bus but is not in model');
+    }
+  }
+
+
+  makeCoordsObject(locationObj) {
+    return {
+      longitude: locationObj.location.longitude,
+      latitude: locationObj.location.latitude
+    }
+  }
+
+  // ------------------------------------------ SOCKET HANDLERS ------------------------------------------
+
+  /**
+   * bus location handler. Adds the bus to the active buses hash and then adds a new marker or updates
+   * the associated markers location
+   *
+   * @param data - bus data
+   */
+  onBusLocation(data) {
+    this.activeBuses[data.bus] = data;
+    this.setMarker(data);
+    this.nobus = false;
+  }
+
+
+
+
+  createDirectionServiceForBus(busName) {
+
     let directionsDisplay = new google.maps.DirectionsRenderer();
     directionsDisplay.setMap(instance);
 
@@ -61,51 +247,15 @@ class HomeController {
       }
     };
 
-    this.activeBuses.push({
-      name: userCoords.bus
-    });
 
     directionsService.route(directionsReq, (res, status) => {
       directionsDisplay.setDirections(res);
       this.initTimer(res.routes.pop());
-      this.timerError = false;
-    });
-  }
-
-  listenForBus(socket) {
-    socket.on('bus location', function(data) {
-      this.ensureMapAssetsAvailableAndDraw(data);
-    }.bind(this));
-
-    socket.on('no buses', () => {
-      this.nobus = true;
     });
 
-    socket.on('yes buses', () => {
-      this.nobus = false;
-    });
-
-    socket.on('connect', function(data) {
-
-    })
 
   }
 
-
-  ensureMapAssetsAvailableAndDraw(coordinates) {
-    Promise.all([this.uiGmapIsReady.promise(1),coordinates, this.uiGmapGoogleMapApi])
-      .then(function(results) {
-        let map = results[0][0];
-        let currentPosition = results[1];
-        this.MAP_INSTANCE = map;
-        this.getTimeToDestination(currentPosition, map.map);
-      }.bind(this));
-
-  }
-
-  showNoBusOverlay() {
-    angular.element()
-  }
 
 
   initTimer(route, hasError) {
@@ -126,12 +276,11 @@ class HomeController {
       destination: leg.end_address,
       distance: leg.distance.text
     };
-    this.$scope.$apply();
   }
 
 
   init(socket) {
-    this.listenForBus(socket);
+    this.initSocketListeners(socket);
 
 
     // Promise.all([this.uiGmapIsReady.promise(1), this.uiGmapGoogleMapApi])
@@ -145,7 +294,7 @@ class HomeController {
 }
 
 HomeController.$inject = ['$scope', 'mapConfig', '$geolocation', 'uiGmapIsReady', 'uiGmapGoogleMapApi',
-  'gpsSocketFactory'];
+  'gpsSocketFactory', '$q', '$timeout'];
 angular.module(moduleName, []).controller('HomeController', HomeController);
 
 export default moduleName;

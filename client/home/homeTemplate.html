@@ -5,26 +5,48 @@
       <div countdown="tl.timer" class="innner"></div>
     </div>
   </div>
-  <div class="map-container row" style="height: 500px; position: relative;">
-    <div class="col-xs-3">
-      <div class="panel panel-default">
-        <div class="panel-heading">Active Buses</div>
-
-        <!-- Table -->
-        <table class="table">
-          <tr ng-repeat="bus in tl.activeBuses">
-            <td>{{bus.name}}</td>
-          </tr>
-        </table>
+  <div class="show-xs hide-sm row">
+    <div class="col-xs-12">
+      <div class="fleet-panel">
+        <div class="no-bottom-margin panel panel-default">
+          <table class="table table-hover">
+            <tr>
+              <td ng-repeat="(key, value) in tl.markerOptions" ng-class="['bus-cell', {'bus-active': tl.activeBuses[key]}]">
+                <i ng-class="{'bus-active': tl.activeBuses[key]}" class="fa fa-circle" aria-hidden="true"></i> -
+                <span class="{{key.toLowerCase()}}">{{key}}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="col-xs-9">
-      <ui-gmap-google-map options="tl.map.options" center='tl.map.center' zoom='tl.map.zoom'>
-        <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id"></ui-gmap-marker>
-      </ui-gmap-google-map>
-      <div ng-show="tl.nobus" class="overlay-container">
+  </div>
+  <div class="map-container row" style="height: 500px; position: relative;">
+    <div class="col-xs-12">
+      <div class="map-wrapper">
+        <ui-gmap-google-map refresh="tl.refresh" options="tl.map.options" center='tl.map.center' zoom='tl.map.zoom'>
+          <ui-gmap-marker ng-repeat="item in tl.markers" options="item.opts" coords="item.coords" idKey="item.id"></ui-gmap-marker>
+        </ui-gmap-google-map>
+        <span ng-show="tl.nobus" class="overlay-container"></span>
+        <span ng-show="tl.nobus" class="overlay-message">No Drivers Are Sharing Their Location Yet!</span>
+        <div class="fleet-panel show-sm hide-xs">
+          <div class="panel panel-default">
+            <div class="panel-heading">Fleet</div>
+            <!-- Table -->
+            <table class="table table-hover">
+              <tr ng-repeat="(key, value) in tl.markerOptions">
+                <td ng-class="['bus-cell']" ng-click="tl.onClientBusSelect(key)">
+                  <img ng-src="{{value}}" alt=""> <span>{{key}}</span>
+                  <div class="status">
+                    <span class="status-text bus-active" ng-if="tl.activeBuses[key]">online</span>
+                    <span class="status-text" ng-if="!tl.activeBuses[key]">offline</span>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
-      <span ng-show="tl.nobus" class="overlay-message">No Drivers Are Sharing Their Location Yet!</span>
     </div>
   </div>
 </div>
