@@ -3,6 +3,9 @@
  */
 
 let driverController = {};
+let driversModel = require('./models/driversModel');
+let _ = require('lodash');
+
 
 
 /**
@@ -13,7 +16,7 @@ let driverController = {};
  *
  */
 driverController.sendExpirationUnauthorization = function(socket, error) {
-  socket.emit('unauthorized', { data : error })
+  socket.emit('unauthorized', { data: error })
 };
 
 
@@ -21,12 +24,31 @@ driverController.sendExpirationUnauthorization = function(socket, error) {
  * Emits to customer channel the drivers' location
  *
  * @param socket - the customer channel
- * @param data - the bus drivers' location
- *
+ * @param locationObj - the bus drivers' location
+ * @param {String} id - socket id for driver
  */
-driverController.sendDriverLocation = function(socket, data) {
-  console.log('token is valid', data);
-  socket.emit('bus location', data);
+driverController.sendDriverLocation = function(socket, locationObj, id) {
+  let locationWithoutId = _.clone(locationObj);
+  driversModel.cacheDriversLatestPosition(locationObj.bus, locationObj, id);
+  socket.emit('bus location', locationWithoutId);
+};
+
+
+driverController.sendClientBusesAvailable = function(socket) {
+  socket.emit('yes buses');
+};
+
+
+/**
+ * emits to customers that driver has left while also removing driver from cache
+ *
+ * @param socket - customer socket channel
+ * @param busName - the bus name
+ * @param sockId - socket id of driver
+ */
+driverController.sendDriverHasLeft = function(socket, busName, sockId) {
+  let leavingDriverBusName = driversModel.removeDriverById(sockId);
+  socket.emit('driver left', leavingDriverBusName);
 };
 
 

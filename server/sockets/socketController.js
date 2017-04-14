@@ -2,8 +2,10 @@
  * Created by taylor on 3/18/17.
  */
 let driverController = require('./driverEmitter');
+let customerController = require('./socketControllers/customerEmitter');
 let customers = {};
 let drivers = {};
+let simpleDrivers = {};
 let socketioJwt = require('socketio-jwt');
 let jwt = require('jsonwebtoken');
 let SECRET = process.env.JWT_SECRET;
@@ -51,26 +53,15 @@ let getDriverObjectById = (id) => {
   return null;
 };
 
-
-// set authorization for socket.io
-// io.sockets
-//   .on('connection', socketioJwt.authorize({
-//     secret: 'your secret or public key',
-//     timeout: 15000 // 15 seconds to send the authentication message
-//   })).on('authenticated', function(socket) {
-//   //this socket is authenticated, we are good to handle more events from it.
-//   console.log('hello! ' + socket.decoded_token.name);
-// });
+let flattenSimpleDrivers = (drivers) => {
+  return Object.keys(drivers).map(driverId => {
+    return drivers[driverId];
+  });
+};
 
 
 module.exports = (io)  => {
 
-  // io.sockets.on('connection', socketioJwt.authorize({
-  //   secret: process.env.JWT_SECRET,
-  //   timeout: 15000
-  // })).on('authenticated', socket => {
-  //   console.log(`Hello ${socket.decoded_token.name}`);
-  // })
 
   let driverChannel = io.of('/driver');
   let customerChannel = io.of('/customer');
@@ -81,16 +72,25 @@ module.exports = (io)  => {
   }));
 
   driverChannel.on('connection', socket => {
-    if(len(drivers) === 0) {
-      sendStaticToGroup(customers,'yes buses', customerChannel)
-    }
+    // if(len(drivers) === 0) {
+    //   sendStaticToGroup(customers,'yes buses', customerChannel)
+    // }
+    let driverId = socket.id;
 
     if(!drivers[socket.id]) {
       drivers[socket.id] = socket;
     }
 
+    socket.on('driver chooses bus', busname => {
+      simpleDrivers[socket.id] = busname;
+      driverController.sendClientBusesAvailable(customerChannel);
+    });
+
     socket.on('disconnect', () => {
+      let driversBus = simpleDrivers[socket.id];
       delete drivers[socket.id];
+      delete simpleDrivers[socket.id];
+      driverController.sendDriverHasLeft(customerChannel, driversBus, driverId);
       (len(drivers) === 0) && sendStaticToGroup(customers, 'no buses', customerChannel)
     });
 
@@ -99,22 +99,27 @@ module.exports = (io)  => {
       checkTokenExpiration(SECRET, driverToken, err => {
         driverController.sendExpirationUnauthorization(socket, err);
       }, data => {
-        driverController.sendDriverLocation(customerChannel, locations);
+        driverController.sendDriverLocation(customerChannel, locations, driverId);
       })
     });
   });
 
 
-  customerChannel.on('connection', client => {
-    customers[client.id] = client;
+  customerChannel.on('connection', socket => {
+    customers[socket.id] = socket;
 
     if(len(drivers) === 0) {
-      client.emit('no buses');
+      socket.emit('no buses');
     }
 
-    client.on('disconnect', client => {
+    socket.on('disconnect', client => {
 
     });
+
+    socket.on('what buses are online', (cb) => {
+      customerController.sendClientOnlineDrivers(cb);
+    });
+
   });
 
 
