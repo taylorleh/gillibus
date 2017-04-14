@@ -31,7 +31,7 @@ class PortalController {
 
     this.$scope.$on('$geolocation.position.changed', (event, newPosition) => {
       this.data.myPosition.coords = newPosition.coords;
-      if(this.socket) {
+      if (this.socket) {
         this.emitGpsDataToServer(this.socket, newPosition.coords, this.driverBus);
       }
     });
@@ -61,16 +61,28 @@ class PortalController {
    *
    * @param gpsSocket - a driver socket
    * @param coordinates - GPS coordinates object
-   *
+   * @param bus - the bus name
    */
   emitGpsDataToServer(gpsSocket, coordinates, bus) {
     gpsSocket.emit('driver location', {
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      accuracy: coordinates.accuracy,
-      heading:coordinates.heading,
-      driverBus: bus
+      location: {
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+        accuracy: coordinates.accuracy,
+        heading: coordinates.heading
+      },
+      bus: bus
     });
+  }
+
+  /**
+   * sends notice to server that driver has chosen a bus
+   * @param socket
+   * @param busName
+   */
+  emitChosenBusToServer(socket, busName) {
+    console.log('emitting to server that driver has chosen bus', socket, busName);
+    socket.emit('driver chooses bus', busName)
   }
 
 
@@ -89,7 +101,7 @@ class PortalController {
       if (type === "UnauthorizedError") {
         this.disconnectDriverSocket(socket);
         this.$state.transitionTo('main');
-      } else if(type === "TokenExpiredError") {
+      } else if (type === "TokenExpiredError") {
         this.disconnectDriverSocket(socket);
         this.$state.transitionTo('admin');
       } else {
@@ -118,6 +130,7 @@ class PortalController {
    * @param name
    */
   onChooseDriverBus(name) {
+    this.emitChosenBusToServer(this.socket, name);
     this.data.isPolling = true;
     this.pollDataFromUser({
       timeout: 30000,

@@ -15,7 +15,7 @@
       <div class="form-horizontal">
         <div class="form-group">
           <label for="driver-bus">What Bus Are You Driving?</label>
-          <select name="driver-bus" id="driver-bus" ng-model="vm.driverBus" class="form-control" ng-options="o as o for o in vm.buses" ng-change="vm.onChooseDriverBus(this);"></select>
+          <select name="driver-bus" id="driver-bus" ng-model="vm.driverBus" class="form-control" ng-options="o as o for o in vm.buses" ng-change="vm.onChooseDriverBus(vm.driverBus);"></select>
         </div>
       </div>
     </div>
