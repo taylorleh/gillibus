@@ -1,0 +1,14 @@
+
+
+** DEVELOPMENT STRATEGIES **
+
+A) Local Development
+
+
+    1.
+    - start a local proxy from cmd `local-ssl-proxy --source 3001 --target 3000`
+    - run `gulp` (default) to watch server side files only
+    - run `npm run wp-watch` which simply watches client side files and reloads. can't use dev-server at
+        the moment because of problems connecting through sockets
+
+

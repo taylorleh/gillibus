@@ -11,7 +11,7 @@
     "wp-watch": "webpack --watch",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
     "dev-proxy": "webpack-dev-server --hot --inline --config webpack-proxy-server.config.js --content-base client",
-    "build:prod": "NODE_ENV='production' webpack"
+    "build:prod": "NODE_ENV='production' webpack --colors"
   },
   "repository": {
     "type": "git",
@@ -40,12 +40,10 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.16.0",
     "bookshelf": "^0.10.3",
-    "bookshelf-modelbase": "^2.10.3",
     "bootstrap": "^3.3.7",
     "css-loader": "^0.26.2",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
-    "express-session": "^1.15.2",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.10.1",
     "fullcalendar": "^3.2.0",
@@ -73,7 +71,6 @@
     "socketio-jwt": "^4.5.0",
     "stripe": "^4.15.0",
     "style-loader": "^0.13.2",
-    "uglify-js": "^2.7.5",
     "uglifyjs-webpack-plugin": "^0.2.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1"
