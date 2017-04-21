@@ -17,7 +17,7 @@ let config = {
     rules: [
       {
         test:/\.js$/,
-        exclude:[path.resolve(__dirname, 'node_modules')],
+        exclude:[path.resolve(__dirname, 'node_modules'), __dirname + '/client/dist'],
         loader: 'babel-loader',
         query: {
           presets: ['es2015']
@@ -51,8 +51,8 @@ let config = {
       moment$:path.resolve( __dirname,'node_modules/moment/moment.js'),
       bootstrapcss$: path.resolve( __dirname,'node_modules/bootstrap/dist/css/bootstrap.css'),
       npm: __dirname + '/node_modules',
-      ass: path.resolve( __dirname,'client/assets/'),
-      b: __dirname + '/client/lib'
+      // ass: path.resolve( __dirname,'client/assets/')
+      // b: __dirname + '/client/lib'
       // angular$: path.resolve(__dirname, 'node_modules/angular/index.js')
     }
   },
@@ -65,11 +65,7 @@ let config = {
 
 
 if(target === 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: false
-    })
-  );
+  console.log('building for production');
 } else {
   console.log('building for development!');
 }

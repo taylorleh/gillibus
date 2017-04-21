@@ -14,7 +14,6 @@ const port = process.env.PORT || 3000;
 require('./server/sockets/socketController')(io);
 
 
-
 // MIDDLEWARE
 const sslRedirect = require('heroku-ssl-redirect');
 const bodyParser = require('body-parser');
@@ -36,12 +35,7 @@ app.use(bodyParser.json());
 require('./server/middleware')(app, express);
 
 models.sequelize.sync().then(() => {
-
   http.listen(port, () => {
     console.log(`Listening on port ${http.address().port}`);
   });
-
-
 });
-
-
