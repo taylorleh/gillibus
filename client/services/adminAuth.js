@@ -23,7 +23,6 @@ function AdminAuth($http, $location, $window, adminSession) {
     .then(function(resp) {
       let data = resp.data;
       adminSession.create(data.token, data.id, data.roles);
-      $location.path('/admin/manage');
       return resp;
     });
   };
