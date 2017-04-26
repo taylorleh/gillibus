@@ -60,7 +60,7 @@ let config = {
     MainStylesExtract,
     VendorStylesExtract
   ],
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   devServer: {
     hot: true,
     contentBase: "client",
