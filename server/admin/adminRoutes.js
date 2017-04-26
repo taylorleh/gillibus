@@ -2,7 +2,7 @@
  * Created by taylor on 3/22/17.
  */
 
-let loginController = require('./loginController');
+let loginController = require('./adminController');
 
 module.exports = function(router) {
 
@@ -19,6 +19,9 @@ module.exports = function(router) {
 
   router.route('/login')
     .post(loginController.loginAdmin);
+
+  router.route('/users')
+    .post(loginController.getAdminUsers);
 
 
 };

@@ -92,7 +92,6 @@ class HomeController {
   refreshMap() {
     this.refresh = true;
     this.$timeout(() => {
-      console.log('in timeout with this', this);
       this.refresh = false;
     }, 1000)
   }
@@ -147,7 +146,6 @@ class HomeController {
     socket.on('driver left', this.removeActiveDriver.bind(this));
 
     socket.on('connect', data => {
-      console.log('connected', data);
       this.requestOnlineBuses(socket);
     })
 

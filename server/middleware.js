@@ -38,6 +38,6 @@ module.exports = function(app, express) {
   require('./booking/bookingRoutes')(bookingRouter);
 
   app.use('/api/v1/admin', authRouter);
-  require('./login/loginRoutes')(authRouter);
+  require('./admin/adminRoutes')(authRouter);
 
 };

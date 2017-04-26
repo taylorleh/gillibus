@@ -8,13 +8,18 @@ import 'npm/fullcalendar/dist/fullcalendar.js';
 import 'npm/fullcalendar/dist/gcal.js';
 
 // CONTROLLERS
+import { default as AppController } from './main/mainCtrl';
 import { default as CharterController } from './charter/charterController';
 import { default as LocationsController } from './locations/locationsController';
 import { default as PricingController } from './pricing/pricingController';
 import { default as HomeController } from './home/homeController';
 import { default as RoutesController } from './routes/routesController';
 import { default as AdminController } from './admin/login/adminLoginController';
-import { default as AdminPortalController } from './admin/manage/adminPortalController';
+import { default as AdminPortalController } from './admin/manage/adminPortalController'; // original
+// new with abstract
+import { default as AdminBaseController } from './admin/adminCtrl';
+import { default as AdminOverviewController } from './admin/overview/adminOverviewCtrl';
+import { default as AdminUsersController } from './admin/users/adminUsersCtrl';
 
 // SERVICES
 import { default as ViewportService } from './services/viewport';
@@ -26,6 +31,7 @@ import { default as GpsSocketFactory } from './services/gpsSocketFactory';
 // import { default as AdminAuthenticationService } from './admin/login/services/adminAuthentication'; // this is mock do not use
 import { default as AdminAuth } from  './services/adminAuth';
 import { default as AdminSessionService } from  './services/adminSession';
+import { default as AdminPortalService } from './admin/services/adminPortalServices'; // services for users, buses, etc
 import { default as DirectionsService } from './services/directions';
 
 
@@ -77,42 +83,88 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
 
   $stateProvider
     .state('main', {
+      abstract: true,
       url: '/',
+      templateUrl: './main/mainTpl.html',
+      controller: 'AppController',
+      controllerAs: 'tl',
+      data: {}
+    })
+    .state('home', {
+      parent: 'main',
+      url: '',
       templateUrl: './home/homeTemplate.html',
       controller: 'HomeController',
       controllerAs: 'tl',
       data: {}
     })
     .state('routes', {
-      url: '/routes',
+      parent: 'main',
+      url: 'routes',
       templateUrl: 'routes/routesTemplate.html',
       controller: 'RoutesController',
       data: {}
     })
     .state('pricing', {
-      url: '/pricing',
+      parent: 'main',
+      url: 'pricing',
       templateUrl: 'pricing/pricingTemplate.html',
       controller: 'PricingController',
       data: {}
     })
     .state('charter', {
-      url: '/charter',
+      parent: 'main',
+      url: 'charter',
       templateUrl: 'charter/charterTemplate.html',
       controller: 'CharterController',
       controllerAs: 'vm',
       data: {}
     })
-    .state('admin', {
+    .state('login', {
       url: '/admin',
       templateUrl: 'admin/login/adminLoginTemplate.html',
       controller: 'AdminController',
       controllerAs: 'vm',
       data: {}
+    });
+
+  // ADMIN
+  $stateProvider
+    .state('portal', {
+      url: '/portal',
+      // abstract: true,
+      templateUrl: 'admin/admin.html',
+      controller: 'AdminBaseCtrl',
+      data: {
+        // authorizedRoles: [USER_ROLES.admin]
+      }
     })
-    .state('manage', {
-      url: '/admin/manage',
+    .state('portal.overview', {
+      parent: 'portal',
+      url: '/overview',
+      templateUrl: 'admin/overview/adminOverviewTpl.html',
+      controller: 'AdminOverviewCtrl',
+      redirectTo: 'login',
+      data: {
+        authorizedRoles: [USER_ROLES.admin]
+      }
+    })
+    .state('portal.buses', {
+      parent: 'portal',
+      url: '/buses',
       templateUrl: 'admin/manage/adminPortalTemplate.html',
       controller: 'PortalController',
+      controllerAs: 'vm',
+      redirectTo: 'login',
+      data: {
+        authorizedRoles: [USER_ROLES.admin]
+      }
+    })
+    .state('portal.users', {
+      parent: 'portal',
+      url: '/users',
+      templateUrl: 'admin/users/adminUsersTpl.html',
+      controller: 'AdminUsersCtrl',
       controllerAs: 'vm',
       data: {
         authorizedRoles: [USER_ROLES.admin]
@@ -136,7 +188,7 @@ config.$inject = ['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiPro
   '$httpProvider', 'USER_ROLES'];
 
 
-function run($rootScope, $location, AdminAuth, USER_ROLES, AUTH_EVENTS) {
+function run($rootScope, $location, AdminAuth, $state, USER_ROLES, AUTH_EVENTS) {
   // I PROBABLY DONT NEED ANY OF TH CODE BELOW AS THIS WAS MEANT FOR USE IN TEMPLATES
   $rootScope.currentUser = null;
   $rootScope.userRoles = USER_ROLES;
@@ -146,9 +198,17 @@ function run($rootScope, $location, AdminAuth, USER_ROLES, AUTH_EVENTS) {
     $rootScope.currentUser = user;
   };
 
+  // event, toState, toParams, fromState, fromParams, options){ ... }
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
 
-  $rootScope.$on('$stateChangeStart', function(event, next, current) {
-    let authorizedRoles = next.data.authorizedRoles;
+    let authorizedRoles = toState.data.authorizedRoles;
+
+    if(toState.parent && toState.parent === 'portal' && !fromState.name) {
+      event.preventDefault();
+      $state.go('login');
+      return;
+    }
+
     if (authorizedRoles && !AdminAuth.isAuthorized(authorizedRoles)) {
       event.preventDefault();
       if (AdminAuth.isAuthenticated()) {
@@ -163,18 +223,22 @@ function run($rootScope, $location, AdminAuth, USER_ROLES, AUTH_EVENTS) {
   });
 }
 
-run.$inject = ['$rootScope', '$location', 'AdminAuth', 'USER_ROLES', 'AUTH_EVENTS'];
+run.$inject = ['$rootScope', '$location', 'AdminAuth', '$state', 'USER_ROLES', 'AUTH_EVENTS'];
 
 angular.module(moduleName, [
     require('angular-ui-router'),
     require('npm/angular-ui-bootstrap'),
     require('angular-animate'),
+    AppController,
     CharterController,
     // LocationsController.name,
     // PricingController.name,
     HomeController,
     RoutesController,
-    AdminController,
+    AdminBaseController, // admin
+    AdminOverviewController,
+    AdminUsersController,
+    AdminController, // old admin
     AdminPortalController,
     CountdownDirective,
     CardDirective,
@@ -182,6 +246,7 @@ angular.module(moduleName, [
     CalendarService,
     CharterBookingService,
     CheckoutStateService,
+    AdminPortalService,
     // AdminAuthService, // remove
     // AdminAuthenticationService, // remove
     AdminAuth,
@@ -205,6 +270,7 @@ angular.module(moduleName, [
   .factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
     return {
       responseError: function(response) {
+        console.log('AUTH INTERCEPTOR');
         $rootScope.$broadcast({
           401: AUTH_EVENTS.notAuthenticated,
           403: AUTH_EVENTS.notAuthorized,

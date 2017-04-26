@@ -9,7 +9,7 @@ class PortalController {
 
   //noinspection SpellCheckingInspection
   constructor($scope, $geolocation, gpsSocketFactory, busProperties, adminSession, $state) {
-    angular.element('nav').hide();
+    angular.element('.front-nav').hide();
     this.gpsSocketFactory = gpsSocketFactory;
     this.$geolocation = $geolocation;
     this.$scope = $scope;
@@ -81,7 +81,6 @@ class PortalController {
    * @param busName
    */
   emitChosenBusToServer(socket, busName) {
-    console.log('emitting to server that driver has chosen bus', socket, busName);
     socket.emit('driver chooses bus', busName)
   }
 

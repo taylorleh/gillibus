@@ -32,7 +32,7 @@ exports.throwIfUserExists = (username) => {
 
   return models.Users.findOne({ where: { username: username } })
     .then(instance => {
-      if(instance) {
+      if (instance) {
         return Promise.reject('exists');
       }
       return Promise.resolve(instance);
@@ -72,11 +72,11 @@ exports.loginAdmin = (req, res, next) => {
 
   models.Users.findOne({ where: { username: username } })
     .then(instance => {
-      if(instance) {
+      if (instance) {
         return instance.checkPassword(password);
       }
       else {
-        return Promise.reject({message:'User not found!'});
+        return Promise.reject({ message: 'User not found!' });
       }
 
     })
@@ -99,6 +99,28 @@ exports.loginAdmin = (req, res, next) => {
       res.status(403).json({ success: false, message: error.message });
     })
 
+};
 
+
+/**
+ * Retrieves all the admin users
+ *
+ * @param req
+ * @param res
+ * @returns {object}
+ *
+ */
+exports.getAdminUsers = (req, res) => {
+  models.Users.findAll({
+      attributes: { exclude: ['hash', 'salt'] }
+    })
+    .then(response => {
+      res.json({
+        users: response
+      })
+    })
+    .catch(error => {
+      res.status(400).end(error);
+    })
 };
 

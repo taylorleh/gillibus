@@ -1,0 +1,20 @@
+<div class="container">
+  <table class="table table-condensed table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Created At</th>
+        <th>Updated At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in vm.users">
+        <td>{{user.id}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.createdAt | date }}</td>
+        <td>{{user.updatedAt | date }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
