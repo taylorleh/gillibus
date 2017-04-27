@@ -17,4 +17,13 @@
       </tr>
     </tbody>
   </table>
+  <div class="panel">
+    <form name="userAdd" ng-submit="vm.addNewAdminUser(vm.newEmail);">
+      <div class="form-group">
+        <label  for="newEmail">Email address</label>
+        <input required ng-model="vm.newEmail" type="email" class="form-control" id="newEmail" placeholder="Email">
+      </div>
+      <button type="submit" ng-disabled="userAdd.$invalid" class="btn btn-primary">Login</button>
+    </form>
+  </div>
 </div>

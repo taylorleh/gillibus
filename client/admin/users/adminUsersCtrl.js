@@ -11,6 +11,8 @@ class AdminUsers {
 
     this.users = [];
 
+    this.newEmail = '';
+
     adminPortalService.getAdminUsers()
       .then(this.adminUsersHandler.bind(this));
 
@@ -20,6 +22,10 @@ class AdminUsers {
 
   adminUsersHandler(response) {
     this.users = response.data.users;
+  }
+
+  addNewAdminUser(email) {
+    this.adminPortalService.requestNewUserToken(email);
   }
 
 

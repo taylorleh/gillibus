@@ -2,30 +2,9 @@
  * Created by taylor on 3/22/17.
  */
 
-  // let Users = require('../collections/users');
 let models = require('../models');
-let bcrypt = require('bcrypt-nodejs');
 let jwt = require('jsonwebtoken');
 
-
-let userExists = (username) => {
-  return Users.query({ where: { username: username } })
-    .fetchOne()
-    .then(user => {
-      return user === null ? Promise.resolve() : Promise.reject('user already exists');
-    });
-};
-
-
-exports.getUsers = (req, res) => {
-  Users.fetchAll()
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(err => {
-      res.json(err)
-    })
-};
 
 
 exports.throwIfUserExists = (username) => {
@@ -53,7 +32,7 @@ exports.createUser = (req, res) => {
       return models.Users.create({ username: username, password: password })
     })
     .then(result => {
-      res.json(result);
+      res.status(200).end();
     })
     .catch(error => {
       res.status(401).json(error);
@@ -123,4 +102,3 @@ exports.getAdminUsers = (req, res) => {
       res.status(400).end(error);
     })
 };
-

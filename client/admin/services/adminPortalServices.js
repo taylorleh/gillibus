@@ -8,7 +8,8 @@ function AdminPortalService($http) {
 
   let service = {};
   let urls = {
-    users: '/api/v1/admin/users'
+    users: '/api/v1/admin/users',
+    newUser: '/api/v1/admin/sendtoken'
   };
 
   service.getAdminUsers = () => {
@@ -19,6 +20,15 @@ function AdminPortalService($http) {
     .then(function(res) {
       return res;
     })
+  };
+
+
+  service.requestNewUserToken = (email) => {
+    return $http({
+      method: 'POST',
+      url: urls.newUser,
+      data: { user: email}
+    });
   };
 
 
