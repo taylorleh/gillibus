@@ -7,7 +7,7 @@ let expressSession = require('express-session');
 let passwordless = require('passwordless');
 let MySQLStore = require('passwordless-mysql');
 let send = require('./email');
-let host = 'https://taylorlehmanjs.com/register';
+let host = 'https://www.taylorlehmanjs.com/register';
 
 module.exports = function(app, express) {
   let calendarRouter = express.Router();
