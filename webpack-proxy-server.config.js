@@ -70,6 +70,10 @@ let config = {
         secure: false,
         target: 'http://localhost:3000'
       },
+      '/sendtoken': {
+        secure: false,
+        target:'http://localhost:3000'
+      },
       '/sockjs-node/*': {
         secure: false,
         target:'http://localhost:3000'
