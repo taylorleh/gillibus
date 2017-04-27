@@ -30,6 +30,7 @@ app.use(express.static(__dirname + '/client'));
 app.use(express.static(__dirname + '/sockjs-node'));
 app.use(express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 
 require('./server/middleware')(app, express);
