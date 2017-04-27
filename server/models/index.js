@@ -8,7 +8,6 @@ let fs = require("fs");
 let path = require("path");
 let Sequelize = require("sequelize");
 require('sequelize-isunique-validator')(Sequelize);
-// let env       = process.env.NODE_ENV || "development";
 
 
 /** @namespace process.env.DATABASE_URL */
