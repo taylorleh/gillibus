@@ -39,7 +39,7 @@ module.exports = function(app, express) {
       }
       callback(err)
     });
-  }, { ttl: 1000*60*10 });
+  }, { ttl: 1000*60*100 });
 
   app.use(expressSession({secret: process.env.SESSION_SECRET, saveUninitialized: false, resave: false}));
 
