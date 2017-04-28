@@ -29,10 +29,10 @@ module.exports = function(app, express) {
   passwordless.addDelivery(function(tokenToSend, uidToSend, recipient, callback) {
 
     send({
-      text: 'Hello!\nYou can now access your account here: '
+      text: 'Hello!\n \nYou can now access your account and complete registration here : '
       + host + '?token=' + tokenToSend + '&uid=' + encodeURIComponent(uidToSend),
       to: recipient,
-      subject: 'Token for ' + host
+      subject: 'You\'re invited to join the Gillibus team'
     }, function(err, message) {
       if (err) {
         console.log(err);
