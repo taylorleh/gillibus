@@ -32,7 +32,7 @@ exports.createUser = (req, res) => {
       return models.Users.create({ username: username, password: password })
     })
     .then(result => {
-      res.status(200).end();
+      res.redirect('/#/admin');
     })
     .catch(error => {
       res.status(401).json(error);

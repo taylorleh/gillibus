@@ -4,6 +4,7 @@
 
 let loginController = require('./adminController');
 let passwordless = require('passwordless');
+const recaptcha = require('../providers/captcha');
 
 module.exports = function(router) {
 
@@ -21,8 +22,15 @@ module.exports = function(router) {
   router.route('/users')
     .post(loginController.getAdminUsers);
 
-  router.route('/complete/registration')
-    .post(loginController.createUser);
+  router.post('/complete/registration', recaptcha.middleware.verify, function(req, res) {
+    if(req.recaptcha.error) {
+      req.flash('error', 'Validation Error!');
+      res.redirect('/password');
+    } else {
+      loginController.createUser(req, res);
+    }
+  });
+
 
   router.post('/sendtoken',
     passwordless.requestToken(
