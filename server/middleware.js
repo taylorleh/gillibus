@@ -6,8 +6,9 @@ let path = require('path');
 let expressSession = require('express-session');
 let passwordless = require('passwordless');
 let MySQLStore = require('passwordless-mysql');
-let send = require('./email');
-let host = 'https://www.taylorlehmanjs.com/register';
+let send = require('./providers');
+let host = process.env.NODE_ENV === 'production' ?  'https://www.taylorlehmanjs.com/register' : 'http://localhost:3000/register';
+const recaptcha = require('./providers/captcha');
 
 module.exports = function(app, express) {
   let calendarRouter = express.Router();
@@ -48,11 +49,15 @@ module.exports = function(app, express) {
   app.use(passwordless.sessionSupport());
   app.use(passwordless.acceptToken({ successRedirect: '/password' }));
 
+  recaptcha.init(process.env.CAPTCHA_KEY, process.env.CAPTCHA_SECRET);
+
 
 
   app.get('/register', passwordless.restricted());
-  app.get('/password', passwordless.restricted(), function(req, res) {
-    res.render('register', { user: req.user });
+
+
+  app.get('/password', passwordless.restricted(), recaptcha.middleware.render,  function(req, res) {
+    res.render('register', { user: req.user, captcha:req.recaptcha, messages: req.flash('error')  });
   });
 
   // ----------------------------------- ROUTES ------------------------------------------------

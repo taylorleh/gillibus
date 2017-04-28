@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-// const db = require('./server/db/config'); // bookshelf
+const flash = require('connect-flash');
 let models = require('./server/models');
 
 // CONFIG
@@ -32,6 +32,8 @@ app.use(express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+app.disable('x-powered-by');
+app.use(flash());
 
 require('./server/middleware')(app, express);
 

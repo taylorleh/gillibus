@@ -4,7 +4,7 @@
         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
         .login-page {
-            width: 360px;
+            width: 392px;
             padding: 8% 0 0;
             margin: auto;
         }
@@ -18,6 +18,10 @@
             padding: 45px;
             text-align: center;
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+
+        .flash {
+            color: red;
         }
 
         .form input {
@@ -103,11 +107,11 @@
         }
 
         body {
-            background: #76b852; /* fallback for old browsers */
-            background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-            background: -moz-linear-gradient(right, #76b852, #8DC26F);
-            background: -o-linear-gradient(right, #76b852, #8DC26F);
-            background: linear-gradient(to left, #76b852, #8DC26F);
+            background: #FBEC98; /* fallback for old browsers */
+            background: -webkit-linear-gradient(right, #FBEC98, #f7eaa1);
+            background: -moz-linear-gradient(right, #FBEC98, #f7eaa1);
+            background: -o-linear-gradient(right, #FBEC98, #f7eaa1);
+            background: linear-gradient(to left, #FBEC98, #f7eaa1);
             font-family: "Roboto", sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -118,35 +122,43 @@
 <body>
 <div class="login-page">
     <div class="form">
-        <form id="admin-form" class="register-form">
+        <% if (messages && messages.length) { %>
+            <h1 class="flash"><%= messages %></h1>
+        <% } %>
+        <form id="admin-form" method="post" action="/api/v1/admin/complete/registration" class="register-form">
+            <!--<input type="text" id="username" name="username" readonly value="<%= user %>"/>-->
             <input type="text" id="username" name="username" readonly value="<%= user %>"/>
             <input type="password" id="password" name="password" placeholder="password"/>
             <input type="password" id=confirm-password" name="confirm-password" placeholder="confirm password"/>
-            <button>create</button>
+            <% if(captcha) { %>
+                <%- captcha %>
+            <% } %>
+            <button type="submit">create</button>
             <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>
     </div>
 </div>
 <script>
-  $(function() {
-    $('#admin-form').submit(function(evt) {
-      evt.preventDefault();
-
-      $.ajax('/api/v1/admin/complete/registration', {
-          type: 'POST',
-          data: {
-            username: $('#username').val(),
-            password: $('#password').val()
-          }
-        })
-        .done(function(response) {
-          window.location = '/#/admin';
-        })
-        .fail(function(error) {
-          window.location = '/';
-        });
-    });
-  });
+//  $(function() {
+//    $('button').click(function(evt) {
+//      evt.preventDefault();
+//
+//      $.ajax('/api/v1/admin/complete/registration', {
+//          type: 'POST',
+//          data: {
+//            username: $('#username').val(),
+//            password: $('#password').val(),
+//            "g-recaptcha-response": grecaptcha.getResponse()
+//          }
+//        })
+////        .done(function(response) {
+////          window.location = '/#/admin';
+////        })
+////        .fail(function(error) {
+////          window.location = '/';
+////        });
+//    });
+//  });
 </script>
 </body>
 </html>
