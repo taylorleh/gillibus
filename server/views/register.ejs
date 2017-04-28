@@ -24,6 +24,14 @@
             color: red;
         }
 
+        .validity {
+            display: none;
+            padding: 1em .2em;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 1em;
+        }
+
         .form input {
             font-family: "Roboto", sans-serif;
             outline: 0;
@@ -125,11 +133,11 @@
         <% if (messages && messages.length) { %>
             <h1 class="flash"><%= messages %></h1>
         <% } %>
+        <div class="validity"></div>
         <form id="admin-form" method="post" action="/api/v1/admin/complete/registration" class="register-form">
-            <!--<input type="text" id="username" name="username" readonly value="<%= user %>"/>-->
             <input type="text" id="username" name="username" readonly value="<%= user %>"/>
             <input type="password" id="password" name="password" placeholder="password"/>
-            <input type="password" id=confirm-password" name="confirm-password" placeholder="confirm password"/>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="confirm password"/>
             <% if(captcha) { %>
                 <%- captcha %>
             <% } %>
@@ -139,26 +147,17 @@
     </div>
 </div>
 <script>
-//  $(function() {
-//    $('button').click(function(evt) {
-//      evt.preventDefault();
-//
-//      $.ajax('/api/v1/admin/complete/registration', {
-//          type: 'POST',
-//          data: {
-//            username: $('#username').val(),
-//            password: $('#password').val(),
-//            "g-recaptcha-response": grecaptcha.getResponse()
-//          }
-//        })
-////        .done(function(response) {
-////          window.location = '/#/admin';
-////        })
-////        .fail(function(error) {
-////          window.location = '/';
-////        });
-//    });
-//  });
+  $(function() {
+    $('form').submit(function(evt) {
+      $('.validity').hide();
+      if($('#password').val() !== $('#confirm-password').val()) {
+        $('.validity').text('Password doesn\t match').show();
+        $('#password').val('') && $('#confirm-password').val('')
+        grecaptcha.reset();
+        evt.preventDefault();
+      }
+    });
+  });
 </script>
 </body>
 </html>
