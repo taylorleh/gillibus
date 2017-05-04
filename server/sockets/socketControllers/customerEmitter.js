@@ -17,7 +17,18 @@ let _ = require('lodash');
  *
  * @param {driversCallback} cb
  */
-exports.sendClientOnlineDrivers = function(cb) {
+exports.onClientRequestAllBuses = function(cb) {
   // console.log('CLIENT LOADED AND REQUESTING ONLINE DRIVERS', JSON.stringify(driversModel.getOnlineDrivers()))
-  cb(_.toArray(driversModel.getOnlineDrivers()));
+  driversModel.debug('client request connections');
+  let currentConnections = driversModel.getAllConnections();
+  let out = [];
+  let connections = Object.keys(currentConnections).forEach(con => {
+    let mod = currentConnections[con];
+    if(mod.bus && mod.loc) {
+      out.push(currentConnections[con].loc);
+    } else {
+      console.error('COULD NOT PROPERLY RETURN BUSES TO CLIENT', mod);
+    }
+  });
+  cb(out);
 };

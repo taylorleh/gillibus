@@ -9,6 +9,7 @@ let simpleDrivers = {};
 let socketioJwt = require('socketio-jwt');
 let jwt = require('jsonwebtoken');
 let SECRET = process.env.JWT_SECRET;
+let driverModel = require('./models/driversModel'); // TODO - remove after debug
 
 
 let len = (obj) => {
@@ -72,26 +73,36 @@ module.exports = (io)  => {
   }));
 
   driverChannel.on('connection', socket => {
+    console.log('DRIVER CONNECTED');
     // if(len(drivers) === 0) {
     //   sendStaticToGroup(customers,'yes buses', customerChannel)
     // }
     let driverId = socket.id;
 
-    if(!drivers[socket.id]) {
-      drivers[socket.id] = socket;
-    }
+    // if(!drivers[socket.id]) {
+    //   drivers[socket.id] = socket;
+    // }
+
+    driverController.onConnect(socket);
 
     socket.on('driver chooses bus', busname => {
-      simpleDrivers[socket.id] = busname;
-      driverController.sendClientBusesAvailable(customerChannel);
+      // simpleDrivers[socket.id] = busname;
+      // driverController.sendClientBusesAvailable(customerChannel);
+      driverController.onDriverChoseBus(socket, busname);
+      driverModel.debug();
     });
 
     socket.on('disconnect', () => {
-      let driversBus = simpleDrivers[socket.id];
-      delete drivers[socket.id];
-      delete simpleDrivers[socket.id];
-      driverController.sendDriverHasLeft(customerChannel, driversBus, driverId);
-      (len(drivers) === 0) && sendStaticToGroup(customers, 'no buses', customerChannel)
+      driverController.onDisconnect(socket, customerChannel);
+
+      // let driversBus = simpleDrivers[socket.id];
+      // if (!driversBus) {
+      //   console.log('DRIVER BUS COULD NOT BE LOCATED');
+      // }
+      // delete drivers[socket.id];
+      // delete simpleDrivers[socket.id];
+      // driverController.sendDriverHasLeft(customerChannel, driversBus, driverId);
+      // (len(drivers) === 0) && sendStaticToGroup(customers, 'no buses', customerChannel)
     });
 
     socket.on('driver location', locations => {
@@ -99,7 +110,9 @@ module.exports = (io)  => {
       checkTokenExpiration(SECRET, driverToken, err => {
         driverController.sendExpirationUnauthorization(socket, err);
       }, data => {
-        driverController.sendDriverLocation(customerChannel, locations, driverId);
+        driverController.onDriverLocation(socket, locations);
+        customerChannel.emit('bus location', locations);
+        driverModel.debug('choose bus');
       })
     });
   });
@@ -117,7 +130,7 @@ module.exports = (io)  => {
     });
 
     socket.on('what buses are online', (cb) => {
-      customerController.sendClientOnlineDrivers(cb);
+      customerController.onClientRequestAllBuses(cb);
     });
 
   });

@@ -161,6 +161,7 @@ class HomeController {
    */
   requestOnlineBuses(socket) {
     socket.emit('what buses are online', data => {
+      console.log('CLIENT RECIEVED ONLINE BUSES', data);
       Object.keys(data).length && (this.nobus = false);
       this.updateBusSelectionWithCurrentlyOnlineBuses(data);
     });
@@ -193,11 +194,18 @@ class HomeController {
    * @param busName
    */
   removeActiveDriver(busName) {
-    if (this.activeBuses[busName] && this.markers[busName]) {
+    if(!busName) {
+      console.error('NO BUS NAME RECIEVED');
+      return;
+    }
+
+    if (!this.activeBuses[busName]) {
+      console.warn('Busname not in active buses', this.activeBuses);
+    } else if(!this.markers[busName]) {
+      console.warn('tried removing bus but is not in model', this.markers);
+    } else {
       delete this.activeBuses[busName];
       delete this.markers[busName];
-    } else {
-      console.warn('tried removing bus but is not in model');
     }
   }
 

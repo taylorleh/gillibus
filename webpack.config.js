@@ -60,7 +60,7 @@ let config = {
     MainStylesExtract,
     VendorStylesExtract
   ],
-  devtool: 'source_map'
+  devtool: 'source-map'
 };
 
 

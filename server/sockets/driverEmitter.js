@@ -20,17 +20,32 @@ driverController.sendExpirationUnauthorization = function(socket, error) {
 };
 
 
+// /**
+//  * Emits to customer channel the drivers' location
+//  *
+//  * @param socket - the customer channel
+//  * @param locationObj - the bus drivers' location
+//  * @param {String} id - socket id for driver
+//  */
+// driverController.sendDriverLocation = function(socket, locationObj, id) {
+//   let locationWithoutId = _.clone(locationObj);
+//   driversModel.cacheDriversLatestPosition(locationObj.bus, locationObj, id);
+//   socket.emit('bus location', locationWithoutId);
+// };
+
 /**
- * Emits to customer channel the drivers' location
+ * Adds a driver's location to their respective connection
  *
- * @param socket - the customer channel
- * @param locationObj - the bus drivers' location
- * @param {String} id - socket id for driver
+ * @param socket
+ * @param {Object} locationObj
+ *
  */
-driverController.sendDriverLocation = function(socket, locationObj, id) {
-  let locationWithoutId = _.clone(locationObj);
-  driversModel.cacheDriversLatestPosition(locationObj.bus, locationObj, id);
-  socket.emit('bus location', locationWithoutId);
+driverController.onDriverLocation = function(socket, locationObj) {
+  if(driversModel.isDriverRegistered(socket.id)) {
+    driversModel.updateDriversLocation(socket.id, locationObj);
+  } else {
+    console.warn('Tried ADDING LOCATION but driver\'s connection is not found!');
+  }
 };
 
 
@@ -47,9 +62,56 @@ driverController.sendClientBusesAvailable = function(socket) {
  * @param sockId - socket id of driver
  */
 driverController.sendDriverHasLeft = function(socket, busName, sockId) {
-  let leavingDriverBusName = driversModel.removeDriverById(sockId);
-  socket.emit('driver left', leavingDriverBusName);
+  console.error('DO NOT INVOKE')
+  // let leavingDriverBusName = driversModel.removeDriverById(sockId);
+  // socket.emit('driver left', leavingDriverBusName);
 };
 
+
+/**
+ * Checks if driver has already been registered, and if not
+ * registers a new driver
+ *
+ * @param socket
+ * @returns None
+ *
+ */
+driverController.onConnect = function(socket) {
+  let id = socket.id;
+  if(!driversModel.isDriverRegistered(id)) {
+    driversModel.addDriver(id, socket);
+    driversModel.debug('connect');
+  } else {
+    console.warn('Tried ADDING driver but id already exists!');
+  }
+};
+
+
+driverController.onDisconnect = function(socket, customerChannel) {
+  let id = socket.id;
+  if(driversModel.isDriverRegistered(socket.id)) {
+    let oldConnection = driversModel.removeDriver(id);
+    customerChannel.emit('driver left', oldConnection.bus);
+    driversModel.debug('disconnect');
+  } else {
+    console.warn('Tried REMOVING driver but driver\'s socket was not found!');
+  }
+};
+
+
+/**
+ * Binds the bus name to the drivers socket
+ *
+ * @param socket
+ * @param {String} bus - the driver's chosen bus
+ *
+ */
+driverController.onDriverChoseBus = function(socket, bus) {
+  if(driversModel.isDriverRegistered(socket.id)) {
+    driversModel.bindBusToDriverSocket(socket.id, bus);
+  } else {
+    console.warn('Tried BINDING BUS NAME to driver connection bus connection did not exist');
+  }
+};
 
 module.exports = driverController;

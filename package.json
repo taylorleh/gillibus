@@ -11,7 +11,8 @@
     "wp-watch": "webpack --watch",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
     "dev-proxy": "webpack-dev-server --hot --inline --config webpack-proxy-server.config.js --content-base client",
-    "build:prod": "NODE_ENV='production' webpack --colors"
+    "build:prod": "NODE_ENV='production' webpack --colors",
+    "build:dev": "NODE_ENV='DEVELOPMENT' webpack --colors"
   },
   "repository": {
     "type": "git",
