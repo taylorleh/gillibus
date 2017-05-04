@@ -89,51 +89,9 @@ class HomeController {
   }
 
 
-  refreshMap() {
-    this.refresh = true;
-    this.$timeout(() => {
-      this.refresh = false;
-    }, 1000)
-  }
 
 
-  /**
-   * Resolve block
-   *
-   * @param {Object} userCoords
-   * @param {Array} instance
-   *
-   * */
-  // getTimeToDestination(userCoords, instance) {
-  //   let directionsDisplay = new google.maps.DirectionsRenderer();
-  //   directionsDisplay.setMap(instance);
-  //
-  //   let directionsService = new google.maps.DirectionsService();
-  //
-  //   let directionsReq = {
-  //     travelMode: 'WALKING',
-  //     origin: {
-  //       lat: userCoords.location.latitude,
-  //       lng: userCoords.location.longitude
-  //     },
-  //     destination: {
-  //       lat: this.SF_PICKUP.LAT,
-  //       lng: this.SF_PICKUP.LNG
-  //     }
-  //   };
-  //
-  //
-  //   directionsService.route(directionsReq, (res, status) => {
-  //     directionsDisplay.setDirections(res);
-  //     this.initTimer(res.routes.pop());
-  //     // this.timerError = false;
-  //   });
-  // }
 
-
-  isDriverNew(locationObj) {
-    return !(locationObj.bus in this.activeBuses);
-  }
 
   initSocketListeners(socket) {
     socket.on('bus location', this.onBusLocation.bind(this));
@@ -189,6 +147,14 @@ class HomeController {
   }
 
 
+  checkIfBusesActive() {
+    this.nobus = !Object.keys(this.activeBuses).length;
+    if(!Object.keys(this.activeBuses).length) {
+      console.log('no online buses');
+    }
+  }
+
+
   /**
    * removes a bus from the active list after driver disconnects
    * @param busName
@@ -207,15 +173,11 @@ class HomeController {
       delete this.activeBuses[busName];
       delete this.markers[busName];
     }
+
+    this.checkIfBusesActive();
   }
 
 
-  makeCoordsObject(locationObj) {
-    return {
-      longitude: locationObj.location.longitude,
-      latitude: locationObj.location.latitude
-    }
-  }
 
   // ------------------------------------------ SOCKET HANDLERS ------------------------------------------
 
@@ -285,18 +247,6 @@ class HomeController {
   }
 
 
-  init(socket) {
-    this.initSocketListeners(socket);
-
-
-    // Promise.all([this.uiGmapIsReady.promise(1), this.uiGmapGoogleMapApi])
-    //   .then(function(results) {
-    //     let map = results[0][0];
-    //     // let currentPosition = results[1].coords;
-    //     this.MAP_INSTANCE = map;
-    //     // this.getTimeToDestination(currentPosition, map.map);
-    //   }.bind(this));
-  }
 }
 
 HomeController.$inject = ['$scope', 'mapConfig', '$geolocation', 'uiGmapIsReady', 'uiGmapGoogleMapApi',
