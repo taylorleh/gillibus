@@ -188,7 +188,7 @@ config.$inject = ['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiPro
   '$httpProvider', 'USER_ROLES'];
 
 
-function run($rootScope, $location, AdminAuth, $state, USER_ROLES, AUTH_EVENTS) {
+function run($rootScope, $location, $window, AdminAuth, $state, USER_ROLES, AUTH_EVENTS) {
   // I PROBABLY DONT NEED ANY OF TH CODE BELOW AS THIS WAS MEANT FOR USE IN TEMPLATES
   $rootScope.currentUser = null;
   $rootScope.userRoles = USER_ROLES;
@@ -221,9 +221,14 @@ function run($rootScope, $location, AdminAuth, $state, USER_ROLES, AUTH_EVENTS) 
     }
 
   });
+
+
+  $rootScope.$on('$stateChangeSuccess', function (event) {
+    $window.ga('send', 'pageview', $location.path());
+  });
 }
 
-run.$inject = ['$rootScope', '$location', 'AdminAuth', '$state', 'USER_ROLES', 'AUTH_EVENTS'];
+run.$inject = ['$rootScope', '$location', '$window', 'AdminAuth', '$state', 'USER_ROLES', 'AUTH_EVENTS'];
 
 angular.module(moduleName, [
     require('angular-ui-router'),
