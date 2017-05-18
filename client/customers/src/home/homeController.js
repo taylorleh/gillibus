@@ -28,10 +28,10 @@ class HomeController {
     this.markerId = Infinity;
     this.activeBusName = null;
     this.markerOptions = {
-      GILLIBUS: 'assets/images/gillibus.png',
-      STARSHIP: 'assets/images/starship.png',
-      G3: 'assets/images/g3.png',
-      CHARLIE: 'assets/images/charlie.png'
+      GILLIBUS: 'static/images/gillibus.png',
+      STARSHIP: 'static/images/starship.png',
+      G3: 'static/images/g3.png',
+      CHARLIE: 'static/images/charlie.png'
     };
     this.initSocketListeners(this.socket);
 

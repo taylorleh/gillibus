@@ -5,23 +5,23 @@
         <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#/">Gillibus</a>
+      <a class="navbar-brand" href="/">Gillibus</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-init="curTab = 'San Francisco'; loc = 'San Francisco'">
       <ul class="nav navbar-nav">
         <li class="dropdown">
-          <a href="#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{loc}}<span class="caret"></span></a>
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{loc}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li ng-click="curTab = 'San Francisco'; loc = 'San Francisco'" ng-class="{active: (curTab == 'San Francisco')}">
-              <a href="#/">San Francisco</a>
+              <a href="/">San Francisco</a>
             </li>
             <li ng-click="curTab = 'Oakland'; loc = 'Oakland'" ng-class="{active: (curTab == 'Oakland')}">
-              <a href="#/">Oakland</a>
+              <a href="/">Oakland</a>
             </li>
             <li role="separator" class="divider"></li>
             <li ng-click="curTab = 'routes'" ng-class="{active: (curTab == 'all')}">
-              <a href="#/routes">All Routes</a>
+              <a href="/routes">All Routes</a>
             </li>
           </ul>
         </li>

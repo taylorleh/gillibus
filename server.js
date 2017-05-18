@@ -26,7 +26,7 @@ const morgan = require('morgan');
 app.set('PRIVATE_KEY', auth.serializeKey(process.env.PRIVATE_KEY));
 app.use(sslRedirect());
 app.use(morgan('dev'));
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/client/customers/dist'));
 app.use(express.static(__dirname + '/sockjs-node'));
 app.use(express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());

@@ -3,6 +3,7 @@
  */
 
 import angular from 'npm/angular';
+import cardTpl from './partials/stripeForm.tpl.html';
 let moduleName = 'gillibus.directive.cardValidation';
 let style = {
   base: {
@@ -90,7 +91,8 @@ function StripeForm(viewportService, charterBooking) {
 
   return {
     restrict: 'EA',
-    templateUrl: '../directives/partials/stripeForm.tpl.html',
+    // templateUrl: '../directives/partials/stripeForm.tpl.html',
+    template: cardTpl,
     replace: true,
     scope: {
       options: '=',

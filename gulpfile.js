@@ -20,12 +20,12 @@ gulp.task('fonts', function() {
 
 
 gulp.task('less', function() {
-  return gulp.src('./client/less/**/*.less')
+  return gulp.src('./client/customers/src/less/**/*.less')
     .pipe(less({
       paths: [path.join(__dirname,'includes' )]
     }))
     .pipe(concat('styles.css'))
-    .pipe(gulp.dest('./client/dist/assets'))
+    .pipe(gulp.dest('./client/customers/static'))
 });
 
 

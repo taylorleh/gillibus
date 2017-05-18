@@ -35,12 +35,19 @@ import { default as AdminPortalService } from './admin/services/adminPortalServi
 import { default as DirectionsService } from './services/directions';
 
 
+// var templateUrl = require('ngtemplate!html!./test.html');
+// TEMPLATES
+const mainTpl = require('./main/mainTpl.html');
+const homeTemplate = require('./home/homeTemplate.html');
+const routesTemplate = require('./routes/routesTemplate.html');
+const pricingTemplate = require('./pricing/pricingTemplate.html');
+const charterTemplate = require('./charter/charterTemplate.html');
+const adminLoginTemplate = require('./admin/login/adminLoginTemplate.html');
+
 // INTERCEPTORS
 import { default as AttachTokensInterceptor } from './services/interceptors/attachTokens';
 
 // DIRECTIVES
-// import { default as ViewportDirective } from './directives/viewport';
-// import { default as FocusDirective } from './directives/focus';
 import { default as CountdownDirective } from './directives/countdownSubheader';
 import { default as CardDirective } from './directives/cardValidation';
 
@@ -52,21 +59,23 @@ import { default as UserRoles } from './constant/userRoles';
 import { default as AuthEvents } from './constant/authEvents';
 
 // THIRDS PARTY
-import 'npm/ngGeolocation/ngGeolocation';
-import 'npm/angular-moment/angular-moment.js';
-// import 'npm/angular-ui-bootstrap';
+import 'ngGeolocation/ngGeolocation';
+import 'angular-moment/angular-moment.js';
 import 'bootstrap/dist/js/bootstrap';
-import 'npm/angular-socket-io/socket.js';
-import 'npm/bootstrap/less/bootstrap.less';
-import io from '../node_modules/socket.io-client/dist/socket.io';
-window.io = io;
+import 'angular-socket-io/socket.js';
 
-import 'npm/fullcalendar/dist/fullcalendar.css';
-import './dist/assets/styles.css';
+// STYLES
+import 'bootstrap/less/bootstrap.less';
+import 'font-awesome/less/font-awesome.less';
+import 'fullcalendar/dist/fullcalendar.css';
+import '../static/styles.css';
+
+import io from '../../../node_modules/socket.io-client/dist/socket.io';
+window.io = io;
 
 
 import 'npm/angular-google-maps/dist/angular-google-maps';
-import nemLogging from 'npm/angular-simple-logger/dist/index'
+import 'npm/angular-simple-logger/dist/index';
 
 let moduleName = 'gillibus';
 
@@ -85,7 +94,8 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
     .state('main', {
       abstract: true,
       url: '/',
-      templateUrl: './main/mainTpl.html',
+      // templateUrl: mainTpl,
+      template: mainTpl,
       controller: 'AppController',
       controllerAs: 'tl',
       data: {}
@@ -93,7 +103,7 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
     .state('home', {
       parent: 'main',
       url: '',
-      templateUrl: './home/homeTemplate.html',
+      template: homeTemplate,
       controller: 'HomeController',
       controllerAs: 'tl',
       data: {}
@@ -101,75 +111,75 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
     .state('routes', {
       parent: 'main',
       url: 'routes',
-      templateUrl: 'routes/routesTemplate.html',
+      template: routesTemplate,
       controller: 'RoutesController',
       data: {}
     })
     .state('pricing', {
       parent: 'main',
       url: 'pricing',
-      templateUrl: 'pricing/pricingTemplate.html',
+      template: pricingTemplate,
       controller: 'PricingController',
       data: {}
     })
     .state('charter', {
       parent: 'main',
       url: 'charter',
-      templateUrl: 'charter/charterTemplate.html',
+      template: charterTemplate,
       controller: 'CharterController',
       controllerAs: 'vm',
       data: {}
     })
-    .state('login', {
-      url: '/admin',
-      templateUrl: 'admin/login/adminLoginTemplate.html',
-      controller: 'AdminController',
-      controllerAs: 'vm',
-      data: {}
-    });
+    // .state('login', {
+    //   url: '/admin',
+    //   template: adminLoginTemplate,
+    //   controller: 'AdminController',
+    //   controllerAs: 'vm',
+    //   data: {}
+    // });
 
   // ADMIN
-  $stateProvider
-    .state('portal', {
-      url: '/portal',
-      // abstract: true,
-      templateUrl: 'admin/admin.html',
-      controller: 'AdminBaseCtrl',
-      data: {
-        // authorizedRoles: [USER_ROLES.admin]
-      }
-    })
-    .state('portal.overview', {
-      parent: 'portal',
-      url: '/overview',
-      templateUrl: 'admin/overview/adminOverviewTpl.html',
-      controller: 'AdminOverviewCtrl',
-      redirectTo: 'login',
-      data: {
-        authorizedRoles: [USER_ROLES.admin]
-      }
-    })
-    .state('portal.buses', {
-      parent: 'portal',
-      url: '/buses',
-      templateUrl: 'admin/manage/adminPortalTemplate.html',
-      controller: 'PortalController',
-      controllerAs: 'vm',
-      redirectTo: 'login',
-      data: {
-        authorizedRoles: [USER_ROLES.admin]
-      }
-    })
-    .state('portal.users', {
-      parent: 'portal',
-      url: '/users',
-      templateUrl: 'admin/users/adminUsersTpl.html',
-      controller: 'AdminUsersCtrl',
-      controllerAs: 'vm',
-      data: {
-        authorizedRoles: [USER_ROLES.admin]
-      }
-    });
+  // $stateProvider
+  //   .state('portal', {
+  //     url: '/portal',
+  //     // abstract: true,
+  //     templateUrl: 'customers/src/admin/admin.html',
+  //     controller: 'AdminBaseCtrl',
+  //     data: {
+  //       // authorizedRoles: [USER_ROLES.admin]
+  //     }
+  //   })
+  //   .state('portal.overview', {
+  //     parent: 'portal',
+  //     url: '/overview',
+  //     templateUrl: 'customers/src/admin/overview/adminOverviewTpl.html',
+  //     controller: 'AdminOverviewCtrl',
+  //     redirectTo: 'login',
+  //     data: {
+  //       authorizedRoles: [USER_ROLES.admin]
+  //     }
+  //   })
+  //   .state('portal.buses', {
+  //     parent: 'portal',
+  //     url: '/buses',
+  //     templateUrl: 'customers/src/admin/manage/adminPortalTemplate.html',
+  //     controller: 'PortalController',
+  //     controllerAs: 'vm',
+  //     redirectTo: 'login',
+  //     data: {
+  //       authorizedRoles: [USER_ROLES.admin]
+  //     }
+  //   })
+  //   .state('portal.users', {
+  //     parent: 'portal',
+  //     url: '/users',
+  //     templateUrl: 'customers/src/admin/users/adminUsersTpl.html',
+  //     controller: 'AdminUsersCtrl',
+  //     controllerAs: 'vm',
+  //     data: {
+  //       authorizedRoles: [USER_ROLES.admin]
+  //     }
+  //   });
 
   $urlRouterProvider.otherwise('/');
 
@@ -180,7 +190,8 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
     libraries: 'geometry'
   });
 
-  $locationProvider.hashPrefix('');
+  // $locationProvider.hashPrefix('');
+  $locationProvider.html5Mode(true);
   $httpProvider.interceptors.push('AttachTokens');
 
 }

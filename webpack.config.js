@@ -1,45 +1,68 @@
 const ExtractTextPlugin  = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-const MainStylesExtract =  new ExtractTextPlugin('assets/main.css');
-const VendorStylesExtract = new ExtractTextPlugin('assets/vendor.css');
+const MainStylesExtract =  new ExtractTextPlugin('static/css/main.css');
+const VendorStylesExtract = new ExtractTextPlugin('static/css/vendor.css');
 const target = process.env.NODE_ENV || 'develop';
+const shell = require('shelljs');
+
+const buildDir = path.resolve(__dirname, 'client/customers/dist');
+shell.rm('-rf', buildDir);
+
 
 let config = {
-  context: __dirname + '/client',
-  entry: './app.js',
+  context: path.resolve(__dirname, "client"),
+  entry: {
+    customers: './customers/src/app.js',
+    // admin: './vue-admin/src/main.js'
+  },
   output: {
-    path: __dirname + '/client/dist',
-    filename: 'bundle.js',
-    publicPath: '/dist/'
+    path: path.resolve(__dirname, 'client/customers/dist'),
+    filename: 'static/js/[name].js'
   },
   module: {
     rules: [
       {
         test:/\.js$/,
-        exclude:[path.resolve(__dirname, 'node_modules'), __dirname + '/client/dist'],
+        exclude:[path.resolve(__dirname, 'node_modules'), __dirname + 'customers/dist'],
         loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }
       },
       {
+        test: /\.(less|css)$/,
+        include: [
+          path.resolve(__dirname, 'node_modules')
+        ],
+        use: VendorStylesExtract.extract({
+          fallback: "style-loader",
+          use: "css-loader!less-loader?url=false"
+        })
+      },
+      {
         test: /\.css$/,
+        exclude: [
+          path.resolve(__dirname, 'node_modules')
+        ],
         use: MainStylesExtract.extract({
           fallback: "style-loader",
           use: "css-loader?url=false",
         })
       },
       {
-        test: /\.less$/,
-        use: VendorStylesExtract.extract({
-          fallback: "style-loader",
-          use: "css-loader!less-loader"
-        })
-      },
-      {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
         loader: 'file-loader?emitFile=false&name=fonts/[name].[ext]'
+      },
+      {
+        test: /\.html$/,
+        loader: 'raw-loader'
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       }
     ]
   },
@@ -50,15 +73,28 @@ let config = {
       jquery$:path.resolve( __dirname,'node_modules/jquery/src/jquery.js'),
       moment$:path.resolve( __dirname,'node_modules/moment/moment.js'),
       bootstrapcss$: path.resolve( __dirname,'node_modules/bootstrap/dist/css/bootstrap.css'),
+      bootstrap: path.resolve(__dirname, "node_modules/bootstrap"),
       npm: __dirname + '/node_modules',
-      // ass: path.resolve( __dirname,'client/assets/')
-      // b: __dirname + '/client/lib'
-      // angular$: path.resolve(__dirname, 'node_modules/angular/index.js')
     }
   },
   plugins: [
+    VendorStylesExtract,
     MainStylesExtract,
-    VendorStylesExtract
+    new CopyWebpackPlugin([
+      {
+        from: 'customers/assets/fonts',
+        to: 'static/fonts'
+      },
+      {
+        from: 'customers/assets/images',
+        to: 'static/images'
+      }
+    ]),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.resolve(__dirname, 'client/customers/index.html'),
+      inject: true
+    })
   ],
   devtool: 'source-map'
 };

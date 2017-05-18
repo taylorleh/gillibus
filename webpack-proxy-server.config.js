@@ -7,10 +7,12 @@ const target = process.env.NODE_ENV || 'develop';
 
 let config = {
   context: path.resolve(__dirname, 'client'),
-  entry: './app.js',
+  entry: {
+    customers: './customers/src/app.js'
+  },
   output: {
     path: __dirname + '/client',
-    filename: 'bundle.js',
+    filename: '[name]/dist/bundle.js',
     publicPath: '/dist/'
   },
   module: {

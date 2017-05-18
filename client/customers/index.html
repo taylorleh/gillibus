@@ -2,13 +2,11 @@
 <html class="no-js" lang="" ng-app="gillibus">
 <head>
   <meta charset="utf-8">
+  <title>Gillibus</title>
+  <base href="/">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="google-site-verification" content="Pgwni3byCSURFBt4KBqVp2E2v8sneajGB3xgu82XEQM" />
-  <title>Gillibus</title>
-  <meta name="description" content="">
-  <link rel="stylesheet" href="dist/assets/vendor.css">
-  <link rel="stylesheet" href="dist/assets/main.css">
   <meta name="robots" content="noindex,nofollow">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -18,20 +16,14 @@
 
     ga('create', 'UA-98508717-1', 'auto');
     ga('send', 'pageview');
-
   </script>
-  <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4rZOUR9C6GjW-FUifZ_kNZpnv9WjS6U&callback=initMap" async defer></script>-->
-  <style>
-    .angular-google-map-container { height: 70vh; }
-  </style>
+  <style>.angular-google-map-container { height: 70vh; }</style>
   <script src="https://js.stripe.com/v3/"></script>
-  <script type="text/javascript">
-    stripe = Stripe('pk_test_pqvrekGG8v1fdndujmr6CA20');
-  </script>
+  <script type="text/javascript">stripe = Stripe('pk_test_pqvrekGG8v1fdndujmr6CA20');</script>
 </head>
 <body>
-  <div ui-view></div>
-  <script src="dist/bundle.js"></script>
+<div ui-view></div>
+
 </body>
 </html>
 
