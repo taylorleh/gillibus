@@ -13,10 +13,10 @@ const paths = {
 };
 
 
-gulp.task('fonts', function() {
-  return gulp.src(paths.BOWER + '/font-awesome/**/*.*')
-    .pipe(gulp.dest(paths.FONT_AWESOME_OUT));
-});
+// gulp.task('fonts', function() {
+//   return gulp.src(paths.BOWER + '/font-awesome/**/*.*')
+//     .pipe(gulp.dest(paths.FONT_AWESOME_OUT));
+// });
 
 
 gulp.task('less', function() {
@@ -25,7 +25,7 @@ gulp.task('less', function() {
       paths: [path.join(__dirname,'includes' )]
     }))
     .pipe(concat('styles.css'))
-    .pipe(gulp.dest('./client/customers/static'))
+    .pipe(gulp.dest('./client/customers/dist/static/css'))
 });
 
 

@@ -44,6 +44,7 @@ exports.loginAdmin = (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
 
+
   if (!username || !password) {
     res.status(401).end('must define pass and user');
   }
@@ -64,8 +65,12 @@ exports.loginAdmin = (req, res, next) => {
       let secret = process.env.JWT_SECRET;
 
       let token = jwt.sign(claims, secret, {
-        expiresIn: '3h'
+        expiresIn: '1m'
       });
+
+      res.cookie('X-Access-Token', token, { httpOnly: true}); //SET COOKIE BECAUSE WE ARE LOADING NEW ROUTE
+
+
       res.json({
         success: true,
         message: 'Admin Authenticated',
@@ -73,6 +78,7 @@ exports.loginAdmin = (req, res, next) => {
         roles: 'ADMIN',
         id: claims.id
       });
+
     })
     .catch(error => {
       res.status(403).json({ success: false, message: error.message });

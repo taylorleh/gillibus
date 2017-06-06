@@ -80,7 +80,7 @@ driverController.onConnect = function(socket) {
   let id = socket.id;
   if(!driversModel.isDriverRegistered(id)) {
     driversModel.addDriver(id, socket);
-    driversModel.debug('connect');
+    // driversModel.debug('connect');
   } else {
     console.warn('Tried ADDING driver but id already exists!');
   }

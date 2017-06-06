@@ -7,10 +7,11 @@ let moduleName = 'gillibus.admin.controller.adminController';
 
 class AdminController {
 
-  constructor($scope, $state, $rootScope, $window, AdminAuth, AUTH_EVENTS) {
+  constructor($scope, $state, $rootScope, $window, AdminAuth, $location, AUTH_EVENTS) {
     angular.element('nav').hide();
 
     this.AUTH_EVENTS = AUTH_EVENTS;
+    this.$location = $location;
     this.$window = $window;
     this.AdminAuth = AdminAuth;
     this.$state = $state;
@@ -33,10 +34,12 @@ class AdminController {
   onRequestLogin(formData) {
     this.AdminAuth.signin(formData)
       .then(function (token) {
-        this.$rootScope.$broadcast(this.AUTH_EVENTS.loginSuccess);
-        this.$rootScope.setCurrentUser(token);
+        // this.$rootScope.$broadcast(this.AUTH_EVENTS.loginSuccess);
+        // this.$rootScope.setCurrentUser(token);
         this.$window.localStorage.setItem('com.gillibus', token);
-        this.$state.go('portal.overview');
+        // this.$state.go('portal.overview');
+        this.$window.location.pathname = '/portal';
+
       }.bind(this), () => {
         this.$rootScope.$broadcast(this.AUTH_EVENTS.loginFailed);
       });
@@ -44,7 +47,7 @@ class AdminController {
 
 }
 
-AdminController.$inject = ['$scope', '$state', '$rootScope', '$window', 'AdminAuth', 'AUTH_EVENTS'];
+AdminController.$inject = ['$scope', '$state', '$rootScope', '$window', 'AdminAuth', '$location', 'AUTH_EVENTS'];
 angular.module(moduleName, []).controller('AdminController', AdminController);
 
 export default moduleName

@@ -5,6 +5,7 @@
 let loginController = require('./adminController');
 let passwordless = require('passwordless');
 const recaptcha = require('../providers/captcha');
+const auth = require('../helpers/auth');
 
 module.exports = function(router) {
 
@@ -12,15 +13,13 @@ module.exports = function(router) {
    * BASE ROUTE: /api/v1/admin
    */
 
-  router.use((req, res, next) => {
-    next();
-  });
+
 
   router.route('/login')
     .post(loginController.loginAdmin);
 
   router.route('/users')
-    .post(loginController.getAdminUsers);
+    .post(auth.tokenCheck,loginController.getAdminUsers);
 
   router.post('/complete/registration', recaptcha.middleware.verify, function(req, res) {
     if(req.recaptcha.error) {

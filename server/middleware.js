@@ -15,6 +15,7 @@ module.exports = function(app, express) {
   let bookingRouter = express.Router();
   let authRouter = express.Router();
 
+
   calendarRouter.use(function(req, res, next) {
     let tokenExists = utils.doesTokenExist();
     if (!tokenExists) {
@@ -22,6 +23,9 @@ module.exports = function(app, express) {
     }
     next();
   });
+
+
+
 
 
 
@@ -41,7 +45,15 @@ module.exports = function(app, express) {
     });
   }, { ttl: 1000*60*100 });
 
-  app.use(expressSession({secret: process.env.SESSION_SECRET, saveUninitialized: false, resave: false}));
+  // app.use(expressSession(
+  //   {
+  //     secret: process.env.SESSION_SECRET,
+  //     saveUninitialized: false,
+  //     resave: false,
+  //     maxAge: 100,
+  //     cookie: { maxAge: 6000000}
+  //   })
+  // );
 
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');

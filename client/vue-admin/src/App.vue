@@ -1,12 +1,23 @@
 <template>
-  <hello-component></hello-component>
+  <div>
+    <nav-bar></nav-bar>
+    <router-view></router-view>
+  </div>
 </template>
 <style>
 
 </style>
 <script>
-  import HelloComponent from './components/HelloComponent.vue';
+  import NavBar from './components/NavBar.vue';
   export default {
-    components: { HelloComponent }
+    sockets: {
+      connect() {
+        console.log('%cSOCKET CONNECT: ADMIN-APP>VUE', 'color:green');
+      },
+      disconnect() {
+        console.log('%cSOCKET DISCONNECT: ADMIN-APP>VUE', 'color:red; font-weight:700;');
+      }
+    },
+    components: {  NavBar }
   }
 </script>

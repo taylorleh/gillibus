@@ -64,6 +64,10 @@ import 'angular-moment/angular-moment.js';
 import 'bootstrap/dist/js/bootstrap';
 import 'angular-socket-io/socket.js';
 
+
+// LOCAL STYLES
+
+
 // STYLES
 import 'bootstrap/less/bootstrap.less';
 import 'font-awesome/less/font-awesome.less';
@@ -130,13 +134,13 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
       controllerAs: 'vm',
       data: {}
     })
-    // .state('login', {
-    //   url: '/admin',
-    //   template: adminLoginTemplate,
-    //   controller: 'AdminController',
-    //   controllerAs: 'vm',
-    //   data: {}
-    // });
+    .state('login', {
+      url: '/admin',
+      template: adminLoginTemplate,
+      controller: 'AdminController',
+      controllerAs: 'vm',
+      data: {}
+    });
 
   // ADMIN
   // $stateProvider
@@ -191,7 +195,10 @@ function config($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider, 
   });
 
   // $locationProvider.hashPrefix('');
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+  });
   $httpProvider.interceptors.push('AttachTokens');
 
 }
