@@ -1,8 +1,7 @@
 <template>
   <div class="container-fluid charter">
     <div>
-      <!--<full-calendar :events="events"></full-calendar>-->
-      <event-calendar :events="events"></event-calendar>
+      <event-calendar @dayClick="dayClick" :events="events"></event-calendar>
     </div>
     <div class="checkout-modal row"></div>
   </div>
@@ -29,19 +28,22 @@
     methods: {
       ...mapActions([
         'fetchEvents'
-      ])
+      ]),
+      dayClick(date) {
+        this.$router.push({
+          name: 'checkout',
+          params: { date }
+        });
+      }
     },
 
 
     created() {
       const today = moment().startOf('month').format('YYYY-MM-DDTHH:mm:ssZ');
+      const eom = moment().endOf('month').format('YYYY-MM-DDTHH:mm:ssZ');
       console.log('toady', today);
-      ['CHARTER_G3', 'CHARTER_CHARLIE'].forEach(bus => {
-        this.fetchEvents({
-          calendar: 'CHARTER_G3',
-          timeMin: today
-        })
-      });
+      this.fetchEvents({ timeMin: today, timeMax: eom});
+
     }
   }
 </script>
@@ -67,6 +69,4 @@
     }
 
   }
-
-
 </style>

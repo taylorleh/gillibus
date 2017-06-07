@@ -50,10 +50,6 @@
 
       dayClick(date) {
         this.$emit('dayClick', date);
-        this.$router.push({
-          name: 'checkout',
-          params: { date }
-        });
       }
     },
 
