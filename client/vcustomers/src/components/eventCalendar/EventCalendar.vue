@@ -12,7 +12,6 @@
                    :week="week"
                    @dayClick="dayClick"
                    :monthKey="month">
-
     </calendar-week>
   </div>
 </template>
@@ -21,8 +20,9 @@
   import CalendarHeader from './components/CalendarHeader.vue';
   import CalendarWeek from './components/CalendarWeek.vue';
 
+  import moment from 'moment';
   import { DAY_LABELS } from '../../util/config';
-  import {Calendar} from 'calendar';
+  import { Calendar } from 'calendar';
   window.Calendar = Calendar; //FIXME - Remove this!
 
   export default {
@@ -39,13 +39,19 @@
       }),
       daysGrid() {
         return this.cal.monthDates(this.year, this.month);
+      },
+      datesMap() {
+        this.daysGrid.forEach(d => {
+          console.log('d', d);
+        });
+        return {};
       }
     },
 
     methods: {
       ...mapActions({
-        nextMonth:'ADD_MONTH',
-        prevMonth:'SUBTRACT_MONTH'
+        nextMonth: 'ADD_MONTH',
+        prevMonth: 'SUBTRACT_MONTH'
       }),
 
       dayClick(date) {
@@ -56,13 +62,18 @@
     created() {
       this.cal = new Calendar();
       this.dayLabels = DAY_LABELS;
-      console.log('CAL', Calendar);
+      let dates = {};
+      let datesMap = this.daysGrid.forEach(w => {
+        w.forEach(d => {
+          dates[moment(d)] = {};
+        });
+      });
     }
   }
 </script>
 <style lang="less">
   .calendar-container {
-    font-family:Bebas-neue;
+    font-family: Bebas-neue;
 
     ul {
       list-style: none;
@@ -71,5 +82,4 @@
       }
     }
   }
-
 </style>

@@ -51,6 +51,7 @@ const mutations = {
 const actions = {
   fetchEvents({ commit }, payload) {
     let { timeMin, timeMax } = payload;
+    let _events = [];
     busKeys.forEach(key => {
       api.post('/events', {
           timeMin,
@@ -58,12 +59,16 @@ const actions = {
           calendar: key
         })
         .then(res => {
-          // console.log('got cal events', res);
+          res.data.items.forEach(item => {
+            _events.push(item);
+          })
         })
         .catch(error => {
           console.error('failed', error);
         })
-    })
+    });
+
+    commit('SET_EVENTS', _events);
   },
   SUBTRACT_MONTH({ commit, state }) {
     if (state.monthKey - 1 >= 0) {
