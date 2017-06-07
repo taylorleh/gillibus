@@ -6,6 +6,10 @@
   // CALENDAR
 export const DAY_LABELS = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
 
+// STRIPE
+export const STRIPE_KEY = "pk_test_pqvrekGG8v1fdndujmr6CA20";
+
+
 // MAPS
 export const CUSTOMER_SOCKET = `${document.location.origin}/customer`;
 export const MAP_ZOOM = 13;
