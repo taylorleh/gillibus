@@ -7,7 +7,13 @@
       :monthKey="month"
       :year="year">
     </calendar-header>
-    <calendar-week v-for="(week, index) in daysGrid" :key="index" :week="week"></calendar-week>
+    <calendar-week v-for="(week, index) in daysGrid"
+                   :key="index"
+                   :week="week"
+                   @dayClick="dayClick"
+                   :monthKey="month">
+
+    </calendar-week>
   </div>
 </template>
 <script>
@@ -32,7 +38,7 @@
         month: 'monthKey'
       }),
       daysGrid() {
-        return this.cal.monthDays(this.year, this.month);
+        return this.cal.monthDates(this.year, this.month);
       }
     },
 
@@ -40,7 +46,15 @@
       ...mapActions({
         nextMonth:'ADD_MONTH',
         prevMonth:'SUBTRACT_MONTH'
-      })
+      }),
+
+      dayClick(date) {
+        this.$emit('dayClick', date);
+        this.$router.push({
+          name: 'checkout',
+          params: { date }
+        });
+      }
     },
 
     created() {
