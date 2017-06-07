@@ -1,8 +1,8 @@
 <template>
   <ul class="week-container">
-    <li v-for="day in week" :class="{'filler-cell': !day }" class="day-cell" >
-      <div class="day-content">
-        {{ day }}
+    <li v-for="day in week" :class="{'filler-cell': day.getMonth() != monthKey }" class="day-cell" >
+      <div class="day-content" @click="dayClick(day)">
+        {{ day.getDate() }}
       </div>
     </li>
   </ul>
@@ -12,7 +12,22 @@
 
   export default {
     name: 'CalendarWeek',
-    props: ['week']
+
+    props: ['week', 'monthKey', 'events'],
+
+    methods: {
+      disableBooking(day) {
+
+      },
+
+      dayClick(day) {
+        this.$emit('dayClick', day);
+      }
+    },
+
+    created() {
+
+    }
   }
 </script>
 <style lang="less">
