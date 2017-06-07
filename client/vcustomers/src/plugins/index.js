@@ -15,11 +15,16 @@ require('!file-loader?name=[name].[ext]&outputPath=/vcustomers/dist/!../assets/i
 import VueSocketio from 'vue-socket.io';
 import socketio from 'socket.io-client';
 import * as VueGoogleMaps from 'vue2-google-maps';
+import { Card } from 'vue-stripe-elements';
 import VueLocalStorage from 'vue-localstorage';
+
+
+Vue.component('card', Card);
 
 
 // REGISTRATION
 Vue.use(VueSocketio, socketio(config.CUSTOMER_SOCKET), store);
+// Vue.component('stripe-checkout', StripeCheckout);
 Vue.use(VueLocalStorage);
 Vue.use(VueGoogleMaps, {
   load: {

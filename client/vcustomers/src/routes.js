@@ -1,10 +1,12 @@
 import CustomerHome from './components/home/HomeView.vue';
 import CustomerCharter from './components/charter/Charter.vue';
 import AdminLogin from './components/adminLogin/AdminLogin.vue';
+import CharterCheckout from './components/charterCheckout/CharterCheckout.vue';
 
 
 export const routes = [
   { name: 'home', path: '/', component: CustomerHome },
+  { name:'admin', path: '/admin', component:AdminLogin },
   { name:'charter', path: '/charter', component:CustomerCharter },
-  { name:'admin', path: '/admin', component:AdminLogin }
+  { name: 'checkout', path: '/checkout', component: CharterCheckout, props: true }
 ];
