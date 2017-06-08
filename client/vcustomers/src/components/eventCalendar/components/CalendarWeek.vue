@@ -76,60 +76,50 @@
       &.filler-cell {
         visibility: hidden;
       }
+      .day-content {
+        text-align: center;
+        height: 100%;
+        font-size: 2em;
+        font-family: Abel;
+        position: relative;
+        outline: 2px solid dimgrey;
 
-    }
-    .day-content {
-      text-align: center;
-      border-width:1px;
-      border-style: solid;
-      border-color: black;
-      height: 100%;
-      font-size: 2em;
-      font-family: Abel;
-      position: relative;
-
-      -webkit-transition: border-color .1s ease-in, border-width .2s ease-in;
-      -moz-transition: border-color .1s ease-in, border-width .2s ease-in;
-      -ms-transition: border-color .1s ease-in, border-width .2s ease-in;
-      -o-transition: border-color .1s ease-in, border-width .2s ease-in;
-      transition: border-color .1s ease-in, border-width .2s ease-in;
-
-
-      .day-label {
-        height:inherit;
-        margin:0;
-      }
-
-      .align-base {
-        position: absolute;
-        bottom: 0;
-        width:100%;
-        line-height:normal;
-        font-size:.5em;
-        font-family:Jura;
-      }
-
-      &.booked {
-        border-color: darkgrey;
-        cursor: default;
-        color:darkgrey;
-
-      }
-
-      &:not(.booked) {
-        &:hover {
-          cursor: pointer;
-          border-color: #0fb4f1;
-          border-width:2px;
+        &.booked {
+          cursor: default;
+          color:darkgrey;
         }
+
+
+        &:not(.booked) {
+          outline: 2px solid black;
+          -webkit-transition: outline 105ms ease-in-out;
+          -moz-transition: outline 105ms ease-in-out;
+          -ms-transition: outline 105ms ease-in-out;
+          -o-transition: outline 105ms ease-in-out;
+          transition: outline 105ms ease-in-out;
+          &:hover {
+            cursor: pointer;
+            outline: 3px solid black;
+          }
+        }
+
+
+        .day-label {
+          height:inherit;
+          margin:0;
+        }
+
+        .align-base {
+          position: absolute;
+          bottom: 0;
+          width:100%;
+          line-height:normal;
+          font-size:.5em;
+          font-family:Jura;
+        }
+
       }
 
-      &:hover {
-        /*cursor: pointer;*/
-        /*border-color: #0fb4f1;*/
-        /*border-width:2px;*/
-        /*border: 2px solid ;*/
-      }
     }
   }
 
