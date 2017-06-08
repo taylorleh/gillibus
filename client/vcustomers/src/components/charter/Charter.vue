@@ -12,18 +12,18 @@
   import fullCalendar from 'vue-fullcalendar';
   import eventCalendar  from '../eventCalendar';
   import moment from 'moment';
+  import bus from '../../util/eventChannel';
 
 
   export default {
     components: { fullCalendar, eventCalendar },
 
-
     computed: {
       ...mapGetters([
-        'events'
+        'events',
+        'dayAvailability'
       ])
     },
-
 
     methods: {
       ...mapActions([
@@ -37,12 +37,13 @@
       }
     },
 
-
     created() {
       const today = moment().startOf('month').format('YYYY-MM-DDTHH:mm:ssZ');
       const eom = moment().endOf('month').format('YYYY-MM-DDTHH:mm:ssZ');
-      console.log('toady', today);
       this.fetchEvents({ timeMin: today, timeMax: eom});
+      bus.$on('date availability', (date, cb) => {
+        cb(this.dayAvailability(date));
+      })
 
     }
   }
