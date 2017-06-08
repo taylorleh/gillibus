@@ -91,7 +91,7 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import moment from 'moment';
-  import { STRIPE_KEY } from '../../util/config';
+  import { STRIPE_KEY } from '../../config';
   import { createToken } from 'vue-stripe-elements';
 
   let style = {

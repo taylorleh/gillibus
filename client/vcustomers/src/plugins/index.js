@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import * as config from '../util/config';
+import * as config from '../config';
 import store from '../vuex/store';
 
 // CSS

@@ -73,7 +73,7 @@
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import { MAP_OPTIONS, MAP_CENTER, MAP_ZOOM } from '../../util/config';
+  import { MAP_OPTIONS, MAP_CENTER, MAP_ZOOM } from '../../config';
 
   export default {
     sockets: {

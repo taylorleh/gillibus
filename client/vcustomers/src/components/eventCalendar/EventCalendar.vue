@@ -20,10 +20,9 @@
   import CalendarHeader from './components/CalendarHeader.vue';
   import CalendarWeek from './components/CalendarWeek.vue';
 
+  import { DAY_LABELS } from '../../config';
   import moment from 'moment';
-  import { DAY_LABELS } from '../../util/config';
   import { Calendar } from 'calendar';
-  window.Calendar = Calendar; //FIXME - Remove this!
 
   export default {
     name: 'EventCalendar',
