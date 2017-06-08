@@ -1,12 +1,13 @@
 /**
  * Created by taylor on 5/24/17.
  */
-import Vue from 'vue';
 import moment from 'moment';
+import axios from 'axios';
 import api from '../../api/calendarResource';
+import { eventTimeBlock } from '../../util/calendarUtils';
 
 
-const busKeys = ['CHARTER_G3', 'CHARTER_CHARLIE', 'CHARTER_STARSHIP', 'CHARTER_GILLIBUS'];
+const busKeys = ['CHARTER_CHARLIE', 'CHARTER_GILLIBUS', 'CHARTER_G3', 'CHARTER_STARSHIP'];
 
 const state = {
   events: [],
@@ -49,26 +50,39 @@ const mutations = {
 //     })
 
 const actions = {
-  fetchEvents({ commit }, payload) {
+  fetchEvents({ commit, dispatch }, payload) {
     let { timeMin, timeMax } = payload;
-    let _events = [];
-    busKeys.forEach(key => {
-      api.post('/events', {
-          timeMin,
-          timeMax,
-          calendar: key
-        })
-        .then(res => {
-          res.data.items.forEach(item => {
-            _events.push(item);
-          })
-        })
-        .catch(error => {
-          console.error('failed', error);
-        })
+    let eventsPromises = busKeys.map(key => {
+      return dispatch('FETCH_CALENDAR_EVENTS', { timeMin, timeMax, key});
     });
 
-    commit('SET_EVENTS', _events);
+    axios.all(eventsPromises)
+      .then(allEvents => {
+        return allEvents.map(busEvents => {
+          return busEvents.data.items;
+        })
+      })
+      .then(events => {
+        commit('SET_EVENTS', {
+          [busKeys[0].split('_')[1]]: events[0],
+          [busKeys[1].split('_')[1]]: events[1],
+          [busKeys[2].split('_')[1]]: events[2],
+          [busKeys[3].split('_')[1]]: events[3]
+        });
+      });
+  },
+  FETCH_CALENDAR_EVENTS(context, {timeMin, timeMax, key}) {
+    return api.post('/events', {
+        timeMin,
+        timeMax,
+        calendar: key
+      })
+      .then(res => {
+        return res;
+      })
+      .catch(error => {
+        console.error('failed', error);
+      })
   },
   SUBTRACT_MONTH({ commit, state }) {
     if (state.monthKey - 1 >= 0) {
@@ -94,7 +108,27 @@ const actions = {
 const getters = {
   events: state => state.events,
   yearKey: state => state.yearKey,
-  monthKey: state => state.monthKey
+  monthKey: state => state.monthKey,
+  dayAvailability: (state, getters) => (date) => {
+    let busesEvents = state.events;
+    let tally = { day: 0, night: 0};
+
+    Object.keys(busesEvents).forEach(bus => {
+      const busEvents = busesEvents[bus];
+      busEvents.forEach(event => {
+        const eventDay = moment(event.start.dateTime);
+        if (eventDay.isSame(date, 'day')) {
+          const block = eventTimeBlock(event);
+          tally[block.toLocaleLowerCase()]++;
+        }
+      })
+    });
+
+    return {
+      bookDay: (tally.day < 4),
+      bookNight: (tally.night < 4)
+    };
+  }
 };
 
 export default {
