@@ -8,5 +8,16 @@ export const routes = [
   { name: 'home', path: '/', component: CustomerHome },
   { name:'admin', path: '/admin', component:AdminLogin },
   { name:'charter', path: '/charter', component:CustomerCharter },
-  { name: 'checkout', path: '/checkout', component: CharterCheckout, props: true }
+  {
+    name: 'checkout',
+    path: '/checkout',
+    component: CharterCheckout,
+    props: true,
+    beforeEnter: (to, from, next) => {
+      if(!to.params.date) {
+        next(from.path);
+      }
+      next();
+    }
+  }
 ];

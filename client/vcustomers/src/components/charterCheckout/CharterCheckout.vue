@@ -114,7 +114,12 @@
   export default {
     name: 'CharterCheckout',
 
-    props: ['date'],
+    props: {
+      date: {
+        type: Date,
+        required: true
+      }
+    },
 
     data() {
       return {
