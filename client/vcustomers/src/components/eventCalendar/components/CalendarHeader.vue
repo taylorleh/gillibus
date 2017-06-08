@@ -5,7 +5,7 @@
       <button @click="prev" class="btn btn-default">&lsaquo;</button>
       <button @click="next" class="btn btn-default">&rsaquo;</button>
     </div>
-    <ul>
+    <ul class="calendar-header-container">
       <li class="day-header" v-for="l in labels">{{l}}</li>
     </ul>
   </div>
@@ -35,10 +35,15 @@
   }
 </script>
 <style lang="less">
-  .day-header {
-    position: relative;
-    width: 14%;
-    text-align: center;
+
+  .calendar-header-container {
+    height: 2.5rem;
+    margin: 0;
+    .day-header {
+      position: relative;
+      width: 14%;
+      text-align: center;
+    }
   }
 
 </style>
