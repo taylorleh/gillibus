@@ -7,11 +7,14 @@
       :monthKey="month"
       :year="year">
     </calendar-header>
+    <!--suppress CommaExpressionJS -->
     <calendar-week v-for="(week, index) in daysGrid"
                    :key="index"
                    :week="week"
-                   @dayClick="dayClick"
-                   :monthKey="month">
+                   :schedule="datesMap"
+                   :monthKey="month"
+                   :events="events"
+                   @dayClick="dayClick">
     </calendar-week>
   </div>
 </template>
@@ -23,6 +26,8 @@
   import { DAY_LABELS } from '../../config';
   import moment from 'moment';
   import { Calendar } from 'calendar';
+  window.Calendar = Calendar;
+  window.moment = moment;
 
   export default {
     name: 'EventCalendar',
@@ -36,14 +41,18 @@
         year: 'yearKey',
         month: 'monthKey'
       }),
+
       daysGrid() {
         return this.cal.monthDates(this.year, this.month);
       },
+
       datesMap() {
-        this.daysGrid.forEach(d => {
-          console.log('d', d);
-        });
-        return {};
+        return this.daysGrid.reduce((memo, week) => {
+          week.forEach(day => {
+            memo[day] = {_dayCount: 0, _nightCount: 0};
+          });
+          return memo;
+        }, {});
       }
     },
 
@@ -61,12 +70,6 @@
     created() {
       this.cal = new Calendar();
       this.dayLabels = DAY_LABELS;
-      let dates = {};
-      let datesMap = this.daysGrid.forEach(w => {
-        w.forEach(d => {
-          dates[moment(d)] = {};
-        });
-      });
     }
   }
 </script>
@@ -76,6 +79,7 @@
 
     ul {
       list-style: none;
+      padding: 0;
       li {
         float: left;
       }
