@@ -8,10 +8,9 @@ import Vuex from 'vuex';
 import GLOBAL from './modules/cGlobalStore';
 import BOOKING from './modules/cBookingStore';
 import GPS from './modules/cGpsStore';
-
-// import * as actions from './actions';
+import CHECKOUT from './modules/cCheckoutStore';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
-  modules: { GLOBAL, BOOKING, GPS }
+  modules: { GLOBAL, BOOKING, GPS, CHECKOUT }
 })
