@@ -1,9 +1,8 @@
-/**
- * Created by taylor on 5/25/17.
- */
 
+// GLOBAL
+export const busNames = ['G3', 'Charlie', 'Gillibus', 'Starship'];
 
-  // CALENDAR
+// CALENDAR
 export const DAY_LABELS = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
 
 // STRIPE

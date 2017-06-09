@@ -18,8 +18,6 @@
   export default {
     name: 'CalendarWeek',
 
-//    props: ['week', 'monthKey', 'events', 'schedule'],
-
     props: {
 
       week: {
@@ -49,7 +47,7 @@
 
       isDateBooked(date) {
         let status;
-        bus.$emit('date availability', date.toString(), (res) => {
+        bus.$emit('date availability', date, (res) => {
           status = !res.bookDay && !res.bookNight;
         });
         return status;

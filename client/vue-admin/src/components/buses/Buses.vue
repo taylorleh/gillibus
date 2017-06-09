@@ -13,13 +13,12 @@
       <div class="col-xs-6 col-xs-offset-3">
         <div class="form-horizontal">
           <div class="form-group">
-            <label for="driver-bus">What Bus Are You Driving?</label> <select
-            name="driver-bus"
-            id="driver-bus"
-            class="form-control"
-            @change="busSelect(selected)"
-            v-model="selected"
-          >
+            <label for="driver-bus">What Bus Are You Driving?</label>
+            <select name="driver-bus"
+              id="driver-bus"
+              class="form-control"
+              @change="busSelect(selected)"
+              v-model="selected">
             <option disabled value="">Please Choose A Bus</option>
             <option v-for="bus in buses">{{ bus }}</option>
           </select>
@@ -112,7 +111,7 @@
     created() {
       console.log(`CREATED \n \n ${this}`);
       console.log(this.$socket);
-      if(this.$socket.disconnected) {
+      if (this.$socket.disconnected) {
         console.log('socket is disconnect. attempt reconnect');
         this.$socket.connect();
       }

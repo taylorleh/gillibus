@@ -8,12 +8,11 @@
       </div>
       <div class="row">
         <div class="col-xs-12 text-center before-info">
-          <span>{{chosenDate}}</span>
+          <span>{{ chosenDate }}</span>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 text-center before-action">
-          <!--<button @clik>Change Date</button>-->
           <router-link to="charter" tag="button">Change Date</router-link>
         </div>
       </div>
@@ -22,24 +21,35 @@
       <div class="col-sm-5 col-xs-12 booking-detail-outer">
         <div class="booking-details">
           <div class="date-summary tbl-row">
-            <span class="tbl-cell tbl-cell-lbl">Date:</span> <span class="tbl-cell">{{chosenDate}}</span>
+            <span class="tbl-cell tbl-cell-lbl">Date:</span> <span class="tbl-cell">{{ chosenDate}}</span>
           </div>
           <div class="bus-summary tbl-row">
             <label class="tbl-cell tbl-cell-lbl" for="bus">Bus</label>
             <div class="tbl-cell">
-              <select name="bus" id="bus" ng-model="vm.formState.checkoutBookBus" class="form-control" ng-options="l as l.name disable when l.disabled for l in vm.formState.buses"></select>
+              <select v-model="selectedBus" name="bus" id="bus" class="form-control">
+                <option v-for="bus in buses" :value="bus.value" :disabled="bus.disabled"> {{ bus.text }}</option>
+              </select>
             </div>
           </div>
           <div class="time-slot tbl-row">
             <span class="tbl-cell tbl-cell-lbl">Time</span>
             <div class="tbl-cell">
-              <select name="time-block" id="time-block" ng-model="vm.formState.checkoutBookTimeBlock" class="form-control" ng-options="c as c.name disable when c.disabled for c in vm.formState.blocks" ng-change="vm.onTimeBlockChange(this)"> </select>
+              <select v-model="selectedBlock" name="time-block" id="time-block" class="form-control">
+                <option v-for="block in timeBlocks" :value="block.value" :disabled="block.disabled">
+                  {{ block.text }}
+                </option>
+              </select>
+              <!--<select name="time-block" id="time-block" ng-model="vm.formState.checkoutBookTimeBlock" class="form-control" ng-options="c as c.name disable when c.disabled for c in vm.formState.blocks" ng-change="vm.onTimeBlockChange(this)"> </select>-->
             </div>
           </div>
           <div class="duration-slot tbl-row">
             <span class="tbl-cell tbl-cell-lbl">Duration</span>
             <div class="tbl-cell">
-              <select name="duration-block" id="duration-block" ng-model="vm.formState.checkoutBookDuration" ng-options="item as item.label disable when item.disabled for item in vm.formState.hours" class="form-control"></select>
+              <select v-model="selectedDuration" class="form-control" name="duration-block" id="duration-block">
+                <option v-for="time in durations" :value="time.value" :disabled="time.disabled">
+                  {{ time.text }}
+                </option>
+              </select>
             </div>
           </div>
           <div class="price-summary tbl-row">
@@ -129,13 +139,51 @@
     },
 
     computed: {
+      ...mapGetters({
+        durations: 'durations',
+        timeBlocks: 'timeBlocks',
+        buses: 'busChoices'
+      }),
+
+      selectedBus: {
+        get() {
+          return this.$store.getters.selectedBus;
+        },
+        set(value) {
+          this.setBus(value);
+        }
+      },
+
+      selectedBlock: {
+        get() {
+          return this.$store.getters.selectedBlock;
+        },
+        set(block) {
+          this.changeBlock({ block, day: this.date });
+        }
+      },
+
+      selectedDuration: {
+        get(){
+          return this.$store.getters.selectedDuration;
+        },
+        set(value) {
+          this.$store.commit('SET_CHOSEN_DURATION', value);
+        }
+      },
+
       chosenDate() {
         return moment(this.date).format('LL');
       }
     },
 
     methods: {
-      //      ...mapActions()
+      ...mapActions({
+        setTimeBlocks: 'setBlocks',
+        changeBlock: 'changeBlock',
+        setBus: 'setBus'
+      }),
+
       pay() {
         createToken()
           .then(data => {
@@ -149,22 +197,15 @@
 
     created() {
       this.stripeKey = STRIPE_KEY;
-      console.log('created cecout ', this);
+      this.setTimeBlocks(this.date);
     }
   }
 </script>
 <style lang="less">
-
   @import "../../less/variables";
 
-
-
-
   .checkout {
-    /*transition: all linear 5s;*/
-
     .stripe-card {
-      /*width: 300px;*/
       font-family: Abel;
       color: red;
       width:100%;
@@ -176,7 +217,6 @@
 
     .previous-step {
       font-family: bebas-neue;
-      /*transition: all linear 5s;*/
       font-size: 3em;
       padding: 5rem 0;
       border-bottom: 5px solid;
@@ -311,7 +351,6 @@
 
       .success {
         color: #666EE8;
-
       }
 
       .success .token {

@@ -10,7 +10,7 @@ import { eventTimeBlock } from '../../util/calendarUtils';
 const busKeys = ['CHARTER_CHARLIE', 'CHARTER_GILLIBUS', 'CHARTER_G3', 'CHARTER_STARSHIP'];
 
 const state = {
-  events: [],
+  events: {},
   monthKey: (new Date()).getMonth(),
   yearKey: (new Date()).getUTCFullYear()
 };
@@ -128,6 +128,23 @@ const getters = {
       bookDay: (tally.day < 4),
       bookNight: (tally.night < 4)
     };
+  },
+
+  busAvailability: (state) => (date) => {
+    let busesEvents = state.events;
+    let schedule = { CHARLIE: null, GILLIBUS:null, G3: null, STARSHIP: null } ;
+
+    Object.keys(busesEvents).forEach((bus, index) => {
+      const busEvents = busesEvents[bus];
+      busEvents.forEach(event => {
+        const eventDay = moment(event.start.dateTime);
+        if (eventDay.isSame(date, 'day')) {
+          const block = eventTimeBlock(event);
+          schedule[bus] = {[block] : event}
+        }
+      })
+    });
+    return schedule;
   }
 };
 
