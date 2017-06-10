@@ -9,6 +9,62 @@ export const DAY_LABELS = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
 export const STRIPE_KEY = "pk_test_pqvrekGG8v1fdndujmr6CA20";
 
 
+// CHECKOUT
+export const BUS_RATES = {
+  CHARLIE:{
+    DAY: {
+      base: 1110,
+      rate: 185,
+      min: 6
+    },
+    NIGHT: {
+      base: 800,
+      rate: 175,
+      min: 4
+    }
+  },
+
+  GILLIBUS: {
+    DAY: {
+      base: 1110,
+      rate: 185,
+      min: 6
+    },
+    NIGHT: {
+      base: 800,
+      rate: 175,
+      min: 4
+    }
+  },
+
+  G3: {
+    DAY: {
+      base: 1170,
+      rate: 195,
+      min: 6
+    },
+    NIGHT: {
+      base: 900,
+      rate: 175,
+      min: 4
+    }
+  },
+
+  STARSHIP: {
+    DAY: {
+      base: 1350,
+      rate: 225,
+      min: 6
+    },
+    NIGHT: {
+      base: 1000,
+      rate: 195,
+      min: 4
+    }
+  }
+};
+
+
 // MAPS
 export const CUSTOMER_SOCKET = `${document.location.origin}/customer`;
 export const MAP_ZOOM = 13;

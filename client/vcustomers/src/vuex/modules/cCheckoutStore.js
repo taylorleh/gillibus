@@ -7,7 +7,8 @@ import {
   timeBlocks,
   getDisabledBlockBlock,
   busChoices,
-  firstFreeBusInList
+  firstFreeBusInList,
+  calculatePrice
 } from '../../util/checkoutUtils';
 
 const state = {
@@ -18,7 +19,9 @@ const state = {
   selectedBlock: '',
 
   durations: [],
-  selectedDuration: ''
+  selectedDuration: 0,
+
+  totalPrice: 0
 };
 
 const mutations = {
@@ -120,7 +123,18 @@ const getters = {
   timeBlocks: state => state.timeBlocks,
 
   selectedBus: state => state.selectedBus,
-  busChoices: state => state.busChoices
+  busChoices: state => state.busChoices,
+
+  totalPrice: state => {
+    if (state.selectedDuration && state.selectedBus && state.selectedBlock) {
+      return calculatePrice(
+        state.selectedBus.split('_')[1],
+        state.selectedBlock.toUpperCase(),
+        state.selectedDuration
+      );
+    }
+    return 0;
+  }
 
 };
 

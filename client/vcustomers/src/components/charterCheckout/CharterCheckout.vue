@@ -54,7 +54,7 @@
           </div>
           <div class="price-summary tbl-row">
             <span class="tbl-cell tbl-cell-lbl">Price</span>
-            <!--<span class="tbl-cell">{{vm.formState.checkoutTotalPrice | currency}}</span>-->
+            <span class="tbl-cell">{{ price | currency }}</span>
           </div>
           <div>
             <p></p>
@@ -142,7 +142,8 @@
       ...mapGetters({
         durations: 'durations',
         timeBlocks: 'timeBlocks',
-        buses: 'busChoices'
+        buses: 'busChoices',
+        price: 'totalPrice'
       }),
 
       selectedBus: {

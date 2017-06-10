@@ -1,7 +1,7 @@
 /**
  * Created by taylor on 6/8/17.
  */
-import { busNames } from '../config'
+import { BUS_RATES, busNames } from '../config'
 
 /**
  * Takes a bus schedule and returns the appropriate bus
@@ -63,12 +63,14 @@ export const timeBlocks = (disableBlock) => {
   ]
 };
 
+
 /**
  * Parses an availibility object to check if day or night is disabled and returns
  * those keys. Otherwise nothing is returned
  *
  * @param {{bookDay: Boolean, bookNight: Boolean}} availability
  * @returns {*}
+ *
  */
 export const getDisabledBlockBlock = (availability) => {
   if (!(availability.bookDay && availability.bookNight)) {
@@ -78,4 +80,21 @@ export const getDisabledBlockBlock = (availability) => {
       return 'Night';
     }
   }
+};
+
+
+/**
+ * Calculates the total rate for a bus
+ *
+ * @param {String} bus - Chosen bus
+ * @param {('DAY'|'NIGHT')} block - time block
+ * @param {Number} duration - the desired length
+ * @return {number}
+ *
+ */
+export const calculatePrice = (bus, block, duration) => {
+  const prices = BUS_RATES[bus][block];
+  const basePrice = prices.base;
+  const additionalHoursPrice = (duration - prices.min) * prices.rate;
+  return basePrice + additionalHoursPrice;
 };
