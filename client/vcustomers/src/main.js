@@ -9,6 +9,7 @@ import App from './App.vue';
 import { routes } from './routes';
 import store from './vuex/store';
 import './plugins';
+import './filters';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
