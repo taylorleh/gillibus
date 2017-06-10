@@ -17,3 +17,6 @@
     components: { CustomerNav }
   }
 </script>
+<style>
+  @import '~element-ui/lib/theme-default/index.css';
+</style>

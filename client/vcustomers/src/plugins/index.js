@@ -17,8 +17,9 @@ import socketio from 'socket.io-client';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import { Card } from 'vue-stripe-elements';
 import VueLocalStorage from 'vue-localstorage';
+import ElementUI from 'element-ui'
 
-
+Vue.use(ElementUI);
 Vue.component('card', Card);
 
 
