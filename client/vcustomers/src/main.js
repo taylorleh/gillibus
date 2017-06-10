@@ -3,7 +3,6 @@
  */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
 
 import App from './App.vue';
 import { routes } from './routes';
@@ -12,9 +11,6 @@ import './plugins';
 import './filters';
 
 Vue.use(VueRouter);
-Vue.use(VueResource);
-
-Vue.http.options.root = '/api/v1';
 
 const router = new VueRouter({
   routes,
