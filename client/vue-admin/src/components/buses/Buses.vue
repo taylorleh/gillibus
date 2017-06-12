@@ -94,28 +94,28 @@
       ...mapActions({
         setIsPolling: 'setIsPolling',
         beginPolling: 'beginPollingGps',
-        clearPosition: 'clearPosition'
+        clearPosition: 'clearPosition',
+        addMessage: 'addMessage'
       }),
+
+
       busSelect: function(name) {
-        console.info(`choose buse: ${this.selected}`);
         this.$socket.emit('driver chooses bus', name);
         this.setIsPolling();
         this.beginPolling(this.geolocationOptions);
-      },
-      decimal: (val) => {
-        let s = val.toString();
-        return s.substring(0, s.indexOf('.') + 5);
       }
+
+
     },
 
     created() {
-      console.log(`CREATED \n \n ${this}`);
-      console.log(this.$socket);
       if (this.$socket.disconnected) {
         console.log('socket is disconnect. attempt reconnect');
         this.$socket.connect();
       }
+
     },
+
     destroyed() {
       console.info('DESTROY');
       this.clearPosition();
