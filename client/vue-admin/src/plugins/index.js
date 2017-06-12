@@ -11,6 +11,7 @@ import socketio from 'socket.io-client';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 
+import ElementUI from 'element-ui';
 
-
+Vue.use(ElementUI);
 Vue.use(VueSocketio, socketio(config.DRIVER_SOCKET), store);
