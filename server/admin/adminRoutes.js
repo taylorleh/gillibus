@@ -5,6 +5,7 @@
 let loginController = require('./adminController');
 let passwordless = require('passwordless');
 const recaptcha = require('../providers/captcha');
+const models = require('../models');
 const auth = require('../helpers/auth');
 
 module.exports = function(router) {
@@ -14,7 +15,18 @@ module.exports = function(router) {
    */
 
   const userIdCallback = (user, delivery, callback) => {
-    callback(null, user);
+    models.Users.findOne({ where : { username: user } })
+      .then(instance => {
+        if (instance) {
+          callback('error', null);
+        } else {
+          callback(null, user);
+        }
+      })
+      .catch(error => {
+        callback('error', null);
+      })
+
   };
 
   router.route('/login')
@@ -33,12 +45,9 @@ module.exports = function(router) {
   });
 
 
-  // router.post('/sendtoken', passwordless.requestToken(userIdCallback), function(req, res) {
-  //   res.status(201).json({msg: `Please have ${req.body.user} check their email for signup instructions`});
-  // })
-
-  router.post('/sendtoken', function(req, res) {
+  router.post('/sendtoken', passwordless.requestToken(userIdCallback), function(req, res) {
     res.status(201).json({msg: `Please have ${req.body.user} check their email for signup instructions`});
   })
+
 
 };
