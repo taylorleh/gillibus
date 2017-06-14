@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+        <button @click="toggleNav" type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                 data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -17,21 +17,21 @@
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-init="currTab = 'home'">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" :class="{'in': isNavOpen }">
         <ul class="nav navbar-nav">
-            <router-link to="/portal/overview" activeClass="active" tag="li">
+            <router-link @click.native="navigateToRoute" to="/portal/overview" activeClass="active" tag="li">
               <a>
                 <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
                 Overview
               </a>
             </router-link>
-            <router-link to="/portal/buses" activeClass="active" tag="li">
+            <router-link @click.native="navigateToRoute" to="/portal/buses" activeClass="active" tag="li">
               <a>
                 <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
                 Buses
               </a>
             </router-link>
-            <router-link tag="li" to="/portal/users" activeClass="active">
+            <router-link @click.native="navigateToRoute" to="/portal/users" activeClass="active" tag="li">
               <a>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 Users
@@ -51,6 +51,23 @@
   </nav>
 </template>
 <script>
-  export default {}
+  export default {
+    data() {
+      return {
+        isNavOpen: false
+      }
+    },
+
+    methods: {
+      toggleNav() {
+        this.isNavOpen = !this.isNavOpen;
+      },
+
+      navigateToRoute() {
+        this.isNavOpen = false;
+      }
+    }
+
+  }
 </script>
 
