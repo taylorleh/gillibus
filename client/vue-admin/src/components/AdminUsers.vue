@@ -1,5 +1,11 @@
 <template>
   <div class="admin container">
+    <div class="row">
+      <div class="well col-xs-offset-1 col-xs-10 page-navigation">
+        <button class="btn-primary" @click="dialogVisible = true">Add Admin User</button>
+      </div>
+    </div>
+
     <div class="col-xs-offset-1 col-xs-10">
       <table class="table table-condensed table-bordered table-striped">
         <thead>
@@ -20,23 +26,73 @@
         </tbody>
       </table>
     </div>
+    <div class="row">
+      <el-dialog
+        title="New User"
+        :visible.sync="dialogVisible"
+        size="tiny"
+        :before-close="handleClose">
+        <input class="form-control" type="text" placeholder="Email" v-model="newUserEmail" autofocus>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="addNewUser(newUserEmail)">Confirm</el-button>
+      </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
-  import { mapActions } from 'vuex';
-  import { mapGetters } from 'vuex';
-  export default {
-    computed: {
-      ...mapGetters(['adminUsers'])
-    },
-    methods : {
-      ...mapActions([
-        'getAdminUsers'
+  import { mapActions, mapGetters } from 'vuex';
 
-      ])
+  export default {
+    data() {
+      return {
+        dialogVisible: false
+      }
+    },
+    computed: {
+      ...mapGetters(['adminUsers']),
+
+      newUserEmail: {
+        get() {
+          return this.$store.getters.newUserEmail;
+
+        },
+        set(value) {
+          this.setNewAdminUser(value);
+        }
+      }
+    },
+    methods: {
+      ...mapActions([
+        'getAdminUsers',
+        'setNewAdminUser',
+        'addNewAdmin'
+      ]),
+
+
+      handleClose() {
+        this.dialogVisible = false;
+      },
+
+      addNewUser(email) {
+        console.log(`addmin new admin user ${email}`);
+        this.dialogVisible = false;
+        this.addNewAdmin(email);
+      }
+
     },
     created() {
       this.getAdminUsers();
     }
   }
 </script>
+<style lang="less">
+  .admin {
+
+    .page-navigation {
+      text-align: right;
+    }
+
+  }
+</style>
