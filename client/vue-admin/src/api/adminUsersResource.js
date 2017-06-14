@@ -5,6 +5,6 @@ import axios from 'axios';
 
 export default axios.create({
   baseURL: `${document.location.origin}/api/v1/admin`,
-  timeout: 2000
+  timeout: 4000
 });
 
