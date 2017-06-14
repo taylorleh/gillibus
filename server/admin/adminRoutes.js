@@ -13,16 +13,18 @@ module.exports = function(router) {
    * BASE ROUTE: /api/v1/admin
    */
 
-
+  const userIdCallback = (user, delivery, callback) => {
+    callback(null, user);
+  };
 
   router.route('/login')
     .post(loginController.loginAdmin);
 
   router.route('/users')
-    .post(auth.tokenCheck,loginController.getAdminUsers);
+    .post(auth.tokenCheck, loginController.getAdminUsers);
 
   router.post('/complete/registration', recaptcha.middleware.verify, function(req, res) {
-    if(req.recaptcha.error) {
+    if (req.recaptcha.error) {
       req.flash('error', 'Validation Error!');
       res.redirect('/password');
     } else {
@@ -31,14 +33,12 @@ module.exports = function(router) {
   });
 
 
-  router.post('/sendtoken',
-    passwordless.requestToken(
-      function(user, delivery, callback) {
-        callback(null, user);
-      },
-      function(req, res) {
-        res.render('sent');
-      })
-  );
+  // router.post('/sendtoken', passwordless.requestToken(userIdCallback), function(req, res) {
+  //   res.status(201).json({msg: `Please have ${req.body.user} check their email for signup instructions`});
+  // })
+
+  router.post('/sendtoken', function(req, res) {
+    res.status(201).json({msg: `Please have ${req.body.user} check their email for signup instructions`});
+  })
 
 };
