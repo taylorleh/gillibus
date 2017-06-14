@@ -2,25 +2,41 @@
   <nav class="top-nav navbar navbar-default front-nav">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <button @click="toggleNav" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
         <router-link class="navbar-brand" to="/">Gillibus</router-link>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" :class="{'in': customerNavOpen}">
         <ul class="nav navbar-nav">
-          <router-link to="/routes" activeClass="active" tag="li"><a>Routes</a></router-link>
-          <router-link to="/charter" activeClass="active" tag="li"><a>Charter</a></router-link>
-          <router-link to="/pricing" activeClass="active" tag="li"><a>Pricing</a></router-link>
+          <router-link @click.native="navigateToRoute" to="/routes" activeClass="active" tag="li"><a>Routes</a></router-link>
+          <router-link @click.native="navigateToRoute" to="/charter" activeClass="active" tag="li"><a>Charter</a></router-link>
+          <router-link @click.native="navigateToRoute" to="/pricing" activeClass="active" tag="li"><a>Pricing</a></router-link>
         </ul>
       </div>
     </div>
   </nav>
 </template>
 <script>
-  export default {}
+  export default {
+    data() {
+      return {
+        customerNavOpen: false
+      }
+    },
+
+    methods: {
+      toggleNav() {
+        this.customerNavOpen = !this.customerNavOpen;
+      },
+
+      navigateToRoute() {
+        this.customerNavOpen = false;
+      }
+    }
+  }
 </script>
 <style lang="less">
 @import "../less/variables";
@@ -63,7 +79,7 @@
     }
 
     a {
-      line-height: 80px;
+      line-height: 78px;
       padding-top: 0;
       padding-bottom: 0;
       color: @link-blue;
