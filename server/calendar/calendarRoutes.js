@@ -3,8 +3,18 @@
  */
 
 let calendarController = require('./calendarController');
+let utils = require('../utils/auth');
 
-module.exports = function(router) {
+module.exports = function(router, app) {
+
+
+  router.use(function(req, res, next) {
+    let tokenExists = utils.doesTokenExist();
+    if (!tokenExists) {
+      utils.initCalendarToken(app);
+    }
+    next();
+  });
 
   router.route('/events')
     .post(calendarController.getEventsForCalendar);

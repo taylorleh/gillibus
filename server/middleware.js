@@ -1,81 +1,51 @@
 /**
  * Created by taylor on 2/7/17.
  */
-let utils = require('./utils/auth');
-let path = require('path');
-let expressSession = require('express-session');
-let passwordless = require('passwordless');
-let MySQLStore = require('passwordless-mysql');
-let send = require('./providers');
-let host = process.env.NODE_ENV === 'production' ?  'https://www.taylorlehmanjs.com/register' : 'http://localhost:3000/register';
+const utils = require('./utils/auth');
+const path = require('path');
+const passwordless = require('passwordless');
 const recaptcha = require('./providers/captcha');
+const sslRedirect = require('heroku-ssl-redirect');
+const bodyParser = require('body-parser');
+const auth = require('./utils/auth');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
 module.exports = function(app, express) {
   let calendarRouter = express.Router();
   let bookingRouter = express.Router();
   let authRouter = express.Router();
 
-
-  calendarRouter.use(function(req, res, next) {
-    let tokenExists = utils.doesTokenExist();
-    if (!tokenExists) {
-      utils.initCalendarToken(app);
-    }
-    next();
-  });
-
-
-
-
-
-
-  passwordless.init(new MySQLStore(process.env.GDATABASE_URL));
-  passwordless.addDelivery(function(tokenToSend, uidToSend, recipient, callback) {
-
-    send({
-      text: 'Hello!\n \nYou can now access your account and complete registration here : '
-      + host + '?token=' + tokenToSend + '&uid=' + encodeURIComponent(uidToSend),
-      to: recipient,
-      subject: 'You\'re invited to join the Gillibus team'
-    }, function(err, message) {
-      if (err) {
-        console.log(err);
-      }
-      callback(err)
-    });
-  }, { ttl: 1000*60*100 });
-
-  // app.use(expressSession(
-  //   {
-  //     secret: process.env.SESSION_SECRET,
-  //     saveUninitialized: false,
-  //     resave: false,
-  //     maxAge: 100,
-  //     cookie: { maxAge: 6000000}
-  //   })
-  // );
-
+  // SETUP
+  app.set('PRIVATE_KEY', auth.serializeKey(process.env.PRIVATE_KEY));
+  app.use(sslRedirect());
+  app.use(morgan('dev'));
+  app.use(express.static(__dirname + '/../client/vcustomers/dist')); // TODO - THIS IS STATIC VUE-CUSTOMER
+  app.use(express.static(__dirname + '/../client/vue-admin/dist'));
+  app.use(express.static(__dirname + '/sockjs-node'));
+  app.use(bodyParser.json());
+  app.use(cookieParser());
+  app.use(bodyParser.urlencoded({extended: false}));
+  app.disable('x-powered-by');
+  app.use(flash());
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
 
-  app.use(passwordless.sessionSupport());
-  app.use(passwordless.acceptToken({ successRedirect: '/password' }));
-
-  recaptcha.init(process.env.CAPTCHA_KEY, process.env.CAPTCHA_SECRET);
-
+  require('./config')(app, express); // configurable middleware
 
 
   app.get('/register', passwordless.restricted());
-
 
   app.get('/password', passwordless.restricted(), recaptcha.middleware.render,  function(req, res) {
     res.render('register', { user: req.user, captcha:req.recaptcha, messages: req.flash('error')  });
   });
 
+
   // ----------------------------------- ROUTES ------------------------------------------------
 
   app.use('/api/v1/calendar', calendarRouter);
-  require('./calendar/calendarRoutes')(calendarRouter);
+  require('./calendar/calendarRoutes')(calendarRouter, app);
 
   app.use('/api/v1/booking', bookingRouter);
   require('./booking/bookingRoutes')(bookingRouter);

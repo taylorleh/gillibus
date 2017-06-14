@@ -30,9 +30,7 @@ module.exports = function(app) {
 
   // TODO - VUE CUSTOMER PORTAL
   app.get('/', (req, res, next) => {
-    console.log('REQUESTAR!!!');
     res.sendFile(path.resolve(__dirname, '../client/vcustomers/dist/index.html'))
-    // next();
   });
 
   app.get(/^\/(?!portal|static|api).*/, (req, res, next) => {
