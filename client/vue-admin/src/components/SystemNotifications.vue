@@ -7,7 +7,7 @@
           v-if="message.type === 'error'"
           :title="message.title"
           :key="message"
-          type="success"
+          type="error"
           :description="message.description"
           @close="close(message)"
           show-icon>
@@ -17,7 +17,7 @@
           v-if="message.type === 'warning'"
           :title="message.title"
           :key="message"
-          type="success"
+          type="warning"
           :description="message.description"
           @close="close(message)"
           show-icon>
