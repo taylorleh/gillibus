@@ -49,6 +49,7 @@ const actions = {
           type: 'success'
         });
         commit('SET_NEW_ADMIN_USER', '');
+        return response.data;
       })
       .catch(error => {
         console.error('could not add a new user', error);

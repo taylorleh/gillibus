@@ -31,7 +31,7 @@
         title="New User"
         :visible.sync="dialogVisible"
         size="tiny"
-        :before-close="handleClose">
+        :before-close="this.handleClose">
         <input class="form-control" type="text" placeholder="Email" v-model="newUserEmail" autofocus>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">Cancel</el-button>
@@ -50,6 +50,7 @@
         dialogVisible: false
       }
     },
+
     computed: {
       ...mapGetters(['adminUsers']),
 
@@ -63,6 +64,7 @@
         }
       }
     },
+
     methods: {
       ...mapActions([
         'getAdminUsers',
@@ -70,20 +72,22 @@
         'addNewAdmin'
       ]),
 
-
       handleClose() {
         this.dialogVisible = false;
       },
 
       addNewUser(email) {
-        console.log(`addmin new admin user ${email}`);
         this.dialogVisible = false;
         this.addNewAdmin(email);
       }
-
     },
+
     created() {
       this.getAdminUsers();
+    },
+
+    destroyed() {
+      this.newUserEmail = '';
     }
   }
 </script>
