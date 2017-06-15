@@ -40,7 +40,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a>
+            <a class="logout" @click="logout">
               <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
               Logout
             </a>
@@ -65,9 +65,22 @@
 
       navigateToRoute() {
         this.isNavOpen = false;
+      },
+
+      logout() {
+        window.sessionStorage.removeItem('com.gillibus');
+        window.location.href = '/admin';
       }
     }
 
   }
 </script>
+<style lang="less">
+  .logout {
+    
+    &:hover {
+      cursor: pointer;
+     }
+  }
+</style>
 
