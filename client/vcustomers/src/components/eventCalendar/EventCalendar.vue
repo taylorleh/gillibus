@@ -4,6 +4,8 @@
       v-on:prevMonth="prevMonth"
       v-on:nextMonth="nextMonth"
       :labels="dayLabels"
+      :currentYear="currentYear"
+      :currentMonth="currentMonth"
       :monthKey="month"
       :year="year">
     </calendar-header>
@@ -41,6 +43,7 @@
 
     data() {
       return {
+        currentYear: today.getFullYear(),
         currentMonth: today.getMonth(),
         currentDay: today.getDate()
       }

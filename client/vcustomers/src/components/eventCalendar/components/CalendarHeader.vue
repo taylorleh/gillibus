@@ -2,7 +2,7 @@
   <div style="text-align:center;">
     <h2 style="text-align:center;">{{month}} {{year}}</h2>
     <div style="margin-bottom:1em;">
-      <button @click="prev" class="btn btn-default">&lsaquo;</button>
+      <button @click="previous" :disabled="disablePrevious()" class="btn btn-default">&lsaquo;</button>
       <button @click="next" class="btn btn-default">&rsaquo;</button>
     </div>
     <ul class="calendar-header-container">
@@ -17,17 +17,49 @@
 
   export default {
     name: 'CalendarHeader',
-    props: ['labels', 'monthKey', 'year'],
+
+    props: {
+      labels: {
+        required: true,
+        type: Array
+      },
+
+      currentYear: {
+        required: true,
+        type: Number
+      },
+
+      currentMonth: {
+        required: true,
+        type: Number
+      },
+
+      monthKey: {
+        required: true,
+        type: Number
+      },
+
+      year: {
+        required: true,
+        type: Number
+      }
+    },
+
     computed: {
       month() {
         return moment().month(this.monthKey).format('MMMM');
       }
     },
-    methods: {
-      prev() {
-        this.$emit('prevMonth');
 
+    methods: {
+      disablePrevious() {
+        return this.year <= this.currentYear && this.monthKey <= this.currentMonth;
       },
+
+      previous() {
+        this.$emit('prevMonth');
+      },
+
       next() {
         this.$emit('nextMonth');
       }
