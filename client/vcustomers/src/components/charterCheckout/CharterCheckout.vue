@@ -1,5 +1,5 @@
 <template>
-  <div class="container charter checkout">
+  <div class="container charter checkout" :class="{'loading': loading }">
     <div class="previous-step">
       <div class="row">
         <div class="col-xs-12 text-center before-header">
@@ -16,6 +16,9 @@
           <router-link to="charter" tag="button">Change Date</router-link>
         </div>
       </div>
+    </div>
+    <div class="checkout-messages">
+      <customer-notifications></customer-notifications>
     </div>
     <div class="row">
       <div class="col-sm-5 col-xs-12 booking-detail-outer">
@@ -53,8 +56,7 @@
             </div>
           </div>
           <div class="price-summary tbl-row">
-            <span class="tbl-cell tbl-cell-lbl">Price</span>
-            <span class="tbl-cell">{{ price | currency }}</span>
+            <span class="tbl-cell tbl-cell-lbl">Price</span> <span class="tbl-cell">{{ price | currency }}</span>
           </div>
           <div>
             <p></p>
@@ -68,20 +70,15 @@
         <div class="payment">
           <div class="payment-form">
             <div class="group">
-              <label class="form-name">
-                <span>Name</span>
-                <input ng-model="formState.checkoutBookCustName" name="cardholder-name" class="field" placeholder="Jane Doe" />
-              </label>
-              <label>
-                <span>Phone</span>
-                <input ng-model="formState.checkoutBookCustPhone" class="field" placeholder="(123) 456-7890" type="tel" />
-              </label>
+              <label class="form-name"> <span>Name</span>
+                <input v-model="name" name="cardholder-name" class="field" placeholder="Jane Doe"/> </label> <label>
+              <span>Phone</span> <input v-model="phone" class="field" placeholder="(123) 456-7890" type="tel"/> </label>
             </div>
             <div class="s-container">
-                <card class="stripe-card" id="card-element" :stripe="stripeKey" :options="stripeOptions"></card>
+              <card class="stripe-card" id="card-element" :stripe="stripeKey" :options="stripeOptions"></card>
             </div>
             <!--<button type="submit">Purchase</button>-->
-            <button class='pay-with-stripe' @click='pay'>Pay with credit card</button>
+            <button :disabled="disableSubmit" class='pay-with-stripe btn btn-default' @click='pay'>Pay with credit card</button>
           </div>
           <div class="row">
             <div class="outcome">
@@ -92,8 +89,6 @@
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -103,6 +98,8 @@
   import moment from 'moment';
   import { STRIPE_KEY } from '../../config';
   import { createToken } from 'vue-stripe-elements';
+  import { Loading } from 'element-ui';
+  import CustomerNotifications  from '../CustomerNotifications.vue';
 
   let style = {
     base: {
@@ -124,6 +121,8 @@
   export default {
     name: 'CharterCheckout',
 
+    components: { CustomerNotifications },
+
     props: {
       date: {
         type: Date,
@@ -134,7 +133,8 @@
     data() {
       return {
         stripeOptions: style,
-        complete: false
+        complete: false,
+        loading: false
       }
     },
 
@@ -143,8 +143,26 @@
         durations: 'durations',
         timeBlocks: 'timeBlocks',
         buses: 'busChoices',
-        price: 'totalPrice'
+        price: 'totalPrice',
       }),
+
+      name: {
+        get() {
+          return this.$store.getters.getName;
+        },
+        set(value) {
+          this.setName(value);
+        }
+      },
+
+      phone: {
+        get() {
+          return this.$store.getters.getPhone;
+        },
+        set(value) {
+          this.setPhone(value);
+        }
+      },
 
       selectedBus: {
         get() {
@@ -173,6 +191,10 @@
         }
       },
 
+      disableSubmit() {
+        return (this.loading || (!this.name || !this.phone));
+      },
+
       chosenDate() {
         return moment(this.date).format('LL');
       }
@@ -182,16 +204,37 @@
       ...mapActions({
         setTimeBlocks: 'setBlocks',
         changeBlock: 'changeBlock',
-        setBus: 'setBus'
+        setBus: 'setBus',
+        setName: 'setName',
+        setPhone: 'setPhone'
       }),
 
+      validForm() {
+        return this.name && this.phone;
+      },
+
       pay() {
+        this.loading = true;
+        let overlay = Loading.service({
+          text: 'Purchasing...',
+          customClass: 'purchase-overlay'
+        });
+
         createToken()
-          .then(data => {
-            console.log('SUCCESS!!!', data);
-          })
+          .then(function(data) {
+            if (data.error) {
+              let s = this.$store.dispatch('addMessage', {
+                type: 'error',
+                title: 'Could not complete order',
+                description: data.error.message
+              });
+            } else {
+            }
+            this.loading = false;
+            overlay.close();
+          }.bind(this))
           .catch(error => {
-            console.error(error);
+            console.log('ERROR', error);
           })
       }
     },
@@ -199,21 +242,34 @@
     created() {
       this.stripeKey = STRIPE_KEY;
       this.setTimeBlocks(this.date);
+      //      Loading.service();
     }
   }
 </script>
 <style lang="less">
   @import "../../less/variables";
 
+  .purchase-overlay {
+    background: none;
+  }
+
   .checkout {
+
+    .checkout-messages {
+      padding: 1em 0;
+    }
+
+    &.loading {
+      opacity: 0.6;
+    }
+
     .stripe-card {
       font-family: Abel;
       color: red;
-      width:100%;
+      width: 100%;
       box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
       background-color: white;
       padding: 1em;
-
     }
 
     .previous-step {
@@ -265,7 +321,6 @@
       }
     }
 
-
     .payment {
       margin-bottom: 3.5em;
 
@@ -275,8 +330,8 @@
 
       .group {
         background: white;
-        box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10),
-        0 3px 6px 0 rgba(0,0,0,0.08);
+        box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.10),
+        0 3px 6px 0 rgba(0, 0, 0, 0.08);
         border-radius: 4px;
         margin-bottom: 20px;
       }
@@ -287,7 +342,7 @@
         font-weight: 300;
         height: 65px;
         line-height: 65px;
-        margin:0;
+        margin: 0;
         display: flex;
         flex-direction: row;
         &.form-name {
@@ -318,7 +373,7 @@
         display: block;
         background: #666EE8;
         color: white;
-        box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10), 0 3px 6px 0 rgba(0,0,0,0.08);
+        box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.10), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
         border-radius: 4px;
         border: 0;
         margin-top: 20px;
@@ -328,7 +383,9 @@
         height: 40px;
         line-height: 38px;
         outline: none;
-        transition: background-color .5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        transition: background-color .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+        padding: 0;
+
         &:hover {
           background: #36395a;
         }
@@ -370,5 +427,4 @@
     }
 
   }
-
 </style>

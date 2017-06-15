@@ -77,7 +77,7 @@
 </script>
 <style lang="less">
   .logout {
-    
+
     &:hover {
       cursor: pointer;
      }

@@ -12,6 +12,9 @@ import {
 } from '../../util/checkoutUtils';
 
 const state = {
+  name: '',
+  phone: '',
+
   busChoices: [],
   selectedBus: '',
 
@@ -31,7 +34,6 @@ const mutations = {
   'SET_TIME_BLOCKS' (state, blocks) {
     state.timeBlocks = blocks;
   },
-
   'SET_DURATIONS' (state, durations) {
     state.durations = durations;
   },
@@ -43,10 +45,36 @@ const mutations = {
   },
   'SET_CHOSEN_BUS' (state, bus) {
     state.selectedBus = bus;
+  },
+  'SET_NAME' (state, name) {
+    state.name = name;
+  },
+  'SET_PHONE' (state, phone) {
+    state.phone = phone;
   }
 };
 
 const actions = {
+
+  /**
+   * Sets name in checkout form
+   * @param commit
+   * @param {String} name
+   */
+  setName({ commit }, name) {
+    commit('SET_NAME', name);
+  },
+
+  /**
+   * Sets phone number in checkout form
+   *
+   * @param commit
+   * @param phone
+   */
+  setPhone({ commit }, phone) {
+    commit('SET_PHONE', phone);
+  },
+
 
   /**
    * Dispatches new selected bus to the store
@@ -116,6 +144,9 @@ const actions = {
 };
 
 const getters = {
+  getName: state => state.name,
+  getPhone: state => state.phone,
+
   selectedDuration: state => state.selectedDuration,
   durations: state => state.durations,
 
