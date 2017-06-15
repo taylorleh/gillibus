@@ -14,6 +14,8 @@
                    :schedule="datesMap"
                    :monthKey="month"
                    :events="events"
+                   :currentMonth="currentMonth"
+                   :currentDay="currentDay"
                    @dayClick="dayClick">
     </calendar-week>
   </div>
@@ -28,6 +30,7 @@
   import { Calendar } from 'calendar';
   window.Calendar = Calendar;
   window.moment = moment;
+  const today = new Date();
 
   export default {
     name: 'EventCalendar',
@@ -35,6 +38,13 @@
     components: { CalendarHeader, CalendarWeek },
 
     props: ['events'],
+
+    data() {
+      return {
+        currentMonth: today.getMonth(),
+        currentDay: today.getDate()
+      }
+    },
 
     computed: {
       ...mapGetters({
