@@ -23,3 +23,15 @@ new Vue({
   store,
   render: h => h(App)
 });
+
+//
+// console.log('PROCESS = ', process);
+// if(process.env.NODE_ENV) {
+//   console.log('node env ', process.env.NODE_ENV)
+// }
+// let hotClient = require('webpack-hot-middleware/client?noInfo=true&reload=true');
+// hotClient.subscribe(function (event) {
+//   if (event.action === 'reload') {
+//     window.location.reload(true)
+//   }
+// });

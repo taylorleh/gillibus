@@ -29,18 +29,18 @@ module.exports = function(app) {
 
 
   // TODO - VUE CUSTOMER PORTAL
-  app.get('/', (req, res, next) => {
+  app.get('*', (req, res, next) => {
     res.sendFile(path.resolve(__dirname, '../client/vcustomers/dist/index.html'))
   });
 
-  app.get(/^\/(?!portal|static|api).*/, (req, res, next) => {
-    res.sendFile(path.resolve(__dirname, '../client/vcustomers/dist/index.html'))
-  });
-
-
-  app.get(['/portal*'],auth.tokenCheck, (req, res, next) => {
-    res.clearCookie('X-Access-Token');
-    res.sendFile(path.resolve(__dirname, '../client/vue-admin/dist/index.html'));
-  })
+  // app.get(/^\/(?!portal|static|api).*/, (req, res, next) => {
+  //   res.sendFile(path.resolve(__dirname, '../client/vcustomers/dist/index.html'))
+  // });
+  //
+  //
+  // app.get(['/portal*'],auth.tokenCheck, (req, res, next) => {
+  //   res.clearCookie('X-Access-Token');
+  //   res.sendFile(path.resolve(__dirname, '../client/vue-admin/dist/index.html'));
+  // })
 
 };

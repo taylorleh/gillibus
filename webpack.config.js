@@ -15,12 +15,12 @@ const VCustomersMainStyles = new ExtractTextPlugin('[name]/dist/static/css/main.
 // const TEST = new ExtractTextPlugin('[name]/dist/static/css/main.css');
 
 // const CustomerLocalStyles = new ExtractTextPlugin('vcustomers/dist/static/css/main.css');
-const CustomerVendorStyles = new ExtractTextPlugin('vcustomers/dist/static/css/vendor.css');
+const CustomerVendorStyles = new ExtractTextPlugin('static/css/vendor.css');
 // const AdminLocalStyles = new ExtractTextPlugin('[name]/dist/static/css/main.css');
-const AdminVendorStyles = new ExtractTextPlugin('vue-admin/dist/static/css/vendor.css');
+// const AdminVendorStyles = new ExtractTextPlugin('vue-admin/dist/static/css/vendor.css');
 
 const AllLocalStyles = new ExtractTextPlugin({
-  filename: '[name]/dist/static/css/main.css',
+  filename: 'static/css/main.css',
   allChunks: true
 });
 
@@ -32,16 +32,15 @@ shell.rm('-rf', customerBuildDir, adminBuildDir, vcustomerBuildDir, testingDir);
 
 
 let config = {
-  context: path.resolve(__dirname, "client"),
-  entry: {
-    // customers: './customers/src/app.js',
-    vcustomers: './vcustomers/src/main.js',
-    "vue-admin": './vue-admin/src/main.js'
-  },
+  context: path.resolve(__dirname, 'client', 'vcustomers'),
+  entry: './src/main.js',
+
   output: {
-    path: path.resolve(__dirname, 'client'),
-    filename: '[name]/dist/static/js/[name].js'
+    path: path.resolve(__dirname, 'client', 'vcustomers', 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
   },
+
   module: {
     rules: [
       {
@@ -64,8 +63,8 @@ let config = {
         include: [path.resolve(__dirname, 'client/vcustomers')],
         loader: 'file-loader',
         query: {
-          name: '/static/images/[hash].[ext]',
-          outputPath: '/vcustomers/dist'
+          name: 'static/images/[hash].[ext]',
+          // outputPath: '/vcustomers/dist'
         }
       },
 
@@ -220,8 +219,8 @@ let config = {
         test: /\.(woff|woff2|eot|ttf|svg|otf)$/,
         loader: 'file-loader',
         query: {
-          name:'/static/fonts/[name].[ext]',
-          outputPath: '/vcustomers/dist'
+          name:'static/fonts/[name].[ext]',
+          // outputPath: '/vcustomers/dist'
         }
       },
 
@@ -295,7 +294,6 @@ let config = {
     // VCustomersMainStyles, //TODO - put this back!
     CustomerVendorStyles,
     // CustomerLocalStyles,
-    AdminVendorStyles,
     AllLocalStyles,
     // AdminLocalStyles,
     // TEST,
@@ -323,17 +321,17 @@ let config = {
     //   inject: false,
     //   chunks: ['customers']
     // }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'vue-admin/dist/index.html',
+    //   template: path.resolve(__dirname, 'client/vue-admin/index.ejs'),
+    //   inject: false,
+    //   chunks: ['vue-admin']
+    // }),
     new HtmlWebpackPlugin({
-      filename: 'vue-admin/dist/index.html',
-      template: path.resolve(__dirname, 'client/vue-admin/index.ejs'),
-      inject: false,
-      chunks: ['vue-admin']
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'vcustomers/dist/index.html',
+      filename: 'index.html',
       template: path.resolve(__dirname, 'client/vcustomers/index.html'),
-      inject: false,
-      chunks: ['vcustomers']
+      inject: true,
+      // chunks: ['vcustomers']
     })
   ],
   devtool: 'source-map'
