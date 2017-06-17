@@ -7,6 +7,8 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 const auth = require('./helpers/auth');
+const passwordless = require('passwordless');
+const recaptcha = require('./providers/captcha');
 
 
 module.exports = function(app) {
@@ -26,6 +28,13 @@ module.exports = function(app) {
       });
     }
   };
+
+  app.get('/register', passwordless.restricted());
+
+
+  app.get('/password', passwordless.restricted(), recaptcha.middleware.render,  function(req, res) {
+    res.render('register', { user: req.user, captcha:req.recaptcha, messages: req.flash('error')  });
+  });
 
 
   // TODO - VUE CUSTOMER PORTAL

@@ -68,9 +68,6 @@ let config = {
         include: [
           path.resolve(__dirname, 'node_modules')
         ],
-        // exclude: [
-        //   path.resolve(__dirname, 'client/vue-admin/src')
-        // ],
         use: CustomerVendorStyles.extract({
           fallback: "style-loader",
           use: ["css-loader"]
@@ -91,7 +88,10 @@ let config = {
   resolve: {
     extensions: ['.js'],
     alias: {
-      VLess: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less')
+      VLess: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less'),
+      "api": path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
+      '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
+      'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components')
     }
   },
 
@@ -108,7 +108,8 @@ let config = {
       develop: true,
       title: 'Gillibus'
     })
-  ]
+  ],
+  devtool: 'source-map'
 };
 
 

@@ -10,8 +10,29 @@ import BOOKING from './modules/cBookingStore';
 import GPS from './modules/cGpsStore';
 import CHECKOUT from './modules/cCheckoutStore';
 import DIALOG from './modules/cSystemMessagesStore';
+//ADMIN
+import ADMIN_USERS from './modules/aUsersStore';
+import ADMIN_BUS from './modules/aBusStore';
 
 Vue.use(Vuex);
-export default new Vuex.Store({
-  modules: { GLOBAL, BOOKING, GPS, CHECKOUT, DIALOG }
-})
+
+const store = new Vuex.Store({
+
+  modules: {
+    GLOBAL, BOOKING, GPS, CHECKOUT, DIALOG,
+    ADMIN_BUS, ADMIN_USERS
+  },
+
+  actions: {
+    handleUnauthorized() {
+      let x = Vue;
+      let y = Vuex;
+      let that = this;
+
+      console.log('handling unauthorized user');
+    }
+  }
+
+});
+
+export default store;

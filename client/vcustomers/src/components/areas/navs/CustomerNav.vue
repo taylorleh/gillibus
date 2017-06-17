@@ -39,7 +39,7 @@
   }
 </script>
 <style lang="less">
-@import "../less/variables";
+@import "../../../less/index";
 
 .navbar.top-nav {
   height: 80px;
@@ -98,7 +98,7 @@
     color: @brand-black;
     line-height: 80px;
     height: 80px;
-    padding-top: 0px;
+    padding-top: 0;
   }
 
   @media (min-width: @screen-sm) {

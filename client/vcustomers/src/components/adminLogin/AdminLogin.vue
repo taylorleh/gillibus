@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <section class="form-wrap" style="margin-top: 20%;">
-      <!--<form name="adminLogin">-->
       <div class="form-group">
         <label for="adminEmailInput">Email address</label>
         <input v-model="email" type="email" class="form-control" id="adminEmailInput" placeholder="Email">
@@ -37,7 +36,7 @@
             password: this.password
           })
           .then(res => {
-            window.location.href = `/portal`;
+            this.$router.push({ name: 'adminHome'})
           })
           .catch(error => {
             console.error('error', error);

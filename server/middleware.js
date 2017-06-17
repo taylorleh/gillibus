@@ -4,13 +4,15 @@
 const utils = require('./utils/auth');
 const path = require('path');
 const passwordless = require('passwordless');
-const recaptcha = require('./providers/captcha');
+
 const sslRedirect = require('heroku-ssl-redirect');
 const bodyParser = require('body-parser');
 const auth = require('./utils/auth');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+
+const chokidar = require('chokidar');
 
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.dev.config');
@@ -32,7 +34,29 @@ module.exports = function(app, express) {
   app.use(morgan('dev'));
 
   if(!PRODUCTION) {
+    console.log('DEVELOPMENT Mode Set - Using dev middleware');
+    // Do "hot-reloading" of express stuff on the server
+    // Throw away cached modules and re-require next time
+    // Ensure there's no important state in there!
+    // console.log(`Watcher will be watching from ${__dirname}`);
+    // const watcher = chokidar.watch(__dirname);
 
+    // watcher.on('ready', function() {
+    //   watcher.on('all', function() {
+    //     console.log("Clearing /server/ module cache from server");
+    //     let count = 0, totalCount = Object.keys(require.cache).length;
+    //     Object.keys(require.cache).forEach(function(id) {
+    //
+    //       if (/[\/\\]server[\/\\]/.test(id)) {
+    //         console.log(`cache id = ${id} is being deleted`);
+    //         delete require.cache[id];
+    //       } else {
+    //         count++;
+    //       }
+    //     });
+    //     console.log(`${count}/${totalCount}`)
+    //   });
+    // });
 
     let devMiddleware = require('webpack-dev-middleware')(compiler, {
       reload: true,
@@ -43,7 +67,7 @@ module.exports = function(app, express) {
         chunks: false, // this reduces the amount of stuff I see in my terminal; configure to your needs
         'errors-only': true
       }
-    })
+    });
 
     let hotMiddleware = require('webpack-hot-middleware')(compiler, {
       reload: true
@@ -51,26 +75,26 @@ module.exports = function(app, express) {
 
     compiler.plugin('compilation', function (compilation) {
       compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-        hotMiddleware.publish({ action: 'reload' })
+        hotMiddleware.publish({ action: 'reload' });
         cb()
       })
-    })
+    });
 
     app.use(require('connect-history-api-fallback')());
 
     app.use(devMiddleware);
     app.use(hotMiddleware);
 
-    let _resolve
+    let _resolve;
     let readyPromise = new Promise(resolve => {
       _resolve = resolve
-    })
+    });
 
     let uri = 'http://localhost:3000';
 
 
     devMiddleware.waitUntilValid(() => {
-      console.log('> Listening at ' + process.env.PORT || 3000 + '\n')
+      console.log('> Listening at ' + process.env.PORT || 3000 + '\n');
       // when env is testing, don't need open it
       if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
         opn(uri)
@@ -81,9 +105,8 @@ module.exports = function(app, express) {
 
   } else {
 
-    console.log('SERVING STATIC FOR PROD -----> \n\n');
+    console.log('PRODUCTION Mode Set - serving static files');
     app.use(express.static(__dirname + '/../client/vcustomers/dist')); // TODO - THIS IS STATIC VUE-CUSTOMER
-    app.use(express.static(__dirname + '/../client/vue-admin/dist'));
     app.use(express.static(__dirname + '/sockjs-node'));
   }
 
@@ -101,12 +124,6 @@ module.exports = function(app, express) {
 
   require('./config')(app, express); // configurable middleware
 
-
-  app.get('/register', passwordless.restricted());
-
-  app.get('/password', passwordless.restricted(), recaptcha.middleware.render,  function(req, res) {
-    res.render('register', { user: req.user, captcha:req.recaptcha, messages: req.flash('error')  });
-  });
 
 
   // ----------------------------------- ROUTES ------------------------------------------------

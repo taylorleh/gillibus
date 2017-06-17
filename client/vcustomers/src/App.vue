@@ -1,20 +1,27 @@
 <template>
   <div>
-    <customer-nav v-if="!($route.name === 'admin')"></customer-nav>
-    <router-view></router-view>
+    <customer-area v-if="inCustomerArea()"></customer-area>
+    <admin-area v-else></admin-area>
   </div>
 </template>
 <style>
 </style>
 <script>
-  import CustomerNav from './components/CustomerNav.vue';
-  export default {
-    sockets: {
-      connect() {
+  import CustomerArea from './components/areas/CustomerArea.vue';
+  import AdminArea from './components/areas/AdminArea.vue';
 
-      }
+  export default {
+    components: { CustomerArea, AdminArea },
+
+    sockets: {
+      connect() {}
     },
-    components: { CustomerNav }
+
+    methods: {
+      inCustomerArea() {
+        return this.$route.path.split('/').indexOf('portal') === -1;
+      }
+    }
   }
 </script>
 <style>

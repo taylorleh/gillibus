@@ -83,6 +83,7 @@
         })
       }
     },
+
     computed: {
       ...mapGetters({ // global map
         buses: 'busNames',
@@ -100,6 +101,7 @@
         setBuses: 'SET_ACTIVE_BUSES'
       })
     },
+
     created() {
       this.center = MAP_CENTER;
       this.zoom = MAP_ZOOM;

@@ -1,24 +1,11 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const shell = require('shelljs');
 const target = process.env.NODE_ENV || 'develop';
 
-const MainStylesExtract = new ExtractTextPlugin('customers/dist/static/css/main.css');
-const VendorStylesExtract = new ExtractTextPlugin('[name]/dist/static/css/vendor.css');
-// const AdminVendorStylesExtract = new ExtractTextPlugin('vue-admin/dist/static/css/VADMIN.css');
-const VCustomersMainStyles = new ExtractTextPlugin('[name]/dist/static/css/main.css');
-// const VFontExtracts = new ExtractTextPlugin('[name]/dist/static')
-
-// const TEST = new ExtractTextPlugin('[name]/dist/static/css/main.css');
-
-// const CustomerLocalStyles = new ExtractTextPlugin('vcustomers/dist/static/css/main.css');
 const CustomerVendorStyles = new ExtractTextPlugin('static/css/vendor.css');
-// const AdminLocalStyles = new ExtractTextPlugin('[name]/dist/static/css/main.css');
-// const AdminVendorStyles = new ExtractTextPlugin('vue-admin/dist/static/css/vendor.css');
-
 const AllLocalStyles = new ExtractTextPlugin({
   filename: 'static/css/main.css',
   allChunks: true
@@ -27,8 +14,7 @@ const AllLocalStyles = new ExtractTextPlugin({
 const customerBuildDir = path.resolve(__dirname, 'client/customers/dist');
 const adminBuildDir = path.resolve(__dirname, 'client/vue-admin/dist');
 const vcustomerBuildDir = path.resolve(__dirname, 'client/vcustomers/dist');
-const testingDir = path.resolve(__dirname, 'client/LEHMAN');
-shell.rm('-rf', customerBuildDir, adminBuildDir, vcustomerBuildDir, testingDir);
+shell.rm('-rf', customerBuildDir, adminBuildDir, vcustomerBuildDir);
 
 
 let config = {
@@ -37,7 +23,7 @@ let config = {
 
   output: {
     path: path.resolve(__dirname, 'client', 'vcustomers', 'dist'),
-    filename: 'bundle.js',
+    filename: 'bundle.js?[hash]',
     publicPath: '/'
   },
 
@@ -280,12 +266,11 @@ let config = {
       jquery$: path.resolve(__dirname, 'node_modules/jquery/src/jquery.js'),
       moment$: path.resolve(__dirname, 'node_modules/moment/moment.js'),
       bootstrapcss$: path.resolve(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.css'),
-      // bootstrap: path.resolve(__dirname, "node_modules/bootstrap"),
-      // assets: path.resolve(__dirname, 'client/vcustomers/src/static/'),
-      '@': __dirname + '/client/vcustomers/src/assets/images/',
       VLess: path.resolve(__dirname, 'client/vcustomers/src/less'),
-      VAdminLess: path.resolve(__dirname, 'client/vue-admin/src/less'),
-      npm: __dirname + '/node_modules'
+      npm: __dirname + '/node_modules',
+      api: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
+      '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
+      'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components')
     }
   },
   plugins: [
@@ -293,28 +278,7 @@ let config = {
     // MainStylesExtract, //TODO - put this back!
     // VCustomersMainStyles, //TODO - put this back!
     CustomerVendorStyles,
-    // CustomerLocalStyles,
     AllLocalStyles,
-    // AdminLocalStyles,
-    // TEST,
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: 'customers/assets/fonts',
-    //     to: 'customers/dist/static/fonts'
-    //   },
-    //   {
-    //     from: 'customers/assets/images',
-    //     to: 'customers/dist/static/images'
-    //   },
-    //   {
-    //     from: 'customers/assets/fonts',
-    //     to: 'vue-admin/dist/static/fonts'
-    //   },
-    //   {
-    //     from: 'customers/assets/images',
-    //     to: 'vue-admin/dist/static/images'
-    //   }
-    // ]),
     // new HtmlWebpackPlugin({
     //   filename: 'customers/dist/index.html',
     //   template: path.resolve(__dirname, 'client/customers/index.html'),

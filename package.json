@@ -5,15 +5,14 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "NODE_ENV='production' node server.js",
     "postinstall": "gulp less",
-    "dev": "node node_modules/.bin/webpack-dev-server --content-base client",
+    "dev": "NODE_ENV=development node server.js",
     "wp-watch": "webpack --watch --hide-modules --colors",
     "watch": "webpack-dev-server --hot --inline --config webpack.config.js --content-base client",
-    "dev-proxy": "webpack-dev-server --hot --inline --config webpack-proxy-server.config.js --content-base client",
     "build:prod": "NODE_ENV='production' webpack --colors",
     "build:dev": "NODE_ENV='DEVELOPMENT' webpack --colors",
-    "build": "webpack --watch"
+    "build": "webpack -p --colors"
   },
   "repository": {
     "type": "git",
@@ -107,6 +106,7 @@
     "webpack-dev-server": "^2.3.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0",
-    "opn": "latest"
+    "opn": "latest",
+    "chokidar": "latest"
   }
 }

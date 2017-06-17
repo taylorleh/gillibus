@@ -10,6 +10,7 @@ module.exports = {
 
 
   getEventsForCalendar: (req, res) => {
+    // res.end('yoooo')
     let token = utils.getAuthToken();
     let calendarId = process.env[req.body.calendar];
     let timeMin = req.body.timeMin;

@@ -32,7 +32,7 @@ exports.createUser = (req, res) => {
       return models.Users.create({ username: username, password: password })
     })
     .then(result => {
-      res.redirect('/#/admin');
+      res.redirect('/admin');
     })
     .catch(error => {
       res.status(401).json(error);
@@ -65,10 +65,8 @@ exports.loginAdmin = (req, res, next) => {
       let secret = process.env.JWT_SECRET;
 
       let token = jwt.sign(claims, secret, {
-        expiresIn: '1m'
+        expiresIn: '5m'
       });
-
-      res.cookie('X-Access-Token', token, { httpOnly: true}); //SET COOKIE BECAUSE WE ARE LOADING NEW ROUTE
 
 
       res.json({

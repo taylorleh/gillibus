@@ -41,8 +41,8 @@ module.exports = {
 
   },
   tokenCheck: (req, res, next) => {
+    const token = req.get('Authorization');
 
-    const token = req.cookies['X-Access-Token'] || req.get('Authorization');
     if(token) {
       jwt.verify(token, secret, (err, decoded) => {
         if (err) {
