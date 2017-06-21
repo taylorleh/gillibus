@@ -2,8 +2,9 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-const shell = require('shelljs');
+// const shell = require('shelljs');
 const target = process.env.NODE_ENV || 'develop';
+
 
 const CustomerVendorStyles = new ExtractTextPlugin('static/css/vendor.css');
 const AllLocalStyles = new ExtractTextPlugin({
@@ -13,8 +14,8 @@ const AllLocalStyles = new ExtractTextPlugin({
 
 // const customerBuildDir = path.resolve(__dirname, 'client/customers/dist');
 // const adminBuildDir = path.resolve(__dirname, 'client/vue-admin/dist');
-const vcustomerBuildDir = path.resolve(__dirname, 'client/vcustomers/dist');
-shell.rm('-rf', vcustomerBuildDir);
+// const vcustomerBuildDir = path.resolve(__dirname, 'client/vcustomers/dist');
+// shell.rm('-rf', vcustomerBuildDir);
 
 
 let config = {
@@ -297,7 +298,7 @@ let config = {
       inject: true
     })
   ],
-  devtool: 'source-map'
+  devtool: false
 };
 
 
