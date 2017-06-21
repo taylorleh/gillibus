@@ -13,6 +13,7 @@ import DIALOG from './modules/cSystemMessagesStore';
 //ADMIN
 import ADMIN_USERS from './modules/aUsersStore';
 import ADMIN_BUS from './modules/aBusStore';
+import ADMIN_RULES from './modules/aPriceRulesStore';
 
 Vue.use(Vuex);
 
@@ -20,7 +21,7 @@ const store = new Vuex.Store({
 
   modules: {
     GLOBAL, BOOKING, GPS, CHECKOUT, DIALOG,
-    ADMIN_BUS, ADMIN_USERS
+    ADMIN_BUS, ADMIN_USERS, ADMIN_RULES
   },
 
   actions: {

@@ -31,6 +31,12 @@
                 Buses
               </a>
             </router-link>
+          <router-link @click.native="navigateToRoute" to="/portal/price-rules" activeClass="active" tag="li">
+            <a>
+              <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+              Price Rules
+            </a>
+          </router-link>
             <router-link @click.native="navigateToRoute" to="/portal/users" activeClass="active" tag="li">
               <a>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>

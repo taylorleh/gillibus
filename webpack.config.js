@@ -11,10 +11,10 @@ const AllLocalStyles = new ExtractTextPlugin({
   allChunks: true
 });
 
-const customerBuildDir = path.resolve(__dirname, 'client/customers/dist');
-const adminBuildDir = path.resolve(__dirname, 'client/vue-admin/dist');
+// const customerBuildDir = path.resolve(__dirname, 'client/customers/dist');
+// const adminBuildDir = path.resolve(__dirname, 'client/vue-admin/dist');
 const vcustomerBuildDir = path.resolve(__dirname, 'client/vcustomers/dist');
-shell.rm('-rf', customerBuildDir, adminBuildDir, vcustomerBuildDir);
+shell.rm('-rf', vcustomerBuildDir);
 
 
 let config = {
@@ -294,8 +294,7 @@ let config = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, 'client/vcustomers/index.html'),
-      inject: true,
-      // chunks: ['vcustomers']
+      inject: true
     })
   ],
   devtool: 'source-map'

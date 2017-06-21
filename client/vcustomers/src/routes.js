@@ -7,6 +7,7 @@ import AdminOverview from './components/admin/AdminOverview.vue';
 
 import AdminUsers from './components/admin/users/AdminUsers.vue';
 import AdminBuses from './components/admin/buses/Buses.vue';
+import AdminPriceRules from 'components/admin/priceRules/AdminPriceRules.vue';
 
 //
 // export const routes = [
@@ -17,7 +18,8 @@ import AdminBuses from './components/admin/buses/Buses.vue';
 const AdminRoutes = [
   { path: '/portal', name: 'adminHome', component: AdminOverview },
   { path: '/portal/users', name: 'adminUsers', component: AdminUsers },
-  { path: '/portal/buses', name: 'adminBuses', component: AdminBuses }
+  { path: '/portal/buses', name: 'adminBuses', component: AdminBuses },
+  { path: '/portal/price-rules', name: 'adminPriceRules', component: AdminPriceRules }
 ];
 
 // const AdminChildRoutes = [
