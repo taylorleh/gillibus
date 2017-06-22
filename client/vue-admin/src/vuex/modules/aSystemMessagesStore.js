@@ -4,9 +4,6 @@
 import _ from 'lodash';
 import { initVanishingTimers, timers } from '../../util/messagesUtils';
 
-
-// const type
-
 const state = {
   messages: []
 };
@@ -19,6 +16,19 @@ const mutations = {
 
 
 const actions = {
+
+  /**
+   * Adds a new notification to the messages array
+   *
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param {Object} payload
+   * @param {('error'|'warning'|'success')} payload.type - message type which will indicate color
+   * @param {String} payload.title - message title
+   * @param {String} payload.description - message body
+   *
+   */
   addMessage({ commit, state, dispatch }, payload) {
     if(payload.type === 'success') {
       initVanishingTimers(payload, dispatch);
