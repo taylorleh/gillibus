@@ -2,6 +2,7 @@ import Vue from 'vue';
 import * as config from '../config';
 import store from '../vuex/store';
 import router from '../router';
+import '../directives';
 
 // CSS
 import 'bootstrap/dist/css/bootstrap.css';

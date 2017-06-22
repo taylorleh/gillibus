@@ -10,7 +10,7 @@ Vue.filter('currency', function(value, sign) {
   if (!isFinite(value) || (!value && value !== 0)) {
     return '';
   }
-  sign = sign || '$'
+  sign = sign || '$';
   var s = Math.floor(Math.abs(value)).toString(),
     i = s.length % 3,
     h = i > 0
