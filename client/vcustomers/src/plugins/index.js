@@ -1,14 +1,12 @@
 import Vue from 'vue';
 import * as config from '../config';
 import store from '../vuex/store';
+import router from '../router';
 
 // CSS
 import 'bootstrap/dist/css/bootstrap.css';
 import 'VLess/index.less';
 
-
-
-// use: "file-loader?name=[name].[ext]&publicPath=assets/foo/&outputPath=app/images/"
 require('!file-loader?name=[name].[ext]&outputPath=/vcustomers/dist/!../assets/images/favicon.ico');
 
 // PLUGINS
@@ -18,14 +16,18 @@ import * as VueGoogleMaps from 'vue2-google-maps';
 import { Card } from 'vue-stripe-elements';
 import VueLocalStorage from 'vue-localstorage';
 import ElementUI from 'element-ui'
-
-Vue.use(ElementUI);
-Vue.component('card', Card);
+import VueAnalytics from 'vue-analytics';
 
 
 // REGISTRATION
+Vue.use(VueAnalytics, {
+  id:'UA-98508717-1',
+  router
+});
+
+Vue.use(ElementUI);
+Vue.component('card', Card);
 Vue.use(VueSocketio, socketio(config.CUSTOMER_SOCKET), store);
-// Vue.component('stripe-checkout', StripeCheckout);
 Vue.use(VueLocalStorage);
 Vue.use(VueGoogleMaps, {
   load: {

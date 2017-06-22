@@ -2,21 +2,11 @@
  * Created by taylor on 5/24/17.
  */
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-
 import App from './App.vue';
-import { routes } from './routes';
+import router from './router';
 import store from './vuex/store';
 import './plugins';
 import './filters';
-
-Vue.use(VueRouter);
-
-const router = new VueRouter({
-  routes,
-  mode: 'history'
-});
-
 
 const app = new Vue({
   el: '#app',
