@@ -91,7 +91,8 @@ let config = {
       VLess: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less'),
       "api": path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
-      'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components')
+      'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),
+      utils:  path.resolve(__dirname, 'client', 'vcustomers', 'src', 'util')
     }
   },
 

@@ -72,43 +72,43 @@
   </div>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import { MAP_OPTIONS, MAP_CENTER, MAP_ZOOM } from '../../config';
+import { mapGetters, mapActions } from 'vuex';
+import { MAP_OPTIONS, MAP_CENTER, MAP_ZOOM } from '../../config';
 
-  export default {
-    sockets: {
-      connect() {
-        this.$socket.emit('what buses are online', data => {
-          this.setBuses(data);
-        })
-      }
-    },
-
-    computed: {
-      ...mapGetters({ // global map
-        buses: 'busNames',
-        icons: 'busIcons'
-      }),
-      ...mapGetters({
-        activeBuses: 'activeBuses',
-        nobus: 'noActiveBuses',
-        markers: 'busMarkers'
+export default {
+  sockets: {
+    connect() {
+      this.$socket.emit('what buses are online', data => {
+        this.setBuses(data);
       })
-    },
-
-    methods: {
-      ...mapActions({
-        setBuses: 'SET_ACTIVE_BUSES'
-      })
-    },
-
-    created() {
-      this.center = MAP_CENTER;
-      this.zoom = MAP_ZOOM;
-      this.options = MAP_OPTIONS;
-
     }
+  },
+
+  computed: {
+    ...mapGetters({ // global map
+      buses: 'busNames',
+      icons: 'busIcons'
+    }),
+    ...mapGetters({
+      activeBuses: 'activeBuses',
+      nobus: 'noActiveBuses',
+      markers: 'busMarkers'
+    })
+  },
+
+  methods: {
+    ...mapActions({
+      setBuses: 'SET_ACTIVE_BUSES'
+    })
+  },
+
+  created() {
+    this.center = MAP_CENTER;
+    this.zoom = MAP_ZOOM;
+    this.options = MAP_OPTIONS;
+
   }
+}
 </script>
 <style lang="less">
   @import "../../less/variables";

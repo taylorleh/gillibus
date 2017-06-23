@@ -32,6 +32,15 @@ module.exports = function(router) {
   router.route('/login')
     .post(loginController.loginAdmin);
 
+
+  //ADMIN HOME
+
+  router.route('/bank/charges/list')
+    .post(auth.tokenCheck, loginController.getStripeCharges);
+
+  router.route('/bank/balance/list')
+    .post(auth.tokenCheck, loginController.getStripeBalance);
+
   router.route('/users')
     .post(auth.tokenCheck, loginController.getAdminUsers);
 

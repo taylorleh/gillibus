@@ -24,6 +24,6 @@
     }
   }
 </script>
-<style>
+<style lang="less">
   @import '~element-ui/lib/theme-default/index.css';
 </style>

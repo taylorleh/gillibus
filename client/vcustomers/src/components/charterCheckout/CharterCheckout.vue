@@ -77,7 +77,6 @@
             <div class="s-container">
               <card class="stripe-card" id="card-element" :stripe="stripeKey" :options="stripeOptions"></card>
             </div>
-            <!--<button type="submit">Purchase</button>-->
             <button :disabled="disableSubmit" class='pay-with-stripe btn btn-default' @click='pay'>Pay with credit card</button>
           </div>
           <div class="row">
@@ -94,157 +93,176 @@
   </div>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import moment from 'moment';
-  import { STRIPE_KEY } from '../../config';
-  import { createToken } from 'vue-stripe-elements';
-  import { Loading } from 'element-ui';
-  import CustomerNotifications  from '../CustomerNotifications.vue';
+import { mapGetters, mapActions } from 'vuex';
+import moment from 'moment';
+import { STRIPE_KEY } from '../../config';
+import { createToken } from 'vue-stripe-elements';
+import { Loading } from 'element-ui';
+import CustomerNotifications  from '../CustomerNotifications.vue';
 
-  let style = {
-    base: {
-      color: '#31325F',
-      'font-family': 'Abel',
-      fontSize: '1.05rem',
-      fontWeight: 300,
-      iconColor: '#666EE8',
-      lineHeight: '65px',
-    },
-    empty: {
-      color: 'green'
-    },
-    invalid: {
-      color: '#cc4f55'
-    }
-  };
-
-  export default {
-    name: 'CharterCheckout',
-
-    components: { CustomerNotifications },
-
-    props: {
-      date: {
-        type: Date,
-        required: true
-      }
-    },
-
-    data() {
-      return {
-        stripeOptions: style,
-        complete: false,
-        loading: false
-      }
-    },
-
-    computed: {
-      ...mapGetters({
-        durations: 'durations',
-        timeBlocks: 'timeBlocks',
-        buses: 'busChoices',
-        price: 'totalPrice',
-      }),
-
-      name: {
-        get() {
-          return this.$store.getters.getName;
-        },
-        set(value) {
-          this.setName(value);
-        }
-      },
-
-      phone: {
-        get() {
-          return this.$store.getters.getPhone;
-        },
-        set(value) {
-          this.setPhone(value);
-        }
-      },
-
-      selectedBus: {
-        get() {
-          return this.$store.getters.selectedBus;
-        },
-        set(value) {
-          this.setBus(value);
-        }
-      },
-
-      selectedBlock: {
-        get() {
-          return this.$store.getters.selectedBlock;
-        },
-        set(block) {
-          this.changeBlock({ block, day: this.date });
-        }
-      },
-
-      selectedDuration: {
-        get(){
-          return this.$store.getters.selectedDuration;
-        },
-        set(value) {
-          this.$store.commit('SET_CHOSEN_DURATION', value);
-        }
-      },
-
-      disableSubmit() {
-        return (this.loading || (!this.name || !this.phone));
-      },
-
-      chosenDate() {
-        return moment(this.date).format('LL');
-      }
-    },
-
-    methods: {
-      ...mapActions({
-        setTimeBlocks: 'setBlocks',
-        changeBlock: 'changeBlock',
-        setBus: 'setBus',
-        setName: 'setName',
-        setPhone: 'setPhone'
-      }),
-
-      validForm() {
-        return this.name && this.phone;
-      },
-
-      pay() {
-        this.loading = true;
-        let overlay = Loading.service({
-          text: 'Purchasing...',
-          customClass: 'purchase-overlay'
-        });
-
-        createToken()
-          .then(function(data) {
-            if (data.error) {
-              let s = this.$store.dispatch('addMessage', {
-                type: 'error',
-                title: 'Could not complete order',
-                description: data.error.message
-              });
-            } else {
-            }
-            this.loading = false;
-            overlay.close();
-          }.bind(this))
-          .catch(error => {
-            console.log('ERROR', error);
-          })
-      }
-    },
-
-    created() {
-      this.stripeKey = STRIPE_KEY;
-      this.setTimeBlocks(this.date);
-      //      Loading.service();
-    }
+let style = {
+  base: {
+    color: '#31325F',
+    'font-family': 'Abel',
+    fontSize: '1.05rem',
+    fontWeight: 300,
+    iconColor: '#666EE8',
+    lineHeight: '65px',
+  },
+  empty: {
+    color: 'green'
+  },
+  invalid: {
+    color: '#cc4f55'
   }
+};
+
+export default {
+  name: 'CharterCheckout',
+
+  components: { CustomerNotifications },
+
+  props: {
+    date: {
+      type: Date,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      stripeOptions: style,
+      complete: false,
+      loading: false
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      durations: 'durations',
+      timeBlocks: 'timeBlocks',
+      buses: 'busChoices',
+      price: 'totalPrice',
+    }),
+
+    name: {
+      get() {
+        return this.$store.getters.getName;
+      },
+      set(value) {
+        this.setName(value);
+      }
+    },
+
+    phone: {
+      get() {
+        return this.$store.getters.getPhone;
+      },
+      set(value) {
+        this.setPhone(value);
+      }
+    },
+
+    selectedBus: {
+      get() {
+        return this.$store.getters.selectedBus;
+      },
+      set(value) {
+        this.setBus(value);
+      }
+    },
+
+    selectedBlock: {
+      get() {
+        return this.$store.getters.selectedBlock;
+      },
+      set(block) {
+        this.changeBlock({ block, day: this.date });
+      }
+    },
+
+    selectedDuration: {
+      get(){
+        return this.$store.getters.selectedDuration;
+      },
+      set(value) {
+        this.$store.commit('SET_CHOSEN_DURATION', value);
+      }
+    },
+
+    disableSubmit() {
+      return (this.loading || (!this.name || !this.phone));
+    },
+
+    chosenDate() {
+      return moment(this.date).format('LL');
+    }
+  },
+
+  methods: {
+    ...mapActions({
+      setTimeBlocks: 'setBlocks',
+      changeBlock: 'changeBlock',
+      setBus: 'setBus',
+      setName: 'setName',
+      setPhone: 'setPhone'
+    }),
+
+    validForm() {
+      return this.name && this.phone;
+    },
+
+    pay() {
+      this.loading = true;
+      let overlay = Loading.service({
+        text: 'Purchasing...',
+        customClass: 'purchase-overlay'
+      });
+
+      createToken()
+        .then(function(data) {
+          if (data.error) {
+            this.$store.dispatch('addMessage', {
+              type: 'error',
+              title: 'Could not complete order',
+              description: data.error.message
+            });
+          }
+          else {
+            this.$store.dispatch('purchaseCharter', {
+              token: data.token.id,
+              amount: (this.price * 100),
+              metadata: {
+                name: this.name,
+                phone: this.phone,
+                bus: this.selectedBus.split('_')[1],
+                time_block: this.selectedBlock,
+                duration: this.selectedDuration,
+                book_date: this.date
+              }
+            });
+          }
+          this.loading = false;
+          overlay.close();
+        }.bind(this))
+        .catch(error => {
+          this.loading = false;
+          overlay.close();
+          this.$store.dispatch('addMessage', {
+            type: 'error',
+            title: 'Error processing purchase',
+            description: 'There was an error processing your purchase. please try again later.'
+          });
+
+        })
+    }
+  },
+
+  created() {
+    this.stripeKey = STRIPE_KEY;
+    this.setTimeBlocks(this.date);
+  }
+}
 </script>
 <style lang="less">
   @import "../../less/variables";

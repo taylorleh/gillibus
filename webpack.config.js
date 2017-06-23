@@ -266,12 +266,11 @@ let config = {
     alias: {
       jquery$: path.resolve(__dirname, 'node_modules/jquery/src/jquery.js'),
       moment$: path.resolve(__dirname, 'node_modules/moment/moment.js'),
-      bootstrapcss$: path.resolve(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.css'),
       VLess: path.resolve(__dirname, 'client/vcustomers/src/less'),
-      npm: __dirname + '/node_modules',
       api: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
-      'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components')
+      'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),
+      utils:  path.resolve(__dirname, 'client', 'vcustomers', 'src', 'util')
     }
   },
   plugins: [

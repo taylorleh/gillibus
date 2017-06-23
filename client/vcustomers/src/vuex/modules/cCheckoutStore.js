@@ -11,6 +11,8 @@ import {
   calculatePrice
 } from '../../util/checkoutUtils';
 
+import api from 'api/bookingResource';
+
 const state = {
   name: '',
   phone: '',
@@ -140,6 +142,24 @@ const actions = {
   setDurations({ commit }, block) {
     commit('SET_DURATIONS', block === 'Day' ? dayDurations(): nightDurations());
     commit('SET_CHOSEN_DURATION', block === 'Day' ? 6 : 4);
+  },
+
+
+  /**
+   * Sends stripe token to server for validation. If successful,
+   * server will also create a calendar event
+   *
+   * @param commit
+   * @param token
+   * @param amount
+   * @return {AxiosPromise}
+   */
+  purchaseCharter({ commit }, { token, amount, metadata }) {
+    return api.post('/purchase', {
+      stripeToken: token,
+      amount,
+      metadata
+    });
   }
 };
 

@@ -9,12 +9,13 @@ let booking = {};
 booking.purchaseCharter = (request, response) => {
   const token = request.body.stripeToken;
   const amount = request.body.amount;
+  const metadata = request.body.metadata;
 
-  if (!token || !amount) {
+  if (!token || !amount || !utils.validMetaData(metadata)) {
     return response.status(401).end('<h1>not authorized</h1>');
   }
 
-  utils.createPurchaseWithToken(token, amount)
+  utils.createPurchaseWithToken(token, amount, metadata)
     .then(result => {
       return response.status(200).end('<h1>Success!</h1>');
     })

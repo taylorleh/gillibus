@@ -26,8 +26,7 @@ instance.interceptors.response.use(function(response) {
     router.replace({name: 'admin'})
   }
   return Promise.reject(response);
-
-})
+});
 
 
 export default instance;

@@ -58,7 +58,7 @@ gulp.task('default', function() {
     watch: ['server', 'server.js'],
     ignore:['node_modules', 'client/lib', 'client/assets', 'client/dist'],
     ext: 'js html less',
-    tasks: ['less']
+    env: {'NODE_ENV': 'production'}
   })
 });
 
