@@ -7,6 +7,8 @@ import { Line } from 'vue-chartjs';
 export default Line.extend({
   props: ['chartData', 'options'],
   mounted () {
-    this.renderChart(this.chartData, this.options)
+    setTimeout(() => {
+      this.renderChart(this.chartData, this.options)
+    }, 1);
   }
 })
