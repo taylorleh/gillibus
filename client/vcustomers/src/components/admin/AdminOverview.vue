@@ -65,60 +65,11 @@
 import { mapGetters, mapActions } from 'vuex';
 import moment from 'moment';
 import CommitChart from '../global/salesChart';
-import { generateWeekLabels } from 'utils/adminUtils/overviewUtils';
+import { generateWeekLabels, generateChartData } from 'utils/adminUtils/overviewUtils';
 
 export default {
   components: {
     CommitChart
-  },
-
-  data() {
-    return {
-      chartOptions: {
-        maintainAspectRatio: false,
-        lineTension: 0,
-        borderJoinStyle: 'miter',
-        backgroundColor: 'white',
-        tooltips: {
-          enabled: false
-        },
-        legend: {
-          display: false
-        },
-        title: {
-          display: false,
-          text: 'HELLO'
-        },
-        layout: {
-          padding: 5
-        },
-        elements: {
-          line: {
-            tension: 0,
-            backgroundColor: 'rgba(244, 211, 180, 1)',
-            borderColor: 'rgb(222, 99, 65)'
-          }
-        },
-        scales: {
-          yAxes: [{
-            stacked: true,
-            gridLines: {
-              display: true,
-              color: "rgb(179, 179, 179)"
-            },
-            ticks: {
-              min: 0
-            }
-          }],
-          xAxes: [{
-            gridLines: {
-              display: true,
-              color: 'rgb(179, 179, 179)'
-            }
-          }]
-        }
-      }
-    }
   },
 
   computed: {
@@ -127,13 +78,18 @@ export default {
       latestCharges: 'lastFiveCharges',
       available: 'availableBalance',
       pending: 'pendingBalance',
-      chargesAfterDate: 'chargesAfterDate'
+      chargesAfterDate: 'chargesAfterDate',
+      highestTransactionsDuringPeriod: 'highestTransactionsDuringPeriod'
     }),
+
+    chartOptions() {
+      let totalCharges = this.highestTransactionsDuringPeriod(moment().subtract(7, 'days'));
+      return generateChartData(totalCharges+1);
+    },
 
     chartData() {
       let labels = generateWeekLabels();
       let weeksCharges = this.chargesAfterDate(moment().subtract(7, 'days'));
-      console.log('LABEL', labels);
       return {
         labels: labels,
         datasets: [
@@ -143,8 +99,6 @@ export default {
         ]
       }
     }
-
-
   },
 
   methods: {
@@ -155,7 +109,6 @@ export default {
   },
 
   created() {
-
     this.getBalance();
     this.getCharges({
       begin: moment().startOf('month').unix()

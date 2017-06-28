@@ -2,6 +2,52 @@
  * Created by taylor on 6/22/17.
  */
 import moment from 'moment';
+import _ from 'lodash';
+let chartOptions = {
+  maintainAspectRatio: false,
+  lineTension: 0,
+  borderJoinStyle: 'miter',
+  backgroundColor: 'white',
+  tooltips: {
+    enabled: false
+  },
+  legend: {
+    display: false
+  },
+  title: {
+    display: false,
+    text: 'HELLO'
+  },
+  layout: {
+    padding: 5
+  },
+  elements: {
+    line: {
+      tension: 0,
+      backgroundColor: 'rgba(244, 211, 180, 1)',
+      borderColor: 'rgb(222, 99, 65)'
+    }
+  },
+  scales: {
+    yAxes: [{
+      stacked: true,
+      gridLines: {
+        display: true,
+        color: "rgb(179, 179, 179)"
+      },
+      ticks: {
+        min: 0
+      }
+    }],
+    xAxes: [{
+      gridLines: {
+        display: true,
+        color: 'rgb(179, 179, 179)'
+      }
+    }]
+  }
+};
+
 const digitsRE = /(\d{3})(?=\d)/g;
 
 const formatMonies = (value, sign) => {
@@ -38,11 +84,12 @@ export const generateWeekLabels = (base = moment()) => {
   let output = empty.map((item, index, arr) => {
     return moment().subtract(index, 'day').format('M/D');
   });
-  console.log('OUTPUT', output);
   return output.reverse();
-
 };
 
-// export const addErrorMessage = (dispatch, error) => {
-//
-// }
+export const generateChartData = (weeklySales) => {
+  let copy = _.cloneDeep(chartOptions);
+  copy.scales.yAxes[0].ticks.max = weeklySales;
+  return copy;
+};
+

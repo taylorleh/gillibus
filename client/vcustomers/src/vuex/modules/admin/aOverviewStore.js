@@ -93,7 +93,19 @@ const getters = {
       }
       return memo;
     }, new Array(7).fill(0));
+  },
 
+  highestTransactionsDuringPeriod: (state) => (date) => {
+    let allCharges = state.stripeMonthlyCharges;
+    let out = allCharges.reduce((memo, item) => {
+      let pDate = moment.unix(item.created).startOf('day');
+      if (pDate.isSameOrAfter(date)) {
+        let diff = pDate.diff(date, 'days');
+        memo[diff]++;
+      }
+      return memo;
+    }, new Array(7).fill(0));
+    return Math.max.apply(null, out);
   }
 };
 
