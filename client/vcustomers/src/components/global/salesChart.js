@@ -9,6 +9,6 @@ export default Line.extend({
   mounted () {
     setTimeout(() => {
       this.renderChart(this.chartData, this.options)
-    }, 1);
+    }, 100);
   }
 })

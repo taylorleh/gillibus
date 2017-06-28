@@ -51,7 +51,6 @@ const actions = {
         return response.data;
       })
       .catch(error => {
-        console.error('could not add a new user', error);
         dispatch('addMessage', {
           title: 'Error adding new admin user',
           description: 'Could not add new admin',
