@@ -6,6 +6,9 @@ let models = require('../models');
 let jwt = require('jsonwebtoken');
 let stripeUtils = require('../helpers/stripe');
 const moment = require('moment');
+let google = require('googleapis');
+let gapi = google.analytics('v3');
+let utils = require('../utils/auth');
 
 
 exports.throwIfUserExists = (username) => {
@@ -159,4 +162,26 @@ exports.getAdminUsers = (req, res) => {
     .catch(error => {
       res.status(400).end(error);
     })
+};
+
+
+exports.getWeeklyUsers = (req, res) => {
+  let token = utils.getAuthToken();
+
+  token.authorize((err, tokens) => {
+    let request = {
+      auth: token,
+      ids: process.env.GAPI_VIEW_ID,
+      metrics: ['rt:activeUsers'],
+      dimensions: ['rt:pagePath']
+    };
+
+    gapi.data.realtime.get(request, (err, data) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(data);
+      }
+    })
+  })
 };
