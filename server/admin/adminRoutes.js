@@ -54,6 +54,9 @@ module.exports = function(router, app) {
   router.route('/ga/visitors/list')
     .post(loginController.getWeeklyUsers);
 
+  router.route('/ga/pageviews/list')
+    .post(auth.tokenCheck, loginController.getPageViews);
+
   router.route('/users')
     .post(auth.tokenCheck, loginController.getAdminUsers);
 

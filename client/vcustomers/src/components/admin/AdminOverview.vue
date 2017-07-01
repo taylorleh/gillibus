@@ -51,6 +51,39 @@
             </div>
           </section>
         </div>
+        <div class="row pageviews-tab">
+          <section class="col-xs-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading">Weekly Pageviews</div>
+              <div class="panel-body">
+                <el-table
+                  :data="pageviews.data.rows"
+                  border
+                  style="width: 100%">
+                  <el-table-column
+                    label="Page"
+                    prop="dimensions"
+                    width="180">
+                  </el-table-column>
+                  <el-table-column
+                    :label="pageviews.columnHeader.metricHeader.metricHeaderEntries[0].name"
+                    width="180">
+                    <template scope="scope">
+                      {{ scope.row.metrics[0].values[0] }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    :label="pageviews.columnHeader.metricHeader.metricHeaderEntries[1].name">
+                    <template scope="scope">
+                      {{ scope.row.metrics[0].values[1] }}
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </section>
+        </div>
+
       </section>
       <section class="col-xs-6">
         <div class="panel panel-primary">
@@ -79,7 +112,8 @@ export default {
       available: 'availableBalance',
       pending: 'pendingBalance',
       chargesAfterDate: 'chargesAfterDate',
-      highestTransactionsDuringPeriod: 'highestTransactionsDuringPeriod'
+      highestTransactionsDuringPeriod: 'highestTransactionsDuringPeriod',
+      pageviews:'getAnalyticsPageviewsReport'
     }),
 
     chartOptions() {
@@ -104,16 +138,21 @@ export default {
   methods: {
     ...mapActions({
       getCharges: 'getCharges',
-      getBalance: 'getAccountBalance'
+      getBalance: 'getAccountBalance',
+      getAnalytics: 'getAnalytics'
     })
   },
 
   created() {
+    this.getAnalytics({
+      startDate: moment().subtract(1, 'week').format('YYYY-MM-DD'),
+      endDate: moment().format('YYYY-MM-DD')
+    });
     this.getBalance();
     this.getCharges({
-      begin: moment().startOf('month').unix()
+      begin: moment().subtract(1, 'month').unix()
     });
-  }
+  },
 
 }
 </script>
