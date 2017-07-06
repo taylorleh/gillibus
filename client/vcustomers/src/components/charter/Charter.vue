@@ -48,7 +48,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="scss">
   @import "../../less/variables";
 
   .charter {

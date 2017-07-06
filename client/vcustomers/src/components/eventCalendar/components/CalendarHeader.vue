@@ -66,7 +66,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="scss">
 
   .calendar-header-container {
     height: 2.5rem;

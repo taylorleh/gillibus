@@ -1,33 +1,15 @@
 <template>
   <div class="home container-fluid content">
-    <div class="subheader row clock-container">
-      <div class="col-xs-9"></div>
-      <div ng-if="tl.timer" class="col-xs-3 timer-container">
-        <div countdown="tl.timer" class="innner"></div>
-      </div>
-    </div>
-    <div class="show-xs hide-sm row">
-      <div class="col-xs-12">
-        <div class="fleet-panel">
-          <div class="no-bottom-margin panel panel-default">
-            <table class="table table-hover">
-              <tbody>
-              <tr>
-                <td v-for="bus in buses" class="bus-cell"
-                    :class="{'bus-active': bus in activeBuses}"
-                >
-                  <i :class="{'bus-active': bus in activeBuses}" class="fa fa-circle" aria-hidden="true"></i> -
-                  <span :class="bus.toLowerCase()">{{bus}}</span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="map-container row" style="height: 500px; position: relative;">
-      <div class="col-xs-12">
+    <div class="subheader row clock-container bg-info"></div>
+    <ul class="row hidden-sm-up fleet-panel pl-0 list-inline">
+      <li class="col text-center" :class="bus.toLocaleLowerCase()" v-for="bus in buses">
+        <span class="status-wrapper text-muted">
+          <i class="fa fa-circle" :class="{'bus-active': activeBuses[bus]}"></i>
+        </span><span>{{bus}}</span>
+      </li>
+    </ul>
+    <div class="map-container row">
+      <div class="col">
         <div class="map-wrapper">
           <gmap-map
             :center="center"
@@ -40,31 +22,21 @@
               :clickable="true"
               :draggable="true"
               :key="val.name"
-              :icon="icons[val.name]"
-            >
+              :icon="icons[val.name]">
             </gmap-marker>
           </gmap-map>
-          <span v-show="nobus" class="overlay-container"></span>
-          <span v-show="nobus" class="overlay-message">No Drivers Are Sharing Their Location Yet!</span>
-          <div class="fleet-panel show-sm hide-xs">
-            <div class="panel panel-default">
-              <div class="panel-heading">Fleet</div>
-              <!-- Table -->
-              <table class="table table-hover">
-                <tbody>
-                <tr v-for="bus in buses">
-                  <td class="bus-cell">
-                    <!--<img :src="charlieImg" alt="">-->
-                    <img :src="icons[bus.toUpperCase()]" alt=""> <span>{{bus}}</span>
-                    <div class="status">
-                      <span class="status-text bus-active" v-show="bus in activeBuses">online</span>
-                      <span class="status-text" v-show="!(bus in activeBuses)">offline</span>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+          <span v-show="nobus" class="overlay-container bg-inverse"></span>
+          <span v-show="nobus" class="overlay-message text-white">No Drivers Are Sharing Their Location Yet!</span>
+          <div class="fleet-panel hidden-xs-down">
+            <b-card class="m-0 p-0" no-block header="FLEET">
+              <b-list-group>
+                <b-list-group-item v-for="bus in buses" :key="bus">
+                  <img :src="icons[bus.toUpperCase()]" alt=""><span class="pl-1 pr-1">{{bus}}</span>
+                  <span :class="{'text-success': activeBuses[bus], 'text-danger': !activeBuses[bus]}" class="ml-auto text-end">{{activeBuses[bus] ?
+                    "online" : "offline"}}</span>
+                </b-list-group-item>
+              </b-list-group>
+            </b-card>
           </div>
         </div>
       </div>
@@ -74,8 +46,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { MAP_OPTIONS, MAP_CENTER, MAP_ZOOM } from '../../config';
+import { bAlert, bBtn, bListGroup, bListGroupItem } from 'bootstrap-vue/lib/components'
 
 export default {
+  components: { bListGroupItem, bListGroup },
+
   sockets: {
     connect() {
       this.$socket.emit('what buses are online', data => {
@@ -110,10 +85,12 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="scss">
   @import "../../less/variables";
+  @import "../../less/fonts/fonts";
 
   .home.container-fluid {
+
     .starship {
       color: #C400FF
     }
@@ -130,32 +107,32 @@ export default {
       color: #0FB4F1
     }
 
-    .bus-active {
-      color: green;
+    .status-wrapper {
+      font-size: xx-small;
     }
+
+    /*.bus-active {*/
+    /*color: green;*/
+    /*}*/
 
     .subheader {
       min-height: 3em;
-      background-color: lightseagreen;
-      margin-top: -20px;
-
-      .timer-container {
-        min-height: inherit;
-        font-weight: 200;
-        font-size: 1.5em;
-      }
+      margin-top: -1rem;
     }
 
     .fleet-panel {
-      font-family: bebas-neue;
-      .status {
-        display: inline-block;
-        text-align: right;
-        float: right;
-        cursor: default;
-        color: #ff3a0f;
+      background-color: $white;
+      /*list-style-type:none;*/
+      /*background-color: #fff;*/
 
-      }
+      /*.status {*/
+      /*display: inline-block;*/
+      /*text-align: right;*/
+      /*float: right;*/
+      /*cursor: default;*/
+      /*color: #ff3a0f;*/
+
+      /*}*/
 
     }
 
@@ -175,7 +152,6 @@ export default {
       }
 
       .overlay-container {
-        background-color: black;
         opacity: 0.65;
         top: 0;
         bottom: 0;
@@ -186,17 +162,14 @@ export default {
       .overlay-message {
         width: 100%;
         top: 50%;
-        color: white;
         text-align: center;
         position: absolute;
-        font-family: bebas-neue;
         font-size: 2em;
       }
 
     }
 
-    @media (min-width: @screen-sm) {
-
+    @media (min-width: map_get($grid-breakpoints, sm)) {
       .fleet-panel {
         position: absolute;
         top: 2em;

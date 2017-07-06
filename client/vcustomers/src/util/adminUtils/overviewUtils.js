@@ -50,7 +50,7 @@ let chartOptions = {
 
 const digitsRE = /(\d{3})(?=\d)/g;
 
-const formatMonies = (value, sign) => {
+export const formatMonies = (value, sign) => {
   value = parseFloat(value);
   if (!isFinite(value) || (!value && value !== 0)) {
     return '';

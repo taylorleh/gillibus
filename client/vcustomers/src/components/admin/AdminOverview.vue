@@ -117,8 +117,8 @@ export default {
 
 }
 </script>
-<style lang="less">
-  @import "../../less/index.less";
+<style lang="scss">
+  /*@import "../../less/index";*/
 
   .admin-overview {
     .panel-body {

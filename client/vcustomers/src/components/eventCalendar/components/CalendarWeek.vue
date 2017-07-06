@@ -73,7 +73,7 @@
     created() {}
   }
 </script>
-<style lang="less">
+<style lang="scss">
   .week-container {
     width: 100%;
     height: 17rem;

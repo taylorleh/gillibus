@@ -9,8 +9,9 @@ import './plugins';
 import './filters';
 
 const app = new Vue({
-  el: '#app',
+  el: 'body',
   router,
+  replace: false,
   store,
   render: h => h(App)
 });

@@ -1,72 +1,101 @@
 <template>
   <div class="container charter checkout" :class="{'loading': loading }">
-    <div class="previous-step">
-      <div class="row">
-        <div class="col-xs-12 text-center before-header">
+    <div class="row previous-step">
+
+        <div class="col-12 before-header">
           <span>Dates</span>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 text-center before-info">
+
+
+        <div class="col-12 before-info">
           <span>{{ chosenDate }}</span>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 text-center before-action">
-          <router-link to="charter" tag="button">Change Date</router-link>
+
+
+        <div class="col-12">
+          <router-link class="before-action btn btn-outline-primary btn-large" to="charter" tag="button">Change Date</router-link>
         </div>
+
+      <div class="col-12 hr-rule">
+        <hr>
       </div>
+
     </div>
     <div class="checkout-messages">
-      <customer-notifications></customer-notifications>
+      <!--<customer-notifications></customer-notifications>-->
     </div>
-    <div class="row">
-      <div class="col-sm-5 col-xs-12 booking-detail-outer">
-        <div class="booking-details">
-          <div class="date-summary tbl-row">
-            <span class="tbl-cell tbl-cell-lbl">Date:</span> <span class="tbl-cell">{{ chosenDate}}</span>
-          </div>
-          <div class="bus-summary tbl-row">
-            <label class="tbl-cell tbl-cell-lbl" for="bus">Bus</label>
-            <div class="tbl-cell">
-              <select v-model="selectedBus" name="bus" id="bus" class="form-control">
-                <option v-for="bus in buses" :value="bus.value" :disabled="bus.disabled"> {{ bus.text }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="time-slot tbl-row">
-            <span class="tbl-cell tbl-cell-lbl">Time</span>
-            <div class="tbl-cell">
-              <select v-model="selectedBlock" name="time-block" id="time-block" class="form-control">
-                <option v-for="block in timeBlocks" :value="block.value" :disabled="block.disabled">
-                  {{ block.text }}
-                </option>
-              </select>
-              <!--<select name="time-block" id="time-block" ng-model="vm.formState.checkoutBookTimeBlock" class="form-control" ng-options="c as c.name disable when c.disabled for c in vm.formState.blocks" ng-change="vm.onTimeBlockChange(this)"> </select>-->
-            </div>
-          </div>
-          <div class="duration-slot tbl-row">
-            <span class="tbl-cell tbl-cell-lbl">Duration</span>
-            <div class="tbl-cell">
-              <select v-model="selectedDuration" class="form-control" name="duration-block" id="duration-block">
-                <option v-for="time in durations" :value="time.value" :disabled="time.disabled">
-                  {{ time.text }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="price-summary tbl-row">
-            <span class="tbl-cell tbl-cell-lbl">Price</span> <span class="tbl-cell">{{ price | currency }}</span>
-          </div>
-          <div>
-            <p></p>
-          </div>
-          <div>
-            <p></p>
-          </div>
-        </div>
+    <div class="row"> <!-- BEGING BOTTOM CONTAINER -->
+      <div class="col">
+        <b-form>
+          <b-form-fieldset :horizontal="true" label="Date">
+            <b-form-input :readonly="true" :static="true" :value="chosenDate"></b-form-input>
+          </b-form-fieldset>
+          <b-form-fieldset :horizontal="true" label="Bus">
+            <b-form-select v-model="selectedBus" :options="buses"></b-form-select>
+          </b-form-fieldset>
+          <b-form-fieldset :horizontal="true" label="Time">
+            <b-form-select v-model="selectedBlock" :options="timeBlocks"></b-form-select>
+          </b-form-fieldset>
+          <b-form-fieldset :horizontal="true" label="Duration">
+            <b-form-select v-model="selectedDuration" :options="durations"></b-form-select>
+          </b-form-fieldset>
+          <b-form-fieldset :horizontal="true" label="Price">
+            <b-form-input-static :formatter="this.formatPrice" :readonly="true" :static="true" :value="price"></b-form-input-static>
+          </b-form-fieldset>
+        </b-form>
       </div>
-      <div class="col-sm-7 col-xs-12">
+      <!--<div class="col col booking-detail-outer">-->
+        <!--<div class="booking-details">-->
+          <!--<div class="date-summary tbl-row">-->
+            <!--<span class="tbl-cell tbl-cell-lbl">Date:</span> <span class="tbl-cell">{{ chosenDate}}</span>-->
+          <!--</div>-->
+          <!--<div class="bus-summary tbl-row">-->
+            <!--<label class="tbl-cell tbl-cell-lbl" for="bus">Bus</label>-->
+            <!--<div class="tbl-cell">-->
+              <!--<select v-model="selectedBus" name="bus" id="bus" class="form-control">-->
+                <!--<option v-for="bus in buses" :value="bus.value" :disabled="bus.disabled"> {{ bus.text }}</option>-->
+              <!--</select>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="time-slot tbl-row">-->
+            <!--<span class="tbl-cell tbl-cell-lbl">Time</span>-->
+            <!--<div class="tbl-cell">-->
+              <!--<select v-model="selectedBlock" name="time-block" id="time-block" class="form-control">-->
+                <!--<option v-for="block in timeBlocks" :value="block.value" :disabled="block.disabled">-->
+                  <!--{{ block.text }}-->
+                <!--</option>-->
+              <!--</select>-->
+              <!--&lt;!&ndash;<select name="time-block" id="time-block" ng-model="vm.formState.checkoutBookTimeBlock" class="form-control" ng-options="c as c.name disable when c.disabled for c in vm.formState.blocks" ng-change="vm.onTimeBlockChange(this)"> </select>&ndash;&gt;-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="duration-slot tbl-row">-->
+            <!--<span class="tbl-cell tbl-cell-lbl">Duration</span>-->
+            <!--<div class="tbl-cell">-->
+              <!--<select v-model="selectedDuration" class="form-control" name="duration-block" id="duration-block">-->
+                <!--<option v-for="time in durations" :value="time.value" :disabled="time.disabled">-->
+                  <!--{{ time.text }}-->
+                <!--</option>-->
+              <!--</select>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="price-summary tbl-row">-->
+            <!--<span class="tbl-cell tbl-cell-lbl">Price</span> <span class="tbl-cell">{{ price | currency }}</span>-->
+          <!--</div>-->
+          <!--<div>-->
+            <!--<p></p>-->
+          <!--</div>-->
+          <!--<div>-->
+            <!--<p></p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+
+
+
+
+
+      <div class="col">
         <div class="payment">
           <div class="payment-form">
             <div class="group">
@@ -94,6 +123,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { formatMonies } from '../../util/adminUtils/overviewUtils';
 import moment from 'moment';
 import { STRIPE_KEY } from '../../config';
 import { createToken } from 'vue-stripe-elements';
@@ -212,6 +242,10 @@ export default {
       return this.name && this.phone;
     },
 
+    formatPrice(val) {
+      return formatMonies(val);
+    },
+
     pay() {
       this.loading = true;
       let overlay = Loading.service({
@@ -264,7 +298,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="scss">
   @import "../../less/variables";
 
   .purchase-overlay {
@@ -281,6 +315,10 @@ export default {
       opacity: 0.6;
     }
 
+    hr {
+      border-top: 5px solid;
+    }
+
     .stripe-card {
       font-family: Abel;
       color: red;
@@ -292,25 +330,26 @@ export default {
 
     .previous-step {
       font-family: bebas-neue;
-      font-size: 3em;
-      padding: 5rem 0;
-      border-bottom: 5px solid;
+      /*font-size: 3em;*/
+      font-size:2rem;
+      text-align: center;
+
 
       .before-info {
-        font-size: 2.2rem;
+        /*font-size: 2.2rem;*/
         color: grey;
       }
 
-      .before-action {
-        color: @link-blue;
-        button {
-          background-color: inherit;
-          border: 1px solid @link-blue;
-          padding: .2rem 2rem;
-          font-size: 2.8rem;
-        }
-      }
+
     }
+    .before-action {
+      //color: $button-blue;
+      font-family: bebas-neue;
+      font-size: inherit;
+    }
+
+
+    /*BELOW HORIZONTAL RULE */
 
     .booking-details {
       display: table;
@@ -436,7 +475,7 @@ export default {
 
     }
 
-    @media (min-width: @screen-sm) {
+    @media (min-width: map_get($grid-breakpoints, sm)) {
 
       label > span {
         margin-right: 30px;

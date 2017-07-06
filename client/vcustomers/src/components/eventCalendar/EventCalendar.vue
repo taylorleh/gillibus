@@ -86,7 +86,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="scss">
   .calendar-container {
     font-family: Bebas-neue;
 

@@ -1,18 +1,19 @@
 <template>
-  <div class="admin-notifications">
+  <div class="admin-notifications container">
     <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <el-alert
+      <div class="col">
+        <b-alert
           v-for="message in messages"
           v-if="message.type === 'error'"
-          :title="message.title"
           :key="message"
-          type="error"
-          :description="message.description"
-          @close="close(message)"
-          show-icon>
-        </el-alert>
-        <el-alert
+          variant="danger"
+          :show="true"
+          :dismissible="true"
+          @dismissed="close(message)">
+          <i class="fa fa-times-circle" aria-hidden="true"></i>{{message.title}}<br>
+          {{message.description}}
+        </b-alert>
+        <b-alert
           v-for="message in messages"
           v-if="message.type === 'warning'"
           :title="message.title"
@@ -21,8 +22,9 @@
           :description="message.description"
           @close="close(message)"
           show-icon>
-        </el-alert>
-        <el-alert
+          {{message.title}}
+        </b-alert>
+        <b-alert
           v-for="message in messages"
           v-if="message.type === 'success'"
           :title="message.title"
@@ -31,7 +33,7 @@
           :description="message.description"
           @close="close(message)"
           show-icon>
-        </el-alert>
+        </b-alert>
       </div>
     </div>
   </div>
@@ -66,7 +68,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="scss">
   .container.admin-notifications {
 
     margin-bottom: 1em;

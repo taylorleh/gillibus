@@ -5,8 +5,8 @@ import router from '../router';
 import '../directives';
 
 // CSS
-import 'bootstrap/dist/css/bootstrap.css';
-import 'VLess/index.less';
+
+// import 'VLess/index.scss';
 
 require('!file-loader?name=[name].[ext]&outputPath=/vcustomers/dist/!../assets/images/favicon.ico');
 
@@ -18,7 +18,13 @@ import { Card } from 'vue-stripe-elements';
 import VueLocalStorage from 'vue-localstorage';
 import ElementUI from 'element-ui'
 import VueAnalytics from 'vue-analytics';
+import BootstrapVue from 'bootstrap-vue'
 
+import '../less/common.scss';
+import '../less/variables.scss'
+import 'font-awesome/scss/font-awesome.scss';
+
+Vue.use(BootstrapVue);
 
 // REGISTRATION
 Vue.use(VueAnalytics, {

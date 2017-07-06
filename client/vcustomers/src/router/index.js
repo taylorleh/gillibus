@@ -13,6 +13,9 @@ import CustomerHome from 'components/home/HomeView.vue';
 import CustomerCharter from 'components/charter/Charter.vue';
 import AdminLogin from 'components/adminLogin/AdminLogin.vue';
 import CharterCheckout from 'components/charterCheckout/CharterCheckout.vue';
+import PrivacyPolicy from 'components/legal/PrivacyPolicy.vue';
+import AboutUs from 'components/legal/AboutUs.vue';
+import TermsConditions from 'components/legal/TermsConditions.vue';
 import AdminOverview from 'components/admin/AdminOverview.vue';
 
 
@@ -50,17 +53,20 @@ const routes = [
   { name: 'home', path: '/', component: CustomerHome },
   { name: 'admin', path: '/admin', component: AdminLogin },
   { name: 'charter', path: '/charter', component: CustomerCharter },
+  { name: 'privacy', path: '/privacy-policy', component: PrivacyPolicy },
+  { name: 'about', path: '/about-us', component: AboutUs },
+  { name: 'terms', path: '/terms-conditions', component: TermsConditions },
   {
     name: 'checkout',
     path: '/checkout',
     component: CharterCheckout,
-    props: true,
-    beforeEnter: (to, from, next) => {
-      if (!to.params.date) {
-        next(from.path);
-      }
-      next();
-    }
+    props: true
+    // beforeEnter: (to, from, next) => {
+    //   if (!to.params.date) {
+    //     next(from.path);
+    //   }
+    //   next();
+    // }
   },
 
 

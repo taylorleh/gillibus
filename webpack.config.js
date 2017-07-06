@@ -125,80 +125,26 @@ let config = {
           use: ["css-loader"]
         })
       },
-
-
-
-
-      // **********************
-      // ***** ADMIN CSS ******
-      // **********************
-
-      // --- ADMIN-LOCAL ---
-      // {
-      //   test: /\.css$/,
-      //   exclude: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   include: [
-      //     path.resolve(__dirname, 'client/vue-admin/src')
-      //   ],
-      //   use: AdminLocalStyles.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader?url=false"
-      //   })
-      // },
-      //
-      // {
-      //   test: /\.less$/,
-      //   include: [
-      //     path.resolve(__dirname, 'client/vue-admin/src')
-      //   ],
-      //   exclude: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   use: AdminLocalStyles.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader!less-loader"
-      //   })
-      // },
-
-
-
-      // --- ADMIN-EXTERNAL ---
-
-
-      // {
-      //   test: /\.css$/,
-      //   include: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   exclude: [
-      //     path.resolve(__dirname, 'client/vcustomers/src')
-      //   ],
-      //   use: AdminVendorStyles.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader?url=false"
-      //   })
-      // },
-      // {
-      //   test: /\.less$/,
-      //   include: [
-      //     path.resolve(__dirname, 'client/vcustomers'),
-      //     path.resolve(__dirname, 'client/vue-admin')
-      //   ],
-      //   use: VCustomersMainStyles.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader!less-loader"
-      //   })
-      // },
-      // {
-      //   test: /\.(woff|woff2|eot|ttf|svg|otf)$/,
-      //   loader: 'file-loader',
-      //   query: {
-      //     name:'/static/fonts/[name].[ext]',
-      //     outputPath: '/vcustomers/dist'
-      //   }
-      // },
+      {
+        test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'node_modules')
+        ],
+        use: CustomerVendorStyles.extract({
+          fallback: "style-loader",
+          use: "css-loader!sass-loader"
+        })
+      },
+      {
+        test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'client', 'vcustomers', 'src')
+        ],
+        use: AllLocalStyles.extract({
+          fallback: "style-loader",
+          use: "css-loader!sass-loader"
+        })
+      },
 
 
 
@@ -266,7 +212,7 @@ let config = {
     alias: {
       jquery$: path.resolve(__dirname, 'node_modules/jquery/src/jquery.js'),
       moment$: path.resolve(__dirname, 'node_modules/moment/moment.js'),
-      VLess: path.resolve(__dirname, 'client/vcustomers/src/less'),
+      style: path.resolve(__dirname, 'client/vcustomers/src/less'),
       api: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
       'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),

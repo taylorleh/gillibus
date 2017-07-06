@@ -74,6 +74,26 @@ let config = {
         })
       },
       {
+        test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'node_modules')
+        ],
+        use: CustomerVendorStyles.extract({
+          fallback: "style-loader",
+          use: "css-loader!sass-loader"
+        })
+      },
+      {
+        test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'client', 'vcustomers', 'src')
+        ],
+        use: AllLocalStyles.extract({
+          fallback: "style-loader",
+          use: "css-loader!sass-loader"
+        })
+      },
+      {
         test: /\.(woff|woff2|eot|ttf|svg|otf)$/,
         loader: 'file-loader',
         query: {
@@ -88,7 +108,7 @@ let config = {
   resolve: {
     extensions: ['.js'],
     alias: {
-      VLess: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less'),
+      style: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less'),
       "api": path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
       'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),

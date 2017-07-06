@@ -81,7 +81,7 @@
 
   }
 </script>
-<style lang="less">
+<style lang="scss">
   .logout {
 
     &:hover {

@@ -91,7 +91,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="scss">
   .admin {
 
     .page-navigation {
