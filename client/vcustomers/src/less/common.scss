@@ -1,18 +1,9 @@
-//@import "fonts/fonts";
-//@import "variables";
-//@import "bootstrap/scss/_variables.scss";
-//@import "~bootstrap/scss/_variables.scss";
 
 
 * {
   box-sizing: border-box;
 }
 
-//html, body {
-//  background-color: #FBEC98;
-//  //font-family: bebas-neue;
-//  height: 100%;
-//}
 
 
 .error-header {
@@ -35,17 +26,5 @@
     &-6 { margin-bottom: 6em; };
   }
 }
-
-
-
-// CONTAINER
-
-//@media (max-width: map_get($grid-breakpoints, sm)) {
-//  html, body {
-//    width: 100%;
-//    overflow-x: hidden;
-//  }
-//
-//}
 
 
