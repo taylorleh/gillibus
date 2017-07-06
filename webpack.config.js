@@ -39,7 +39,10 @@ let config = {
       },
       {
         test: /\.js$/,
-        exclude: [path.resolve(__dirname, 'node_modules'), __dirname + 'customers/dist'],
+        include: [
+          path.resolve(__dirname, 'client', 'vcustomers','src'),
+          path.resolve(__dirname, 'node_modules', 'bootstrap-vue')
+        ],
         loader: 'babel-loader',
         query: {
           presets: ['es2015', 'stage-2']

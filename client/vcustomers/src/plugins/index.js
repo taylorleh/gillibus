@@ -18,7 +18,7 @@ import { Card } from 'vue-stripe-elements';
 import VueLocalStorage from 'vue-localstorage';
 import ElementUI from 'element-ui'
 import VueAnalytics from 'vue-analytics';
-import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue';
 
 import '../less/common.scss';
 import '../less/variables.scss'
