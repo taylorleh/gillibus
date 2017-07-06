@@ -1,0 +1,33 @@
+@import "variables";
+
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.pad-tb-half {
+  padding: .5em 0;
+}
+
+.show-xs {
+  display: inherit !important;
+}
+
+.hide-xs {
+  display: none !important;
+}
+
+
+
+.font-primary {
+  font-family: $heading-font !important;
+}
+
+
+.font-secondary {
+  font-family: $body-font;
+}
