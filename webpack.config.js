@@ -53,16 +53,9 @@ let config = {
         include: [path.resolve(__dirname, 'client/vcustomers')],
         loader: 'file-loader',
         query: {
-          name: 'static/images/[hash].[ext]',
-          // outputPath: '/vcustomers/dist'
+          name: 'static/images/[hash].[ext]'
         }
       },
-
-      // **********************
-      //  *** ````ALL```` CSS *
-      // **********************
-
-      // TODO - added 12:23pm; 12:36 THIS WORKS - exports styles to respective bundle!!!
       {
         test: /\.less$/,
         include: [
@@ -77,52 +70,11 @@ let config = {
           use: "css-loader!less-loader"
         })
       },
-
-
-      // **********************
-      //  *** CUSTOMER CSS ****
-      // **********************
-
-      // - Local
-      // {
-      //   test: /\.css$/,
-      //   include: [
-      //     path.resolve(__dirname, 'client/vcustomers/src')
-      //   ],
-      //   exclude: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   use: CustomerLocalStyles.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader?url=false",
-      //   })
-      // },
-
-      // TODO - add back in: 12:28
-      // {
-      //   test: /\.less$/,
-      //   include: [
-      //     path.resolve(__dirname, 'client/vcustomers/src')
-      //   ],
-      //   exclude: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   use: CustomerLocalStyles.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader!less-loader"
-      //   })
-      // },
-
-
-      // - External
       {
         test: /\.css$/,
         include: [
           path.resolve(__dirname, 'node_modules')
         ],
-        // exclude: [
-        //   path.resolve(__dirname, 'client/vue-admin/src')
-        // ],
         use: CustomerVendorStyles.extract({
           fallback: "style-loader",
           use: ["css-loader"]
@@ -148,9 +100,6 @@ let config = {
           use: "css-loader!sass-loader"
         })
       },
-
-
-
       {
         test: /\.(woff|woff2|eot|ttf|svg|otf)$/,
         loader: 'file-loader',
@@ -159,54 +108,10 @@ let config = {
           // outputPath: '/vcustomers/dist'
         }
       },
-
-
-
-      // {
-      //   test: /\.(less|css)$/,
-      //   include: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   use: VendorStylesExtract.extract({
-      //       fallback: "style-loader",
-      //       use: "css-loader!less-loader?url=false"
-      //     })
-      // },
-      // {
-      //   test: /\.css$/,
-      //   exclude: [
-      //     path.resolve(__dirname, 'node_modules')
-      //   ],
-      //   use: MainStylesExtract.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader?url=false",
-      //   })
-      // },
-      // {
-      //   test: /\.less$/,
-      //   include: [
-      //     path.resolve(__dirname, 'client/vue-admin/src')
-      //   ],
-      //   use: AdminVendorStylesExtract.extract({
-      //     fallback: "style-loader",
-      //     use: "css-loader!less-loader?url=false"
-      //   })
-      // },
-      // {
-      //   test: /\.(woff|woff2|eot|ttf|svg)$/,
-      //   loader: 'file-loader?emitFile=false&name=fonts/[name].[ext]'
-      // },
       {
         test: /\.html$/,
         loader: 'raw-loader'
       }
-      // {
-      //   test: /\.vue$/,
-      //   loader: 'vue-loader',
-      //   options: {
-      //     js: 'babel-loader!file-loader'
-      //   }
-      // }
     ]
   },
   resolve: {
@@ -223,23 +128,8 @@ let config = {
     }
   },
   plugins: [
-    // VendorStylesExtract, //TODO - put this back!
-    // MainStylesExtract, //TODO - put this back!
-    // VCustomersMainStyles, //TODO - put this back!
     CustomerVendorStyles,
     AllLocalStyles,
-    // new HtmlWebpackPlugin({
-    //   filename: 'customers/dist/index.html',
-    //   template: path.resolve(__dirname, 'client/customers/index.html'),
-    //   inject: false,
-    //   chunks: ['customers']
-    // }),
-    // new HtmlWebpackPlugin({
-    //   filename: 'vue-admin/dist/index.html',
-    //   template: path.resolve(__dirname, 'client/vue-admin/index.ejs'),
-    //   inject: false,
-    //   chunks: ['vue-admin']
-    // }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, 'client/vcustomers/index.html'),
