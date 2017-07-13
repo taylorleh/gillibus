@@ -10,5 +10,5 @@ A) Local Development
     - run `gulp` (default) to watch server side files only
     - run `npm run wp-watch` which simply watches client side files and reloads. can't use dev-server at
         the moment because of problems connecting through sockets
-
+2. to push use git push heroku <BRANCH_TO_PUSH>:master
 
