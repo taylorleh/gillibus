@@ -48,7 +48,7 @@
           :header-class="['bg-primary', 'text-white']"
           header="Weekly Pageviews">
           <div class="card-block p-0">
-            <el-table :data="pageviews.data.rows" border>
+            <el-table v-if="pageviews" :data="pageviews.data.rows" border>
               <el-table-column
                 label="Page"
                 prop="dimensions"
