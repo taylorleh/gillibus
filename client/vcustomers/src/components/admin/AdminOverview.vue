@@ -72,7 +72,8 @@ export default {
       available: 'availableBalance',
       pending: 'pendingBalance',
       chargesAfterDate: 'chargesAfterDate',
-      highestTransactionsDuringPeriod: 'highestTransactionsDuringPeriod'
+      highestTransactionsDuringPeriod: 'highestTransactionsDuringPeriod',
+      pageviews:'getAnalyticsPageviewsReport'
     }),
 
     chartOptions() {
@@ -97,14 +98,19 @@ export default {
   methods: {
     ...mapActions({
       getCharges: 'getCharges',
-      getBalance: 'getAccountBalance'
+      getBalance: 'getAccountBalance',
+      getAnalytics: 'getAnalytics'
     })
   },
 
   created() {
+    this.getAnalytics({
+      startDate: moment().subtract(1, 'week').format('YYYY-MM-DD'),
+      endDate: moment().format('YYYY-MM-DD')
+    });
     this.getBalance();
     this.getCharges({
-      begin: moment().startOf('month').unix()
+      begin: moment().subtract(1, 'month').unix()
     });
   }
 

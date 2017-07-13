@@ -6,6 +6,9 @@ let models = require('../models');
 let jwt = require('jsonwebtoken');
 let stripeUtils = require('../helpers/stripe');
 const moment = require('moment');
+let google = require('googleapis');
+let gapi = google.analyticsreporting('v4');
+let utils = require('../utils/auth');
 
 
 exports.throwIfUserExists = (username) => {
@@ -159,4 +162,71 @@ exports.getAdminUsers = (req, res) => {
     .catch(error => {
       res.status(400).end(error);
     })
+};
+
+
+exports.getWeeklyUsers = (req, res) => {
+  let token = utils.getAuthToken();
+
+  token.authorize((err, tokens) => {
+    let request = {
+      auth: token,
+      ids: process.env.GAPI_VIEW_ID,
+      metrics: ['rt:activeUsers'],
+      dimensions: ['rt:pagePath']
+    };
+
+    gapi.data.realtime.get(request, (err, data) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(data);
+      }
+    })
+  })
+};
+
+
+exports.getPageViews = (req, res) => {
+  let token = utils.getAuthToken();
+  const { startDate, endDate } = req.body;
+
+  if (!startDate || !endDate) {
+    res.status(404).end("Must supply end and start date");
+    return;
+  }
+
+  token.authorize((err, tokens) => {
+
+    const query = {
+      viewId: process.env.GAPI_VIEW_ID,
+      dateRanges: [{ startDate, endDate }],
+      metrics: [
+        {
+          expression: "ga:pageviews",
+          alias: 'Pageviews'
+        },
+        {
+          expression: "ga:uniquePageviews",
+          alias: 'Unique Pageviews'
+        }
+      ],
+      dimensions: [{ "name": "ga:pagePath" }]
+    };
+
+    const request = {
+      auth: token,
+      resource: {
+        reportRequests: [query]
+      }
+    };
+
+    gapi.reports.batchGet(request, (err, data) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(data);
+      }
+    })
+  })
 };

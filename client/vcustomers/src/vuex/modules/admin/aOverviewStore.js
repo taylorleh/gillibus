@@ -8,7 +8,8 @@ import moment from 'moment';
 const state = {
   stripeMonthlyCharges: [],
   availableBalance: [],
-  pendingBalance: []
+  pendingBalance: [],
+  gapiReports: []
 };
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_PENDING_BALANCE(state, balance) {
     state.pendingBalance = balance;
+  },
+  SET_GAPI_REPORTS(state, reports) {
+    state.gapiReports = reports;
   }
 };
 
@@ -58,7 +62,7 @@ const actions = {
    * @param commit
    *
    */
-  getAccountBalance({ commit }) {
+  getAccountBalance({ commit, dispatch }) {
     api.post('/bank/balance/list')
       .then(results => {
         let { pending, available } = results.data;
@@ -70,6 +74,26 @@ const actions = {
           type: 'error',
           title: 'Error retrieving monthly charges'
         });
+      })
+  },
+
+
+  getAnalytics({ commit, dispatch }, dateRanges) {
+    let { startDate, endDate } = dateRanges;
+    return api.post('/ga/pageviews/list', {
+        startDate,
+        endDate
+      })
+      .then(results => {
+        let data = results.data.reports;
+        commit('SET_GAPI_REPORTS', data);
+      })
+      .catch(error => {
+        dispatch('addMessage', {
+          type: 'error',
+          title: 'Error retrieving analytics data'
+        });
+
       })
   }
 };
@@ -106,6 +130,11 @@ const getters = {
       return memo;
     }, new Array(7).fill(0));
     return Math.max.apply(null, out);
+  },
+
+  // ANALYTICS GETTERS
+  getAnalyticsPageviewsReport(state) {
+    return state.gapiReports[0];
   }
 };
 

@@ -7,8 +7,9 @@ let passwordless = require('passwordless');
 const recaptcha = require('../providers/captcha');
 const models = require('../models');
 const auth = require('../helpers/auth');
+let utils = require('../utils/auth');
 
-module.exports = function(router) {
+module.exports = function(router, app) {
 
   /**
    * BASE ROUTE: /api/v1/admin
@@ -29,6 +30,15 @@ module.exports = function(router) {
 
   };
 
+
+  router.use(function(req, res, next) {
+    let tokenExists = utils.doesTokenExist();
+    if (!tokenExists) {
+      utils.initCalendarToken(app);
+    }
+    next();
+  });
+
   router.route('/login')
     .post(loginController.loginAdmin);
 
@@ -40,6 +50,12 @@ module.exports = function(router) {
 
   router.route('/bank/balance/list')
     .post(auth.tokenCheck, loginController.getStripeBalance);
+
+  router.route('/ga/visitors/list')
+    .post(loginController.getWeeklyUsers);
+
+  router.route('/ga/pageviews/list')
+    .post(auth.tokenCheck, loginController.getPageViews);
 
   router.route('/users')
     .post(auth.tokenCheck, loginController.getAdminUsers);
