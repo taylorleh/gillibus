@@ -65,6 +65,9 @@
     },
 
     created() {
+      if (this.$socket) {
+        this.$socket.disconnect();
+      }
     }
   }
 </script>

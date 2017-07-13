@@ -53,7 +53,7 @@ export default {
 }
 </script>
 <style lang="scss">
-  @import '~style/variables';
+  @import '~styles/variables';
   footer {
     height: 100px;
     font-size: 14px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper bg-main">
     <customer-nav-bar></customer-nav-bar>
     <notifications></notifications>
     <router-view class="main"></router-view>
@@ -21,12 +21,19 @@ export default {
   },
 
   created() {
-    console.log('IN CUSTOMER')
+    if (this.$socket.nsp !== '/customer') {
+      this.$socket.nsp = '/customer';
+    }
+
+    if (!this.$socket.connected) {
+      this.$socket.connect();
+    }
+
   }
 }
 </script>
 <style lang="scss">
-  @import '~style/variables';
+  @import '~styles/variables';
 
   html, body {
     height: 100%;

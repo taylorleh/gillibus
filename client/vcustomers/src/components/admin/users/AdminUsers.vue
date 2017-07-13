@@ -1,31 +1,23 @@
 <template>
   <div class="admin container">
-    <div class="row">
-      <div class="well col-xs-offset-1 col-xs-10 page-navigation">
-        <button class="btn-primary" @click="dialogVisible = true">Add Admin User</button>
+    <section class="row">
+      <div class="col">
+        <b-card no-block class="mb-4"
+          :header-class="['bg-primary-dark-gradient', 'text-white', 'justify-content-end', 'd-flex']">
+          <p class="pb-0 mb-0" slot="header">
+              <button @click="dialogVisible = true" class="btn btn-sm btn-warning">Add Admin User</button>
+          </p>
+          <div class="card-block p-0">
+            <el-table :data="adminUsers" border>
+              <el-table-column width="70" prop="id" label="ID"></el-table-column>
+              <el-table-column prop="username" label="Username"></el-table-column>
+              <el-table-column :formatter="dateFormatter" prop="createdAt" label="Created at"></el-table-column>
+              <el-table-column :formatter="dateFormatter" prop="updatedAt" label="Updated at"></el-table-column>
+            </el-table>
+          </div>
+        </b-card>
       </div>
-    </div>
-
-    <div class="col-xs-offset-1 col-xs-10">
-      <table class="table table-condensed table-bordered table-striped">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Username</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="user in adminUsers">
-          <td>{{user.id}}</td>
-          <td>{{user.username}}</td>
-          <td>{{user.createdAt }}</td>
-          <td>{{user.updatedAt }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    </section>
     <div class="row">
       <el-dialog
         title="New User"
@@ -42,61 +34,73 @@
   </div>
 </template>
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import { bNav, bNavItem } from 'bootstrap-vue/lib/components';
 
-  export default {
-    data() {
-      return {
-        dialogVisible: false
-      }
-    },
+export default {
+  components: { bNav, bNavItem },
 
-    computed: {
-      ...mapGetters(['adminUsers']),
-
-      newUserEmail: {
-        get() {
-          return this.$store.getters.newUserEmail;
-
-        },
-        set(value) {
-          this.setNewAdminUser(value);
-        }
-      }
-    },
-
-    methods: {
-      ...mapActions([
-        'getAdminUsers',
-        'setNewAdminUser',
-        'addNewAdmin'
-      ]),
-
-      handleClose() {
-        this.dialogVisible = false;
-      },
-
-      addNewUser(email) {
-        this.dialogVisible = false;
-        this.addNewAdmin(email);
-      }
-    },
-
-    created() {
-      this.getAdminUsers();
-    },
-
-    destroyed() {
-      this.newUserEmail = '';
+  data() {
+    return {
+      dialogVisible: false
     }
+  },
+
+  computed: {
+    ...mapGetters(['adminUsers']),
+
+    newUserEmail: {
+      get() {
+        return this.$store.getters.newUserEmail;
+
+      },
+      set(value) {
+        this.setNewAdminUser(value);
+      }
+    }
+  },
+
+  methods: {
+    ...mapActions([
+      'getAdminUsers',
+      'setNewAdminUser',
+      'addNewAdmin'
+    ]),
+
+    handleClose() {
+      this.dialogVisible = false;
+    },
+
+    addNewUser(email) {
+      this.dialogVisible = false;
+      this.addNewAdmin(email);
+    },
+
+    dateFormatter(row, col) {
+      return moment(row[col.property]).format('MMM D, YYYY  h:mm:ss A');
+    }
+  },
+
+
+
+  created() {
+    this.getAdminUsers();
+  },
+
+  destroyed() {
+    this.newUserEmail = '';
   }
+}
 </script>
 <style lang="scss">
-  .admin {
 
-    .page-navigation {
-      text-align: right;
-    }
+@import "~styles/mixins";
+@import "~styles/variables";
+.admin {
 
+  .page-navigation {
+    text-align: right;
   }
+
+}
 </style>

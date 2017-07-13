@@ -33,120 +33,26 @@ export default {
 }
 </script>
 <style lang="scss">
-  @import "~style/variables";
-  @import "~style/utilities";
+@import "~styles/variables";
+@import "~styles/utilities";
 
-  .navbar.customer-nav {
-    /*font-family: bebas-neue;*/
-    background-color: $white;
+.navbar.customer-nav {
+  background-color: $white;
 
-    .navbar-brand {
+  .navbar-brand {
+    color: $brand-black;
+    &:hover {
       color: $brand-black;
-      &:hover {
-        color: $brand-black;
-      }
-      &:focus {
-        color: $brand-black;
-      }
     }
-
-    .nav-item {
-/*
-      .nav-link {
-        color: $link-blue;
-        font-family: $nav-font;
-
-        &:hover {
-          color: $link-blue-hover;
-        }
-        &.active {
-          color: $link-blue-active;
-          font-weight: bold;
-        }
-      }
-*/
-
-    }
-  /*}*/
-
-/*  .navbar.top-nav {
-    height: 80px;
-    z-index: 1000;*/
-
-/*
-    .navbar-header {
-      text-align: center;
-      button.navbar-toggle {
-        float: left;
-        padding: 1.6rem 1.12rem;
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-        left: 1.3rem;
-        margin: 0;
-      }
-      .navbar-brand {
-        float: none;
-      }
-    }
-*/
-
-/*
-    ul.navbar-nav {
-      background-color: #f8f8f8;
-      height: 100vh;
-      text-align: center;
-      margin-top: 0;
-      padding: 0 3.2em;
-
-      & > li {
-        border-bottom: 1px solid blue;
-      }
-
-      li.dropdown {
-        z-index: 100;
-        //border-bottom: 1px solid blue;
-      }
-
-      a {
-        line-height: 78px;
-        padding-top: 0;
-        padding-bottom: 0;
-        color: $link-blue;
-        font-family: $nav-font;
-        font-size: 18px;
-      }
-    }
-*/
-
-    /*.navbar-brand {
-      font-family: bebas-neue;
-      font-weight: normal;
-      font-size: 3em;
+    &:focus {
       color: $brand-black;
-      line-height: 80px;
-      height: 80px;
-      padding-top: 0;
-    }*/
-
-    @media (min-width: map_get($grid-breakpoints, sm)) {
-/*
-      ul.navbar-nav {
-        height: inherit;
-        & > li {
-          border-bottom: none;
-        }
-      }
-*/
-
-/*
-      li {
-        background-color: inherit;
-      }
-*/
     }
-
-    @media (min-width: map_get($grid-breakpoints, md)) {}
-
   }
+
+  @media (min-width: map_get($grid-breakpoints, sm)) {
+  }
+
+  @media (min-width: map_get($grid-breakpoints, md)) {
+  }
+}
 </style>

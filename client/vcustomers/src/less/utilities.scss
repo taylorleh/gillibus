@@ -1,5 +1,10 @@
 @import "variables";
+@import "mixins";
 
+
+.bg-main {
+  background-color: $yellow;
+}
 
 .no-bottom-margin {
   margin-bottom: 0;
@@ -31,3 +36,16 @@
 .font-secondary {
   font-family: $body-font;
 }
+
+//.m#{$infix}-auto
+
+.bg-primary-dark {
+  //background-color: darken($blue, 20%) !important;
+  background-color: mix($blue, $gray-dark) !important;
+  &#{'-gradient'} {
+    //background-color: gradient-x();
+    @include gradient-y($gray-light, darken($gray-light, 7%));
+  }
+
+}
+

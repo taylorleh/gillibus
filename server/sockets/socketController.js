@@ -74,7 +74,7 @@ module.exports = (io)  => {
   // }));
 
   driverChannel.on('connection', socket => {
-    // console.log('DRIVER CONNECTED');
+    console.log('\nDRIVER CONNECTED\n');
     // if(len(drivers) === 0) {
     //   sendStaticToGroup(customers,'yes buses', customerChannel)
     // }
@@ -108,24 +108,24 @@ module.exports = (io)  => {
 
 
     //TODO - UNCOMMENT AFTER I SETUP AUTH
-    // socket.on('driver location', locations => {
-    //   console.log(`DRIVER LOCATION ${locations.location.longitude}`);
-    //   let driverToken = socket.handshake.query.token;
-    //   checkTokenExpiration(SECRET, driverToken, err => {
-    //     console.log('ERROR AUTHING DRIVER');
-    //     driverController.sendExpirationUnauthorization(socket, err);
-    //   }, data => {
-    //     driverController.onDriverLocation(socket, locations);
-    //     customerChannel.emit('bus location', locations);
-    //     driverModel.debug('choose bus');
-    //   })
-    // });
+    socket.on('driver location', locations => {
+      console.log(`DRIVER LOCATION ${locations.location.longitude}`);
+      let driverToken = socket.handshake.query.token;
+      checkTokenExpiration(SECRET, driverToken, err => {
+        console.log('ERROR AUTHING DRIVER');
+        driverController.sendExpirationUnauthorization(socket, err);
+      }, data => {
+        driverController.onDriverLocation(socket, locations);
+        customerChannel.emit('bus location', locations);
+        driverModel.debug('choose bus');
+      })
+    });
 
     socket.on('driver location', locations => {
-      // console.log(`DRIVER LOCATION ${locations.location.longitude}`);
+      console.log(`DRIVER LOCATION ${locations.location.longitude}`);
       driverController.onDriverLocation(socket, locations);
       customerChannel.emit('bus location', locations);
-      // driverModel.debug('choose bus');
+      driverModel.debug('choose bus');
     });
 
   });
@@ -140,6 +140,7 @@ module.exports = (io)  => {
     }
 
     socket.on('disconnect', client => {
+      console.log('\nCUSTOMER DISCONNECTED')
 
     });
 

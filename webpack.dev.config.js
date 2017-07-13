@@ -108,7 +108,7 @@ let config = {
   resolve: {
     extensions: ['.js'],
     alias: {
-      style: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less'),
+      styles: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'less'),
       "api": path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
       'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),

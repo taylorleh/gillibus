@@ -2,7 +2,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-// const shell = require('shelljs');
+const shell = require('shelljs');
 const target = process.env.NODE_ENV || 'develop';
 
 
@@ -14,8 +14,11 @@ const AllLocalStyles = new ExtractTextPlugin({
 
 // const customerBuildDir = path.resolve(__dirname, 'client/customers/dist');
 // const adminBuildDir = path.resolve(__dirname, 'client/vue-admin/dist');
-// const vcustomerBuildDir = path.resolve(__dirname, 'client/vcustomers/dist');
-// shell.rm('-rf', vcustomerBuildDir);
+const vcustomerBuildDir = path.resolve(__dirname, 'client/vcustomers/dist');
+shell.rm('-rf', vcustomerBuildDir);
+
+
+console.log('\n----- BUILDING PROD -----');
 
 
 let config = {
@@ -120,7 +123,7 @@ let config = {
     alias: {
       jquery$: path.resolve(__dirname, 'node_modules/jquery/src/jquery.js'),
       moment$: path.resolve(__dirname, 'node_modules/moment/moment.js'),
-      style: path.resolve(__dirname, 'client/vcustomers/src/less'),
+      styles: path.resolve(__dirname, 'client/vcustomers/src/less'),
       api: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
       'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),
@@ -141,9 +144,9 @@ let config = {
 
 
 if (target === 'production') {
-  console.log('building for production');
+  console.log('\nTarget set for production');
 } else {
-  console.log('building for development!');
+  console.log('\nTarget set for development!');
 }
 
 module.exports = config;

@@ -34,52 +34,11 @@ $modal-desktop-size: 35.0em;
 $modal-mobile-size: 400px;
 
 
-
-
-
-
-
-//$navbar-padding-y: 3rem;
-
-
-
-
-//@import '~bootstrap/scss/bootstrap-grid';
-//@import "~bootstrap/scss/_variables.scss";
-
-
-
-//.no-left-border {
-//  border-top-left-radius: 0;
-//  border-bottom-left-radius: 0;
-//  border-left: none;
-//}
-//
-//.no-right-border {
-//  border-top-right-radius: 0;
-//  border-bottom-right-radius: 0;
-//  border-right: none;
-//}
-//
-//.no-border(@side) {
-//  border-@{side}:none;
-//}
-//
-//.no-radius(@side) {
-//  border-top-@{side}-radius:0;
-//  border-bottom-@{side}-radius:0;
-//}
-
-
-
-//html {
-//  font-size: 14px;
-//}
-
-
-
-
-
+// ALERTS COLORS
+$alert-danger: #FF4949;
+$alert-info: #20A0FF;
+$alert-success: #13CE66;
+$alert-warning: #F7BA2A;
 
 
 
@@ -273,7 +232,7 @@ $sizes: (
 //
 // Settings for the `<body>` element.
 
-$body-bg:       $yellow !default;
+$body-bg:       $white !default;
 $body-color:    $gray-dark !default;
 $inverse-bg:    $gray-dark !default;
 $inverse-color: $gray-lighter !default;
@@ -527,10 +486,10 @@ $navbar-inverse-disabled-color:        rgba($white,.25) !default;
 $navbar-inverse-toggler-bg: str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-inverse-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E"), "#", "%23") !default;
 $navbar-inverse-toggler-border:        rgba($white,.1) !default;
 
-$navbar-light-color:                rgba($brand-primary,.5) !default;
-$navbar-light-hover-color:          rgba($brand-primary,.7) !default;
-$navbar-light-active-color:         rgba($brand-primary,.9) !default;
-$navbar-light-disabled-color:       rgba($brand-primary,.3) !default;
+$navbar-light-color:                rgba($black,.5) !default;
+$navbar-light-hover-color:          rgba($black,.7) !default;
+$navbar-light-active-color:         rgba($black,.9) !default;
+$navbar-light-disabled-color:       rgba($black,.3) !default;
 $navbar-light-toggler-bg: str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-light-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E"), "#", "%23") !default;
 $navbar-light-toggler-border:       rgba($black,.1) !default;
 
@@ -736,19 +695,19 @@ $alert-border-radius:         $border-radius !default;
 $alert-link-font-weight:      $font-weight-bold !default;
 $alert-border-width:          $border-width !default;
 
-$alert-success-bg:            $state-success-bg !default;
+$alert-success-bg:            $alert-success !default;
 $alert-success-text:          $state-success-text !default;
 $alert-success-border:        $state-success-border !default;
 
-$alert-info-bg:               $state-info-bg !default;
+$alert-info-bg:               $alert-info !default;
 $alert-info-text:             $state-info-text !default;
 $alert-info-border:           $state-info-border !default;
 
-$alert-warning-bg:            $state-warning-bg !default;
+$alert-warning-bg:            $alert-warning !default;
 $alert-warning-text:          $state-warning-text !default;
 $alert-warning-border:        $state-warning-border !default;
 
-$alert-danger-bg:             $state-danger-bg !default;
+$alert-danger-bg:             $alert-danger !default;
 $alert-danger-text:           $state-danger-text !default;
 $alert-danger-border:         $state-danger-border !default;
 

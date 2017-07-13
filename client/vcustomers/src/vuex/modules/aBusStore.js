@@ -36,20 +36,21 @@ const actions = {
       position => {
         console.log(`GOT LOCATION ${position.coords}`);
         commit('UPDATE_POSITION', position);
-
       },
       error => {
         console.log(`GOT ERROR ${error}`);
-
       },
       options
     );
     commit('SET_WATCH_ID', id);
   },
 
-  clearPosition: ({commit}) => {
+
+  clearPosition: ({commit, state }) => {
     commit('UPDATE_POSITION', { coords: { longitude: null, latitude: null}})
     commit('SET_POLLING', false);
+    navigator.geolocation.clearWatch(state.watchId);
+    commit('SET_WATCH_ID', null);
   }
 };
 

@@ -67,6 +67,8 @@ export const BUS_RATES = {
 
 // MAPS
 export const CUSTOMER_SOCKET = `${document.location.origin}/customer`;
+export const DRIVER_SOCKET = `${document.location.origin}/driver`;
+
 export const MAP_ZOOM = 13;
 export const MAP_CENTER = {
   lat: 37.774929,
