@@ -44,6 +44,32 @@
             </commit-chart>
           </div>
         </b-card>
+        <b-card no-block class="mb-4"
+          :header-class="['bg-primary', 'text-white']"
+          header="Weekly Pageviews">
+          <div class="card-block p-0">
+            <el-table :data="pageviews.data.rows" border>
+              <el-table-column
+                label="Page"
+                prop="dimensions"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                :label="pageviews.columnHeader.metricHeader.metricHeaderEntries[0].name"
+                width="180">
+                <template scope="scope">
+                  {{ scope.row.metrics[0].values[0] }}
+                </template>
+              </el-table-column>
+              <el-table-column
+                :label="pageviews.columnHeader.metricHeader.metricHeaderEntries[1].name">
+                <template scope="scope">
+                  {{ scope.row.metrics[0].values[1] }}
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </b-card>
       </section>
     </div>
   </div>
