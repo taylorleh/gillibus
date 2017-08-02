@@ -20,8 +20,12 @@ const state = {
   busChoices: [],
   selectedBus: '',
 
-  timeBlocks: [],
-  selectedBlock: '',
+  // timeBlocks: [],
+  // selectedBlock: '',
+  selectedPickupTime: '',
+  selectedDropOffTime: '',
+
+  selectedPickupAddress: '',
 
   durations: [],
   selectedDuration: 0,
@@ -53,6 +57,16 @@ const mutations = {
   },
   'SET_PHONE' (state, phone) {
     state.phone = phone;
+  },
+  'SET_PICKUP'(state, time) {
+    state.selectedPickupTime = time;
+  },
+  'SET_DROPOFF'(state, time) {
+    state.selectedDropOffTime = time;
+  },
+
+  'SET_PICKUP_ADDRESS' (state, address) {
+    state.selectedPickupAddress = address;
   }
 };
 
@@ -93,7 +107,7 @@ const actions = {
     const defaultBus = firstFreeBusInList(busesAvailability, block);
     const daySchedule = busChoices(busesAvailability, block);
     commit('SET_BUS_CHOICES', daySchedule);
-    commit('SET_CHOSEN_BUS', `CHARTER_${defaultBus}`);
+    // commit('SET_CHOSEN_BUS', `CHARTER_${defaultBus}`);
   },
 
 
@@ -160,7 +174,39 @@ const actions = {
       amount,
       metadata
     });
+  },
+
+  /**
+   * Sets the pickup time for
+   * the customers' charter
+   *
+   * @param commit
+   * @param payload
+   *
+   */
+  setPickup({commit}, payload) {
+    commit('SET_PICKUP', payload);
+  },
+
+  /**
+   * Sets the dropoff
+   *
+   * @param commit
+   * @param payload
+   */
+  setDropOff({commit}, payload) {
+    commit('SET_DROPOFF', payload);
+  },
+
+  /**
+   *
+   * @param commit
+   * @param address
+   */
+  setPickupAddress({commit}, address) {
+    commit('SET_PICKUP_ADDRESS', address);
   }
+
 };
 
 const getters = {
@@ -176,16 +222,21 @@ const getters = {
   selectedBus: state => state.selectedBus,
   busChoices: state => state.busChoices,
 
-  totalPrice: state => {
-    if (state.selectedDuration && state.selectedBus && state.selectedBlock) {
-      return calculatePrice(
-        state.selectedBus.split('_')[1],
-        state.selectedBlock.toUpperCase(),
-        state.selectedDuration
-      );
-    }
-    return 0;
-  }
+  selectedPickupTime: state => state.selectedPickupTime,
+  selectedDropOffTime: state => state.selectedDropOffTime,
+
+  selectedPickupAddress: state => state.selectedPickupAddress
+
+  // totalPrice: state => {
+  //   if (state.selectedDuration && state.selectedBus && state.selectedBlock) {
+  //     return calculatePrice(
+  //       state.selectedBus.split('_')[1],
+  //       state.selectedBlock.toUpperCase(),
+  //       state.selectedDuration
+  //     );
+  //   }
+  //   return 0;
+  // }
 
 };
 

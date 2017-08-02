@@ -31,7 +31,7 @@
             <b-card class="m-0 p-0" no-block header="FLEET">
               <b-list-group>
                 <b-list-group-item v-for="bus in buses" :key="bus">
-                  <img :src="icons[bus.toUpperCase()]" alt=""><span class="pl-1 pr-1">{{bus}}</span>
+                  <img :src="icons[bus.toUpperCase()]" alt=""><span class="pl-1 pr-1 text-uppercase">{{bus}}</span>
                   <span :class="{'text-success': activeBuses[bus], 'text-danger': !activeBuses[bus]}" class="ml-auto text-end">{{activeBuses[bus] ?
                     "online" : "offline"}}</span>
                 </b-list-group-item>

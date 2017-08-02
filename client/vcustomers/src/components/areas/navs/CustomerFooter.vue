@@ -23,17 +23,17 @@
         <div class="col col-sm-12 col-md">
           <ul class="list-inline text-primary text-center text-md-left mb-0">
             <li class="list-inline-item">
-              <a class="btn-lg py-1" href="https://www.facebook.com/Gillibussf/">
+              <a class="btn-lg py-1" target="_blank" href="https://www.facebook.com/Gillibussf/">
                 <i class="fa fa-facebook" aria-hidden="true"></i>
               </a>
             </li>
             <li class="list-inline-item">
-              <a class="btn-lg py-1" href="https://www.instagram.com/gillibussf/">
+              <a class="btn-lg py-1" target="_blank" href="https://www.instagram.com/gillibussf/">
                 <i class="fa fa-instagram" aria-hidden="true"></i>
               </a>
             </li>
             <li class="list-inline-item">
-              <a class="btn-lg py-1" href="https://twitter.com/GillibusSF">
+              <a class="btn-lg py-1" target="_blank" href="https://twitter.com/GillibusSF">
                 <i class="fa fa-twitter" aria-hidden="true"></i>
               </a>
             </li>

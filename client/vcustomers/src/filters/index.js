@@ -23,3 +23,11 @@ Vue.filter('currency', function(value, sign) {
 });
 
 
+Vue.filter('pad', function(value) {
+  if(Number(value) / 10 <= 1) {
+    return ['0', value].join('');
+  }
+  return value;
+});
+
+

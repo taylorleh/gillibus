@@ -1,0 +1,10 @@
+{
+  "base": {
+    "color": "#31325F",
+    "font-family": "Abel",
+    "fontSize": "1.05rem",
+    "fontWeight": 300,
+    "iconColor": "#666EE8",
+    "lineHeight": "65px"
+  }
+}

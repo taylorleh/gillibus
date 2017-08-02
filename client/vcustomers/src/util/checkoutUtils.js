@@ -2,6 +2,7 @@
  * Created by taylor on 6/8/17.
  */
 import { BUS_RATES, busNames } from '../config'
+import moment from 'moment';
 
 /**
  * Takes a bus schedule and returns the appropriate bus
@@ -97,4 +98,36 @@ export const calculatePrice = (bus, block, duration) => {
   const basePrice = prices.base;
   const additionalHoursPrice = (duration - prices.min) * prices.rate;
   return basePrice + additionalHoursPrice;
+};
+
+
+/**
+ * Generates an array of time intervals provided a min time and
+ * maximum time
+ *
+ * @param min
+ * @param max
+ * @param step
+ *
+ */
+export const generateTimesArray = (min, max, step) => {
+  let base = moment().set({
+    hour: min,
+    minutes: 0,
+    seconds: 0
+  });
+
+  let stop = moment().set({
+    hour: max,
+    minutes: 0,
+    seconds: 0
+  });
+
+  let times = [];
+
+  while(base.isSameOrBefore(stop)) {
+    times.push(base.format('LT'));
+    base.add(step, 'm');
+  }
+  return times;
 };

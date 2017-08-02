@@ -37,6 +37,27 @@
   font-family: $body-font;
 }
 
+
+//BORDERS
+.border-success {
+  border: 4px solid $alert-success;
+}
+
+.border-default {
+  border-color: $gray-light;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.border-white {
+  border: 2px solid $white;
+}
+
+.border-primary {
+  border: 2px solid $brand-primary;
+}
+
+
 //.m#{$infix}-auto
 
 .bg-primary-dark {
@@ -48,4 +69,34 @@
   }
 
 }
+
+.bg-faded-dark {
+  background-color: $gray-light;
+}
+
+.bg-black {
+  background-color: $gray-dark;
+}
+
+.bg-white {
+  background-color: $white;
+}
+
+.position-abs {
+  position: absolute;
+}
+
+.position-relative {
+  position: relative;
+}
+
+
+.form-group {
+  .required::after {
+    content: '*';
+    color: $red;
+    position: absolute;
+  }
+}
+
 

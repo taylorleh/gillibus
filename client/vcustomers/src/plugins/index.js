@@ -19,6 +19,8 @@ import VueLocalStorage from 'vue-localstorage';
 import ElementUI from 'element-ui'
 import VueAnalytics from 'vue-analytics';
 import BootstrapVue from 'bootstrap-vue';
+import VeeValidate from 'vee-validate';
+
 
 import '../less/common.scss';
 import '../less/variables.scss'
@@ -36,10 +38,11 @@ Vue.use(ElementUI);
 Vue.component('card', Card);
 Vue.use(VueSocketio, socketio(config.CUSTOMER_SOCKET), store);
 Vue.use(VueLocalStorage);
+Vue.use(VeeValidate);
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyAirP89osWYJpZQPOuUrCeFaO2kF3NS9eA',
     v: '3',
-    libraries: 'geometry'
+    libraries: 'geometry,places'
   }
 });

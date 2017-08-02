@@ -14,7 +14,7 @@ const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&t
 
 let config = {
   context: path.resolve(__dirname, 'client', 'vcustomers'),
-  entry: [ './src/main.js', hotMiddlewareScript],
+  entry: ['./src/main.js', hotMiddlewareScript],
 
   output: {
     path: path.resolve(__dirname, 'client', 'vcustomers', 'dist'),
@@ -25,10 +25,23 @@ let config = {
   module: {
     rules: [
       {
+        test: require.resolve('jquery'),
+        use: [{
+          loader: 'expose-loader',
+          options: 'jQuery'
+        }, {
+          loader: 'expose-loader',
+          options: '$'
+        }]
+      },
+
+
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          extractCSS: true
+          extractCSS: true,
+          preserveWhitespace: false
         }
       },
       {
@@ -97,7 +110,7 @@ let config = {
         test: /\.(woff|woff2|eot|ttf|svg|otf)$/,
         loader: 'file-loader',
         query: {
-          name:'static/fonts/[name].[ext]'
+          name: 'static/fonts/[name].[ext]'
           // outputPath: '/vcustomers/dist'
         }
       },
@@ -112,11 +125,20 @@ let config = {
       "api": path.resolve(__dirname, 'client', 'vcustomers', 'src', 'api'),
       '@': path.resolve(__dirname, 'client', 'vcustomers', 'src'),
       'components': path.resolve(__dirname, 'client', 'vcustomers', 'src', 'components'),
-      utils:  path.resolve(__dirname, 'client', 'vcustomers', 'src', 'util')
+      utils: path.resolve(__dirname, 'client', 'vcustomers', 'src', 'util')
     }
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify("development"),
+      'process.env.USE_SERVICES': JSON.stringify(process.env.API_SERVICES)
+    }),
+
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }),
     CustomerVendorStyles,
     AllLocalStyles,
     new webpack.HotModuleReplacementPlugin(),
@@ -133,5 +155,10 @@ let config = {
   devtool: 'source-map'
 };
 
+let areServicesOn = process.env.API_SERVICES === 'on';
+
+console.log(`
+${areServicesOn ? 'SERVICES TURNED ON' : 'services are turned off'}
+`);
 
 module.exports = config;

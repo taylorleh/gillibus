@@ -12,11 +12,15 @@ Vue.use(Router);
 import CustomerHome from 'components/home/HomeView.vue';
 import CustomerCharter from 'components/charter/Charter.vue';
 import AdminLogin from 'components/adminLogin/AdminLogin.vue';
-import CharterCheckout from 'components/charterCheckout/CharterCheckout.vue';
 import PrivacyPolicy from 'components/legal/PrivacyPolicy.vue';
 import AboutUs from 'components/legal/AboutUs.vue';
 import TermsConditions from 'components/legal/TermsConditions.vue';
 import AdminOverview from 'components/admin/AdminOverview.vue';
+
+import CharterCheckout from 'components/charterCheckout/CharterCheckout.vue';
+import DetailsStep from 'components/charterCheckout/DetailsStep.vue';
+import PaymentStep from 'components/charterCheckout/PaymentStep.vue';
+import ReviewStep from 'components/charterCheckout/ReviewStep.vue';
 
 
 import AdminUsers from 'components/admin/users/AdminUsers.vue';
@@ -48,7 +52,6 @@ const AdminRoutes = [
 //   { path: '/portal/buses', component: AdminBuses }
 // ];
 
-
 const routes = [
   { name: 'home', path: '/', component: CustomerHome },
   { name: 'admin', path: '/admin', component: AdminLogin },
@@ -57,10 +60,17 @@ const routes = [
   { name: 'about', path: '/about-us', component: AboutUs },
   { name: 'terms', path: '/terms-conditions', component: TermsConditions },
   {
-    name: 'checkout',
+    // name: 'checkout',
     path: '/checkout',
     component: CharterCheckout,
-    props: true
+    props: true,
+    name: 'checkout',
+    redirect: '/checkout/details',
+    children: [
+      { component: DetailsStep, path: 'details'},
+      { name: 'payment', component: PaymentStep, path: 'payment'},
+      { name: 'review', component: ReviewStep, path: 'review'}
+    ]
     // beforeEnter: (to, from, next) => {
     //   if (!to.params.date) {
     //     next(from.path);

@@ -88,7 +88,7 @@
 </script>
 <style lang="scss">
   .calendar-container {
-    font-family: Bebas-neue;
+    font-family: Bebas neue;
 
     ul {
       list-style: none;

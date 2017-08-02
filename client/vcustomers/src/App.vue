@@ -8,6 +8,7 @@
 <style>
 </style>
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import CustomerArea from './components/areas/CustomerArea.vue';
 import AdminArea from './components/areas/AdminArea.vue';
 import CustomerFooter from "./components/areas/navs/CustomerFooter.vue";
@@ -22,9 +23,34 @@ export default {
     connect() {}
   },
 
+  computed: {
+    ...mapGetters(['USE_SERVICES'])
+  },
+
   methods: {
+    ...mapActions(['setEnvironmentMode', 'setServiceUsage']),
+
     inCustomerArea() {
       return this.$route.path.split('/').indexOf('portal') === -1;
+    }
+  },
+
+  created() {
+    if (process.env.NODE_ENV) {
+      this.setEnvironmentMode(process.env.NODE_ENV);
+    } else {
+      console.warn('Could not set environment mode');
+    }
+
+    if (process.env.USE_SERVICES) {
+      this.setServiceUsage((process.env.USE_SERVICES === 'on'));
+    } else {
+      console.warn('Could not set environment mode');
+    }
+    let me = this;
+
+    window.toggleServices = () => {
+      me.setServiceUsage(!me.USE_SERVICES);
     }
   }
 }

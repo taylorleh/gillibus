@@ -7,6 +7,7 @@ import router from './router';
 import store from './vuex/store';
 import './plugins';
 import './filters';
+import './directives';
 
 const app = new Vue({
   el: 'body',

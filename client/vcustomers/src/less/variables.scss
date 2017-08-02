@@ -43,7 +43,7 @@ $alert-warning: #F7BA2A;
 
 
 
-
+$enable-rounded: false;
 
 
 
@@ -181,6 +181,28 @@ $enable-transitions:        true !default;
 $enable-hover-media-query:  true !default;
 $enable-grid-classes:       true !default;
 $enable-print-styles:       true !default;
+
+
+
+// INPUTS
+$input-bg:                       $white !default;
+$input-bg-disabled:              $gray-lighter !default;
+
+$input-color:                    $gray !default;
+//$input-border-color:             rgba($black,.15) !default;
+//$input-btn-border-width:         $border-width !default; // For form controls and buttons
+//$input-box-shadow:               inset 0 1px 1px rgba($black,.075) !default;
+//
+//$input-border-radius:            $border-radius !default;
+//$input-border-radius-lg:         $border-radius-lg !default;
+//$input-border-radius-sm:         $border-radius-sm !default;
+//
+//$input-bg-focus:                 $input-bg !default;
+//$input-border-focus:             lighten($brand-primary, 25%) !default;
+//$input-box-shadow-focus:         $input-box-shadow, rgba($input-border-focus, .6) !default;
+//$input-color-focus:              $input-color !default;
+
+$input-color-placeholder:        $gray-light !default;
 
 
 // Spacing
