@@ -1,0 +1,102 @@
+@import "variables";
+@import "mixins";
+
+
+.bg-main {
+  background-color: $yellow;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.pad-tb-half {
+  padding: .5em 0;
+}
+
+.show-xs {
+  display: inherit !important;
+}
+
+.hide-xs {
+  display: none !important;
+}
+
+
+
+.font-primary {
+  font-family: $heading-font !important;
+}
+
+
+.font-secondary {
+  font-family: $body-font;
+}
+
+
+//BORDERS
+.border-success {
+  border: 4px solid $alert-success;
+}
+
+.border-default {
+  border-color: $gray-light;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.border-white {
+  border: 2px solid $white;
+}
+
+.border-primary {
+  border: 2px solid $brand-primary;
+}
+
+
+//.m#{$infix}-auto
+
+.bg-primary-dark {
+  //background-color: darken($blue, 20%) !important;
+  background-color: mix($blue, $gray-dark) !important;
+  &#{'-gradient'} {
+    //background-color: gradient-x();
+    @include gradient-y($gray-light, darken($gray-light, 7%));
+  }
+
+}
+
+.bg-faded-dark {
+  background-color: $gray-light;
+}
+
+.bg-black {
+  background-color: $gray-dark;
+}
+
+.bg-white {
+  background-color: $white;
+}
+
+.position-abs {
+  position: absolute;
+}
+
+.position-relative {
+  position: relative;
+}
+
+
+.form-group {
+  .required::after {
+    content: '*';
+    color: $red;
+    position: absolute;
+  }
+}
+
+
